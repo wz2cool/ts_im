@@ -1,0 +1,22 @@
+.fontIconLink {
+    & .iconfont {
+        font-family: "iconfont";
+        font-size: 32px;
+        font-style: normal;
+        text-decoration: none;
+        color: #848484
+    }
+    & .iconfont:hover {
+        color: #4DA9FD
+    }
+    & .activeIcon {
+        display: none;
+    }
+    &.activeLink .defaultIcon {
+        display: none;
+    }
+    &.activeLink .activeIcon {
+        display: inline-block;
+        color: #3290FC
+    }
+}

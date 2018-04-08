@@ -1,0 +1,16 @@
+{
+    "apps": [
+        {
+            "name": "ts_im_apis",
+            "script": "bin/www.js",
+            "env": {
+                "NODE_ENV": "dev",
+                "DATABASE_DB": "ts_im",
+                "DATABASE_HOST": "wz2cool.wicp.net",
+                "DATABASE_PORT": 4306,
+                "DATABASE_USER": "frank",
+                "DATABASE_PWD": "frank"
+            }
+        }
+    ]
+}

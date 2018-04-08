@@ -1,0 +1,1 @@
+export { FontIconLink } from './FontIconLink';

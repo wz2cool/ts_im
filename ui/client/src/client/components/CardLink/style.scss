@@ -1,0 +1,30 @@
+.cardLink {
+    width: 100%;
+    height: 64px;
+    display: inline-block;
+    &:active,
+    &:focus {
+        text-decoration: none
+    }
+    &:hover {
+        background-color: #ddd;
+    }
+    &.c-active {
+        background-color: #ccc;
+    }
+    .c-image {
+        width: 48px;
+        height: 48px;
+        margin: 8px;
+        display: inline-block;
+        background-color: #fff;
+    }
+    .c-title {
+        font-size: 18px;
+        color: #333;
+    }
+    .c-subTitle {
+        font-size: 12px;
+        color: #999;
+    }
+}
