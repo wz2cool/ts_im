@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "antd": "^3.1.6",
+    "antd": "3.2.0",
     "express": "^4.16.2",
     "fs-extra": "^5.0.0",
     "lodash": "^4.17.5",
