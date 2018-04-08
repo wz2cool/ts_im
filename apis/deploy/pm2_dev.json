@@ -5,11 +5,11 @@
             "script": "bin/www.js",
             "env": {
                 "NODE_ENV": "dev",
-                "DATABASE_DB": "ts_im",
-                "DATABASE_HOST": "wz2cool.wicp.net",
-                "DATABASE_PORT": 4306,
-                "DATABASE_USER": "frank",
-                "DATABASE_PWD": "frank"
+                "DATABASE_DB": "ts_im_dev",
+                "DATABASE_HOST": "118.25.40.123",
+                "DATABASE_PORT": 3306,
+                "DATABASE_USER": "bigdev",
+                "DATABASE_PWD": "innodealing"
             }
         }
     ]
