@@ -1,7 +1,7 @@
 {
     "apps": [
         {
-            "name": "ts_im_apis",
+            "name": "ts_im_apis_dev",
             "script": "bin/www.js",
             "env": {
                 "NODE_ENV": "dev",
