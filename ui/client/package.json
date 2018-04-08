@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsc -p tsconfig.server.json && node dist/app.js --development",
     "analyze": "webpack --config webpack.config.analyze.js",
-    "build": "rimraf ./dist && webpack --config webpack.config.js && tsc -p tsconfig.server.json && copyfiles package.json dist",
+    "build": "rimraf ./dist && webpack --config webpack.config.js && tsc -p tsconfig.server.json && copyfiles package.json dist && copyfiles deploy/**/* dist",
     "prestart": "npm run build",
     "start": "node dist/app.js --production"
   },

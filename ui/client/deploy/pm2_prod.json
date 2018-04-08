@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "ts_im_web",
+      "script": "app.js --production",
+      "env": {
+        "PORT": 4000,
+        "NODE_ENV": "prod"
+      }
+    }
+  ]
+}
