@@ -4,6 +4,7 @@
             "name": "ts_im_apis",
             "script": "bin/www.js",
             "env": {
+                "PORT": 3000,
                 "NODE_ENV": "production",
                 "DATABASE_DB": "ts_im",
                 "DATABASE_HOST": "localhost",
