@@ -2,10 +2,10 @@
   "apps": [
     {
       "name": "ts_im_web_dev",
-      "script": "app.js --production",
+      "script": "app.js",
       "env": {
         "PORT": 4001,
-        "NODE_ENV": "dev"
+        "NODE_ENV": "development"
       }
     }
   ]
