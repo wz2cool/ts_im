@@ -7,6 +7,7 @@ const port = process.env.PORT || 8081;
 const app = express();
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
+console.log(`isDeveloment: ${isDevelopment}`);
 if (isDevelopment) {
   const webpack = require('webpack');
   const webpackConfig = require('../webpack.config.dev');
