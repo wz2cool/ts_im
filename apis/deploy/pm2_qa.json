@@ -1,0 +1,17 @@
+{
+    "apps": [
+        {
+            "name": "ts_im_apis_dev",
+            "script": "bin/www.js",
+            "env": {
+                "PORT": 3002,
+                "NODE_ENV": "qa",
+                "DATABASE_DB": "ts_im_qa",
+                "DATABASE_HOST": "localhost",
+                "DATABASE_PORT": 3306,
+                "DATABASE_USER": "bigdev",
+                "DATABASE_PWD": "innodealing"
+            }
+        }
+    ]
+}
