@@ -1,0 +1,12 @@
+{
+  "apps": [
+    {
+      "name": "ts_im_web_qa",
+      "script": "app.js",
+      "env": {
+        "PORT": 4002,
+        "NODE_ENV": "qa"
+      }
+    }
+  ]
+}

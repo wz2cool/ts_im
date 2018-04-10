@@ -6,7 +6,7 @@ import * as fse from 'fs-extra';
 const port = process.env.PORT || 8081;
 const app = express();
 
-const isDevelopment = process.env.NODE_ENV !== 'production';
+const isDevelopment = !process.env.NODE_ENV || process.env.NODE_ENV === 'developmenet';
 console.log(`isDeveloment: ${isDevelopment}`);
 if (isDevelopment) {
   const webpack = require('webpack');
