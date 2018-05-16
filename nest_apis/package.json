@@ -21,8 +21,7 @@
     "@nestjs/testing": "^4.5.5",
     "@nestjs/websockets": "^4.5.8",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.6",
-    "typescript": "^2.6.2"
+    "rxjs": "^5.5.6"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",
@@ -40,7 +39,8 @@
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-sourcemaps": "^2.6.1",
-    "gulp-typescript": "^3.2.2"
+    "gulp-typescript": "^3.2.2",
+    "typescript": "^2.6.2"
   },
   "jest": {
     "moduleFileExtensions": [
