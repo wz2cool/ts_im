@@ -21,4 +21,8 @@ gulp.task("build", ['clean'], function () {
         .pipe(gulp.dest("./dist"));
 });
 
-gulp.task('default', ['build']);
+gulp.task("copy_packageJson", ["clean"], function () {
+    return move('package.json', 'dist')
+});
+
+gulp.task('default', ['build', 'copy_packageJson']);
