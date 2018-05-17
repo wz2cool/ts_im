@@ -1,10 +1,14 @@
 import { Get, Controller, Post, Body, Request, Response } from '@nestjs/common';
 import { CreateGroupDto } from '../model/dto';
+import { GroupDbService } from '../service';
 
 @Controller('groups')
 export class GroupsController {
+    constructor(private readonly groupDbService: GroupDbService) {
+    }
+
     @Post()
-    create(@Body() dto: CreateGroupDto) {
-        return 'this action adds a new cat';
+    async create(@Body() dto: CreateGroupDto) {
+        return await this.groupDbService.createGroup(dto);
     }
 }

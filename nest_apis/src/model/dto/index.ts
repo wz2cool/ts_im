@@ -1,3 +1,3 @@
-import { CreateGroupDto } from './create-group.dto';
+import { CreateGroupDto } from './create.group.dto';
 
 export { CreateGroupDto };
