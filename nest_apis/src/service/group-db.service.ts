@@ -41,30 +41,33 @@ export class GroupDbService {
     }
 
     public async updateGroup(groupId: number, updateGroupDto: UpdateGroupDto): Promise<void> {
-        if (CommonHelper.isNullOrUndefined(groupId)) {
-            return new Promise<void>((resolve, reject) => reject('"groupId" cannot be empty'));
-        }
-        if (CommonHelper.isNullOrUndefined(updateGroupDto)) {
-            return new Promise<void>((resolve, reject) => resolve());
-        }
-
-        const group = this.updateDtoToEntity(groupId, updateGroupDto);
+        let conn: IConnection;
+        let beginTrans: boolean = false;
         try {
-            const conn = await this.dbCoreService.getConnection();
-            try {
-                await conn.beginTransaction();
-                const groupMapper = new GroupMapper(conn);
-                const effectRows = await groupMapper.updateByPrimaryKeySelective(group);
-                console.log('effectRows: ', effectRows);
-                await conn.commit();
-                await conn.release();
-                return new Promise<void>((resolve, reject) => resolve());
-            } catch (beginTransError) {
-                await conn.release();
-                return new Promise<void>((resolve, reject) => reject(beginTransError));
+            if (CommonHelper.isNullOrUndefined(groupId)) {
+                throw new DisplayException('"groupId" 不能为空。');
             }
-        } catch (getConnError) {
-            return new Promise<void>((resolve, reject) => reject(getConnError));
+            if (this.isDtoEmpty(updateGroupDto)) {
+                throw new DisplayException('参数不能为空。');
+            }
+            const group = this.updateDtoToEntity(groupId, updateGroupDto);
+            conn = await this.dbCoreService.getConnection();
+            await conn.beginTransaction();
+            beginTrans = true;
+            const groupMapper = new GroupMapper(conn);
+            const effectRows = await groupMapper.updateByPrimaryKeySelective(group);
+            console.log('effectRows: ', effectRows);
+            await conn.commit();
+            await conn.release();
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (error) {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                if (beginTrans) {
+                    await conn.rollback();
+                }
+                await conn.release();
+            }
+            return new Promise<void>((resolve, reject) => reject(error));
         }
     }
 
