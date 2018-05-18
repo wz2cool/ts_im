@@ -3,7 +3,7 @@ import { DbCoreService } from './db-core.service';
 import { CreateGroupDto, UpdateGroupDto } from '../model/dto';
 import { CommonHelper, IConnection } from 'tsbatis';
 import { Group } from '../model/entity/table/group';
-import { GroupMapper } from '../mapper/groupMapper';
+import { GroupMapper } from '../mapper';
 import { DisplayException } from '../model/exception';
 
 @Component()
