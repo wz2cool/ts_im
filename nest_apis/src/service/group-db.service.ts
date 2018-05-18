@@ -1,5 +1,5 @@
 import { Component } from '@nestjs/common';
-import { DbCoreService } from './db.core.service';
+import { DbCoreService } from './db-core.service';
 import { CreateGroupDto, UpdateGroupDto } from '../model/dto';
 import { CommonHelper, IConnection } from 'tsbatis';
 import { Group } from '../model/entity/table/group';
@@ -16,7 +16,7 @@ export class GroupDbService {
         let conn: IConnection;
         let beginTrans: boolean = false;
         try {
-            if (CommonHelper.isNullOrUndefined(createGroupDto) || JSON.stringify(createGroupDto) === '{}') {
+            if (this.isDtoEmpty(createGroupDto)) {
                 throw new DisplayException('参数不能为空');
             }
             const group = this.createDtoToEntity(createGroupDto);
@@ -66,6 +66,10 @@ export class GroupDbService {
         } catch (getConnError) {
             return new Promise<void>((resolve, reject) => reject(getConnError));
         }
+    }
+
+    private isDtoEmpty(dto: any): boolean {
+        return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
 
     private createDtoToEntity(createGroupDto: CreateGroupDto): Group {
