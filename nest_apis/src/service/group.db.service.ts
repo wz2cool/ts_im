@@ -1,9 +1,10 @@
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db.core.service';
 import { CreateGroupDto, UpdateGroupDto } from '../model/dto';
-import { CommonHelper } from 'tsbatis';
+import { CommonHelper, IConnection } from 'tsbatis';
 import { Group } from '../model/entity/table/group';
 import { GroupMapper } from '../mapper/groupMapper';
+import { DisplayException } from '../model/exception';
 
 @Component()
 export class GroupDbService {
@@ -12,27 +13,30 @@ export class GroupDbService {
     }
 
     public async createGroup(createGroupDto: CreateGroupDto): Promise<number> {
-        if (CommonHelper.isNullOrUndefined(createGroupDto)) {
-            return new Promise<number>((resolve, reject) => resolve(0));
-        }
-
-        const group = this.createDtoToEntity(createGroupDto);
+        let conn: IConnection;
+        let beginTrans: boolean = false;
         try {
-            const conn = await this.dbCoreService.getConnection();
-            try {
-                await conn.beginTransaction();
-                const groupMapper = new GroupMapper(conn);
-                const effectRows = await groupMapper.insertSelective(group);
-                console.log('effectRows: ', effectRows);
-                await conn.commit();
-                await conn.release();
-                return new Promise<number>((resolve, reject) => resolve(group.id));
-            } catch (beginTransError) {
-                await conn.release();
-                return new Promise<number>((resolve, reject) => reject(beginTransError));
+            if (CommonHelper.isNullOrUndefined(createGroupDto) || JSON.stringify(createGroupDto) === '{}') {
+                throw new DisplayException('参数不能为空');
             }
-        } catch (getConnError) {
-            return new Promise<number>((resolve, reject) => reject(getConnError));
+            const group = this.createDtoToEntity(createGroupDto);
+            conn = await this.dbCoreService.getConnection();
+            await conn.beginTransaction();
+            beginTrans = true;
+            const groupMapper = new GroupMapper(conn);
+            const effectRows = await groupMapper.insertSelective(group);
+            console.log('effectRows: ', effectRows);
+            await conn.commit();
+            await conn.release();
+            return new Promise<number>((resolve, reject) => resolve(group.id));
+        } catch (error) {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                if (beginTrans) {
+                    await conn.rollback();
+                }
+                await conn.release();
+            }
+            return new Promise<number>((resolve, reject) => reject(error));
         }
     }
 
