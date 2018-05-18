@@ -2,7 +2,8 @@ import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseI
 import { CreateGroupDto, UpdateGroupDto, GroupPageDto } from '../model/dto';
 import { GroupDbService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptor';
+import { LoggingInterceptor } from '../common/interceptors';
+import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('groups')
 @UseInterceptors(LoggingInterceptor)
@@ -18,21 +19,25 @@ export class GroupsController {
 
     @Put(':groupId')
     @ApiImplicitParam({ name: 'groupId', type: 'integer' })
-    async update(@Param() params: any, @Body() dto: UpdateGroupDto) {
-        return await this.groupDbService.updateGroup(params.groupId, dto);
+    async update(
+        @Param('groupId', new ParseIntPipe()) groupId: number,
+        @Body() dto: UpdateGroupDto) {
+        return await this.groupDbService.updateGroup(groupId, dto);
     }
 
     @Get()
     @ApiImplicitQuery({ name: 'pageNum', type: 'integer' })
     @ApiImplicitQuery({ name: 'pageSize', type: 'integer' })
     @ApiResponse({ status: 200, description: '分页获取全部组', type: GroupPageDto })
-    async getGroups(@Query() query: any) {
-        console.log(query);
+    async getGroups(
+        @Query('pageNum', new ParseIntPipe()) pageNum: number,
+        @Query('pageSize', new ParseIntPipe()) pageSize: number) {
+        console.log(pageNum);
     }
 
     @Get(':groupId')
     @ApiImplicitParam({ name: 'groupId', type: 'integer' })
-    async getGroupById(@Param() params: any) {
-        console.log(params);
+    async getGroupById(@Param('groupId', new ParseIntPipe()) groupId: number) {
+        console.log(groupId);
     }
 }

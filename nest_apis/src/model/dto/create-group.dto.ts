@@ -10,7 +10,7 @@ export class CreateGroupDto {
     @IsString()
     readonly subject: string;
 
-    @ApiModelProperty({ type: String, required: false })
+    @ApiModelProperty({ type: Boolean, required: false })
     @IsBoolean()
     readonly canInvite: boolean;
 
