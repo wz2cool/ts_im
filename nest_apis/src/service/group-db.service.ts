@@ -1,7 +1,7 @@
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import { CreateGroupDto, UpdateGroupDto } from '../model/dto';
-import { CommonHelper, IConnection } from 'tsbatis';
+import { CreateGroupDto, UpdateGroupDto, GroupDto } from '../model/dto';
+import { CommonHelper, IConnection, Page, PageRowBounds, DynamicQuery, SortDescriptor, SortDirection } from 'tsbatis';
 import { Group } from '../model/entity/table/group';
 import { GroupMapper } from '../mapper';
 import { DisplayException } from '../model/exception';
@@ -12,7 +12,7 @@ export class GroupDbService {
         console.log('GroupDbService init');
     }
 
-    public async createGroup(createGroupDto: CreateGroupDto): Promise<number> {
+    public async  createGroup(createGroupDto: CreateGroupDto): Promise<number> {
         let conn: IConnection;
         let beginTrans: boolean = false;
         try {
@@ -57,6 +57,9 @@ export class GroupDbService {
             const groupMapper = new GroupMapper(conn);
             const effectRows = await groupMapper.updateByPrimaryKeySelective(group);
             console.log('effectRows: ', effectRows);
+            if (effectRows === 0) {
+                throw new DisplayException(`未能找到对应的组。id: ${groupId}`);
+            }
             await conn.commit();
             await conn.release();
             return new Promise<void>((resolve, reject) => resolve());
@@ -68,6 +71,64 @@ export class GroupDbService {
                 await conn.release();
             }
             return new Promise<void>((resolve, reject) => reject(error));
+        }
+    }
+
+    private async deleteGroup(groupId: number): Promise<void> {
+        let conn: IConnection;
+        let beginTrans: boolean = false;
+        try {
+            if (CommonHelper.isNullOrUndefined(groupId)) {
+                throw new DisplayException('"groupId" 不能为空。');
+            }
+
+            conn = await this.dbCoreService.getConnection();
+            await conn.beginTransaction();
+            beginTrans = true;
+            const groupMapper = new GroupMapper(conn);
+            const effectRows = await groupMapper.deleteByPrimaryKey(groupId);
+            console.log('effectRows: ', effectRows);
+            if (effectRows === 0) {
+                throw new DisplayException(`未能找到对应的组。id: ${groupId}`);
+            }
+            await conn.commit();
+            await conn.release();
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (error) {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                if (beginTrans) {
+                    await conn.rollback();
+                }
+                await conn.release();
+            }
+            return new Promise<void>((resolve, reject) => reject(error));
+        }
+    }
+
+    public async getGroups(pageNum: number, pageSize: number): Promise<Page<Group>> {
+        let conn: IConnection;
+        try {
+            if (!CommonHelper.isNullOrUndefined(pageNum)) {
+                throw new DisplayException('"pageNum" 不能为空。');
+            }
+            if (!CommonHelper.isNullOrUndefined(pageSize)) {
+                throw new DisplayException('"pageSize" 不能为空。');
+            }
+            const pageRowBounds = new PageRowBounds(pageNum, pageSize);
+            conn = await this.dbCoreService.getConnection();
+            const groupMapper = new GroupMapper(conn);
+            const query = DynamicQuery.createIntance<Group>();
+            const idSort = new SortDescriptor<Group>((g) => g.id, SortDirection.DESC);
+            query.addSorts(idSort);
+            const result = await groupMapper.selectPageRowBoundsByDynamicQuery(query, pageRowBounds);
+            await conn.release();
+
+            return new Promise<Page<Group>>((resolve, reject) => resolve(result));
+        } catch (error) {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+            return new Promise<Page<Group>>((resolve, reject) => reject(error));
         }
     }
 
@@ -106,5 +167,20 @@ export class GroupDbService {
         group.subject = updateGroupDto.subject;
         group.groupName = updateGroupDto.groupName;
         return group;
+    }
+
+    private entityToDto(group: Group): GroupDto {
+        const dto = new GroupDto();
+        dto.id = group.id;
+        dto.canInvite = JSON.stringify(group.canInvite) === '1';
+        dto.canRegister = JSON.stringify(group.canRegister) === '1';
+        dto.createTime = group.createTime;
+        dto.description = group.description;
+        dto.groupName = group.groupName;
+        dto.maxUser = group.maxUser;
+        dto.publicGroup = JSON.stringify(group.publicGroup) === '1';
+        dto.subject = group.subject;
+        dto.updateTime = group.updateTime;
+        return dto;
     }
 }
