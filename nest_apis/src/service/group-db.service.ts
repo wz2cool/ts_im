@@ -1,6 +1,7 @@
+import * as lodash from 'lodash';
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import { CreateGroupDto, UpdateGroupDto, GroupDto } from '../model/dto';
+import { CreateGroupDto, UpdateGroupDto, GroupDto, GroupPageDto } from '../model/dto';
 import { CommonHelper, IConnection, Page, PageRowBounds, DynamicQuery, SortDescriptor, SortDirection } from 'tsbatis';
 import { Group } from '../model/entity/table/group';
 import { GroupMapper } from '../mapper';
@@ -105,13 +106,13 @@ export class GroupDbService {
         }
     }
 
-    public async getGroups(pageNum: number, pageSize: number): Promise<Page<Group>> {
+    public async getGroups(pageNum: number, pageSize: number): Promise<GroupPageDto> {
         let conn: IConnection;
         try {
-            if (!CommonHelper.isNullOrUndefined(pageNum)) {
+            if (CommonHelper.isNullOrUndefined(pageNum)) {
                 throw new DisplayException('"pageNum" 不能为空。');
             }
-            if (!CommonHelper.isNullOrUndefined(pageSize)) {
+            if (CommonHelper.isNullOrUndefined(pageSize)) {
                 throw new DisplayException('"pageSize" 不能为空。');
             }
             const pageRowBounds = new PageRowBounds(pageNum, pageSize);
@@ -120,15 +121,35 @@ export class GroupDbService {
             const query = DynamicQuery.createIntance<Group>();
             const idSort = new SortDescriptor<Group>((g) => g.id, SortDirection.DESC);
             query.addSorts(idSort);
-            const result = await groupMapper.selectPageRowBoundsByDynamicQuery(query, pageRowBounds);
+            const groupPage = await groupMapper.selectPageRowBoundsByDynamicQuery(query, pageRowBounds);
+            const result = this.groupPageToGroupPageDto(groupPage);
             await conn.release();
-
-            return new Promise<Page<Group>>((resolve, reject) => resolve(result));
+            return new Promise<GroupPageDto>((resolve, reject) => resolve(result));
         } catch (error) {
             if (!CommonHelper.isNullOrUndefined(conn)) {
                 await conn.release();
             }
-            return new Promise<Page<Group>>((resolve, reject) => reject(error));
+            return new Promise<GroupPageDto>((resolve, reject) => reject(error));
+        }
+    }
+
+    public async getGroupById(groupId: number): Promise<GroupDto> {
+        let conn: IConnection;
+        try {
+            if (CommonHelper.isNullOrUndefined(groupId)) {
+                throw new DisplayException('"groupId" 不能为空。');
+            }
+            conn = await this.dbCoreService.getConnection();
+            const groupMapper = new GroupMapper(conn);
+            const group = await groupMapper.selectByPrimaryKey(groupId);
+            const result = this.entityToDto(group);
+            await conn.release();
+            return new Promise<GroupDto>((resolve, reject) => resolve(result));
+        } catch (error) {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+            return new Promise<GroupDto>((resolve, reject) => reject(error));
         }
     }
 
@@ -170,6 +191,10 @@ export class GroupDbService {
     }
 
     private entityToDto(group: Group): GroupDto {
+        if (CommonHelper.isNullOrUndefined(group)) {
+            return null;
+        }
+
         const dto = new GroupDto();
         dto.id = group.id;
         dto.canInvite = JSON.stringify(group.canInvite) === '1';
@@ -182,5 +207,20 @@ export class GroupDbService {
         dto.subject = group.subject;
         dto.updateTime = group.updateTime;
         return dto;
+    }
+
+    private groupPageToGroupPageDto(groupPage: Page<Group>): GroupPageDto {
+        if (CommonHelper.isNullOrUndefined(groupPage)) {
+            return null;
+        }
+        const entities = groupPage.getEntities();
+        const dtoEntities = lodash.map(entities, x => this.entityToDto(x));
+
+        return new GroupPageDto(
+            groupPage.getPageNum(),
+            groupPage.getPageSize(),
+            groupPage.getTotal(),
+            groupPage.getPages(),
+            dtoEntities);
     }
 }

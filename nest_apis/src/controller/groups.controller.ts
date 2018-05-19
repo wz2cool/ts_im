@@ -32,12 +32,12 @@ export class GroupsController {
     async getGroups(
         @Query('pageNum', new ParseIntPipe()) pageNum: number,
         @Query('pageSize', new ParseIntPipe()) pageSize: number) {
-        console.log(pageNum);
+        return await this.groupDbService.getGroups(pageNum, pageSize);
     }
 
     @Get(':groupId')
     @ApiImplicitParam({ name: 'groupId', type: 'integer' })
     async getGroupById(@Param('groupId', new ParseIntPipe()) groupId: number) {
-        console.log(groupId);
+        return await this.groupDbService.getGroupById(groupId);
     }
 }
