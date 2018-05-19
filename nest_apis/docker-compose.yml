@@ -5,11 +5,11 @@ services:
     image: docker.wz2cool.top/ts_im/ts_im_api:4
     environment:
       - NODE_ENV=production
-      - ENABLE_DATABASE_LOG=xxxx,
-      - DATABASE_DB=xxxx,
-      - DATABASE_HOST=xxxx,
-      - DATABASE_PORT=xxxxx,
-      - DATABASE_USER=xxxxx,
+      - ENABLE_DATABASE_LOG=xxxx
+      - DATABASE_DB=xxxx
+      - DATABASE_HOST=xxxx
+      - DATABASE_PORT=xxxxx
+      - DATABASE_USER=xxxxx
       - DATABASE_PWD=xxxxx
     ports:
       - 4001:3000
