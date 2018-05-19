@@ -1,10 +1,16 @@
 version: '2.1'
 
 services:
-  nest_apis:
-    image: nest_apis
+  ts_im_api:
+    image: docker.wz2cool.top/ts_im/ts_im_api:4
     build: .
     environment:
       NODE_ENV: production
+      ENABLE_DATABASE_LOG: xxxx,
+      DATABASE_DB: xxxx,
+      DATABASE_HOST: xxxx,
+      DATABASE_PORT: xxxxx,
+      DATABASE_USER: xxxxx,
+      DATABASE_PWD: xxxxx
     ports:
-      - 3000:3000
+      - 4001:3000
