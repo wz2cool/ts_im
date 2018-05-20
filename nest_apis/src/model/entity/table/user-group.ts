@@ -12,7 +12,7 @@ export class UserGroup extends TableEntity {
     public userGroupCategoryId: number;
     @column('display_name', false, false)
     public displayName: string;
-    @column('user_group', false, false)
+    @column('create_time', false, false)
     public createTime: Date;
 
     getTableName(): string {

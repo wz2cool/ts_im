@@ -2,7 +2,17 @@ import * as lodash from 'lodash';
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateGroupDto, UpdateGroupDto, GroupDto, GroupPageDto } from '../model/dto';
-import { CommonHelper, IConnection, Page, PageRowBounds, DynamicQuery, SortDescriptor, SortDirection, FilterDescriptor, FilterOperator } from 'tsbatis';
+import {
+    CommonHelper,
+    IConnection,
+    Page,
+    PageRowBounds,
+    DynamicQuery,
+    SortDescriptor,
+    SortDirection,
+    FilterDescriptor,
+    FilterOperator,
+} from 'tsbatis';
 import { Group } from '../model/entity/table/group';
 import { GroupMapper, UserGroupMapper } from '../mapper';
 import { DisplayException } from '../model/exception';
@@ -154,13 +164,14 @@ export class GroupService {
         }
     }
 
-    public async getGroupsByCategoryId(userGroupCategoryId: number): Promise<GroupDto[]> {
+    public async getGroupsByUserCategoryId(userGroupCategoryId: number): Promise<GroupDto[]> {
         let conn: IConnection;
         try {
             if (CommonHelper.isNullOrUndefined(userGroupCategoryId)) {
                 throw new DisplayException('"userGroupCategoryId" 不能为空。');
             }
 
+            const a = new UserGroup();
             conn = await this.dbCoreService.getConnection();
             const userGroupMapper = new UserGroupMapper(conn);
             const userGroupquery = DynamicQuery.createIntance<UserGroup>();
@@ -169,10 +180,13 @@ export class GroupService {
             userGroupquery.addFilters(categoryIdFilter);
             const userGroups = await userGroupMapper.selectByDynamicQuery(userGroupquery);
             const groupIds = lodash.map(userGroups, x => x.groupId);
+            if (groupIds.length === 0) {
+                return new Promise<GroupDto[]>((resolve, reject) => resolve([]));
+            }
 
             const groupMapper = new GroupMapper(conn);
             const groupQuery = DynamicQuery.createIntance<Group>();
-            const gorupIdFilter = new FilterDescriptor<Group>((g) => g.id, FilterOperator.IN, groupIds);
+            const gorupIdFilter = new FilterDescriptor<Group>(g => g.id, FilterOperator.IN, groupIds);
             const groups = await groupMapper.selectByDynamicQuery(groupQuery);
             const groupDtos = lodash.map(groups, x => this.entityToDto(x));
             // handle displayName
