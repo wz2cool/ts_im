@@ -8,7 +8,7 @@ import { GroupMapper } from '../mapper';
 import { DisplayException } from '../model/exception';
 
 @Component()
-export class GroupDbService {
+export class GroupService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('GroupDbService init');
     }

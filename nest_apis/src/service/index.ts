@@ -1,4 +1,5 @@
 import { DbCoreService } from './db-core.service';
-import { GroupDbService } from './group-db.service';
+import { GroupService } from './group.service';
+import { UserGroupCategoryService } from './user-group-category.service';
 
-export { DbCoreService, GroupDbService };
+export { DbCoreService, GroupService, UserGroupCategoryService };

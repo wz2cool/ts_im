@@ -1,6 +1,6 @@
 import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors } from '@nestjs/common';
 import { CreateGroupDto, UpdateGroupDto, GroupPageDto } from '../model/dto';
-import { GroupDbService } from '../service';
+import { GroupService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery } from '@nestjs/swagger';
 import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
@@ -8,7 +8,7 @@ import { ParseIntPipe } from '@nestjs/common';
 @Controller('groups')
 @UseInterceptors(LoggingInterceptor)
 export class GroupsController {
-    constructor(private readonly groupDbService: GroupDbService) {
+    constructor(private readonly groupDbService: GroupService) {
     }
 
     @Post()
