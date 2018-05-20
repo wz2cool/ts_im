@@ -40,16 +40,16 @@ export class UserGroupCategoryService {
             const effectRows = await userGroupCategoryMapper.insertSelective(userGroupCategory);
             console.log('effectRows: ', effectRows);
             await conn.commit();
-            await conn.release();
             return new Promise<number>((resolve, reject) => resolve(userGroupCategory.id));
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<number>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
         }
     }
 
@@ -74,16 +74,16 @@ export class UserGroupCategoryService {
                 throw new DisplayException(`未能找到对应的分组。id: ${userGroupCategoryId}`);
             }
             await conn.commit();
-            await conn.release();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<void>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+            }
+            await conn.release();
         }
     }
 
@@ -105,16 +105,16 @@ export class UserGroupCategoryService {
                 throw new DisplayException(`未能找到对应的分组。id: ${userGroupCategoryId}`);
             }
             await conn.commit();
-            await conn.release();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<void>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
         }
     }
 

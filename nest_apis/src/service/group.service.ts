@@ -39,16 +39,16 @@ export class GroupService {
             const effectRows = await groupMapper.insertSelective(group);
             console.log('effectRows: ', effectRows);
             await conn.commit();
-            await conn.release();
             return new Promise<number>((resolve, reject) => resolve(group.id));
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<number>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
         }
     }
 
@@ -73,16 +73,16 @@ export class GroupService {
                 throw new DisplayException(`未能找到对应的组。id: ${groupId}`);
             }
             await conn.commit();
-            await conn.release();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<void>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
         }
     }
 
@@ -107,13 +107,14 @@ export class GroupService {
             await conn.release();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
-                if (beginTrans) {
-                    await conn.rollback();
-                }
-                await conn.release();
+            if (beginTrans) {
+                await conn.rollback();
             }
             return new Promise<void>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
         }
     }
 
@@ -134,13 +135,13 @@ export class GroupService {
             query.addSorts(idSort);
             const groupPage = await groupMapper.selectPageRowBoundsByDynamicQuery(query, pageRowBounds);
             const result = this.groupPageToGroupPageDto(groupPage);
-            await conn.release();
             return new Promise<GroupPageDto>((resolve, reject) => resolve(result));
         } catch (error) {
+            return new Promise<GroupPageDto>((resolve, reject) => reject(error));
+        } finally {
             if (!CommonHelper.isNullOrUndefined(conn)) {
                 await conn.release();
             }
-            return new Promise<GroupPageDto>((resolve, reject) => reject(error));
         }
     }
 
@@ -154,13 +155,13 @@ export class GroupService {
             const groupMapper = new GroupMapper(conn);
             const group = await groupMapper.selectByPrimaryKey(groupId);
             const result = this.entityToDto(group);
-            await conn.release();
             return new Promise<GroupDto>((resolve, reject) => resolve(result));
         } catch (error) {
+            return new Promise<GroupDto>((resolve, reject) => reject(error));
+        } finally {
             if (!CommonHelper.isNullOrUndefined(conn)) {
                 await conn.release();
             }
-            return new Promise<GroupDto>((resolve, reject) => reject(error));
         }
     }
 
@@ -181,6 +182,7 @@ export class GroupService {
             const userGroups = await userGroupMapper.selectByDynamicQuery(userGroupquery);
             const groupIds = lodash.map(userGroups, x => x.groupId);
             if (groupIds.length === 0) {
+                await conn.release();
                 return new Promise<GroupDto[]>((resolve, reject) => resolve([]));
             }
 
@@ -199,10 +201,11 @@ export class GroupService {
             });
             return new Promise<GroupDto[]>((resolve, reject) => resolve(result));
         } catch (error) {
+            return new Promise<GroupDto[]>((resolve, reject) => reject(error));
+        } finally {
             if (!CommonHelper.isNullOrUndefined(conn)) {
                 await conn.release();
             }
-            return new Promise<GroupDto[]>((resolve, reject) => reject(error));
         }
     }
 
