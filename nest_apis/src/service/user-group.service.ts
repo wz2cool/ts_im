@@ -7,7 +7,7 @@ import { UserGroup } from 'model/entity/table/user-group';
 import { UserGroupMapper } from '../mapper';
 
 @Component()
-export class UserGroupCategoryService {
+export class UserGroupService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('UserGroupService init');
     }
