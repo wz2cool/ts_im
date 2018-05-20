@@ -6,6 +6,7 @@ import { CreateUserGroupCategoryDto } from './create-user-group-category.dto';
 import { UpdateUserGroupCategoryDto } from './update-user-group-category.dto';
 import { CreateUserGroupDto } from './create-user-group.dto';
 import { UpdateUserGroupDto } from './update-user-group.dto';
+import { UserGroupDto } from './user-group.dto';
 
 export {
     CreateGroupDto,
@@ -16,4 +17,5 @@ export {
     UpdateUserGroupCategoryDto,
     CreateUserGroupDto,
     UpdateUserGroupDto,
+    UserGroupDto,
 };

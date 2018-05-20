@@ -1,10 +1,13 @@
+import * as lodash from 'lodash';
+
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import { IConnection, CommonHelper } from 'tsbatis';
+import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator } from 'tsbatis';
 import { DisplayException } from '../model/exception';
-import { CreateUserGroupDto, UpdateUserGroupDto } from 'model/dto';
+import { CreateUserGroupDto, UpdateUserGroupDto, UserGroupDto } from 'model/dto';
 import { UserGroup } from 'model/entity/table/user-group';
-import { UserGroupMapper } from '../mapper';
+import { UserGroupMapper, GroupMapper } from '../mapper';
+import { Group } from 'model/entity/table/group';
 
 @Component()
 export class UserGroupService {
@@ -96,6 +99,50 @@ export class UserGroupService {
         }
     }
 
+    public async getGroupsByUserCategoryId(userGroupCategoryId: number): Promise<UserGroupDto[]> {
+        let conn: IConnection;
+        try {
+            if (CommonHelper.isNullOrUndefined(userGroupCategoryId)) {
+                throw new DisplayException('"userGroupCategoryId" 不能为空。');
+            }
+
+            const a = new UserGroup();
+            conn = await this.dbCoreService.getConnection();
+            const userGroupMapper = new UserGroupMapper(conn);
+            const userGroupquery = DynamicQuery.createIntance<UserGroup>();
+            const categoryIdFilter = new FilterDescriptor<UserGroup>(
+                (g) => g.userGroupCategoryId, FilterOperator.EQUAL, userGroupCategoryId);
+            userGroupquery.addFilters(categoryIdFilter);
+            const userGroups = await userGroupMapper.selectByDynamicQuery(userGroupquery);
+            const groupIds = lodash.map(userGroups, x => x.groupId);
+            if (groupIds.length === 0) {
+                await conn.release();
+                return new Promise<UserGroupDto[]>((resolve, reject) => resolve([]));
+            }
+
+            const groupMapper = new GroupMapper(conn);
+            const groupQuery = DynamicQuery.createIntance<Group>();
+            const gorupIdFilter = new FilterDescriptor<Group>(g => g.id, FilterOperator.IN, groupIds);
+            const groups = await groupMapper.selectByDynamicQuery(groupQuery);
+            const userGroupDtos = lodash.map(userGroups, x => {
+                const matchGroup = lodash.find(groups, y => y.id === x.groupId);
+                if (matchGroup != null) {
+                    return this.entityToDto(x, matchGroup);
+                } else {
+                    return null;
+                }
+            });
+            const result = lodash.filter(userGroupDtos, x => !CommonHelper.isNullOrUndefined(x));
+            return new Promise<UserGroupDto[]>((resolve, reject) => resolve(result));
+        } catch (error) {
+            return new Promise<UserGroupDto[]>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+        }
+    }
+
     private isDtoEmpty(dto: any): boolean {
         return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
@@ -118,5 +165,18 @@ export class UserGroupService {
         userGroup.userGroupCategoryId = updateUserGroupDto.userGroupCategoryId;
         userGroup.updateTime = new Date();
         return userGroup;
+    }
+
+    private entityToDto(entity: UserGroup, group: Group): UserGroupDto {
+        const dto = new UserGroupDto();
+        dto.id = entity.id;
+        dto.displayName = entity.displayName;
+        dto.groupId = entity.groupId;
+        dto.groupName = group.groupName;
+        dto.userGroupCategoryId = entity.userGroupCategoryId;
+        dto.userId = entity.userId;
+        dto.createTime = entity.createTime;
+        dto.updateTime = entity.updateTime;
+        return dto;
     }
 }
