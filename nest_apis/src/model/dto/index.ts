@@ -4,6 +4,8 @@ import { GroupDto } from './group.dto';
 import { GroupPageDto } from './group-page.dto';
 import { CreateUserGroupCategoryDto } from './create-user-group-category.dto';
 import { UpdateUserGroupCategoryDto } from './update-user-group-category.dto';
+import { CreateUserGroupDto } from './create-user-group.dto';
+import { UpdateUserGroupDto } from './update-user-group.dto';
 
 export {
     CreateGroupDto,
@@ -12,4 +14,6 @@ export {
     GroupPageDto,
     CreateUserGroupCategoryDto,
     UpdateUserGroupCategoryDto,
+    CreateUserGroupDto,
+    UpdateUserGroupDto,
 };

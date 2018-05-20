@@ -14,6 +14,8 @@ export class UserGroup extends TableEntity {
     public displayName: string;
     @column('create_time', false, false)
     public createTime: Date;
+    @column('update_time', false, false)
+    public updateTime: Date;
 
     getTableName(): string {
         return 'user_group';
