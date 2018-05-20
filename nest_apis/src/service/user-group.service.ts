@@ -4,10 +4,10 @@ import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator } from 'tsbatis';
 import { DisplayException } from '../model/exception';
-import { CreateUserGroupDto, UpdateUserGroupDto, UserGroupDto } from 'model/dto';
-import { UserGroup } from 'model/entity/table/user-group';
+import { CreateUserGroupDto, UpdateUserGroupDto, UserGroupDto } from '../model/dto';
+import { UserGroup } from '../model/entity/table/user-group';
 import { UserGroupMapper, GroupMapper } from '../mapper';
-import { Group } from 'model/entity/table/group';
+import { Group } from '../model/entity/table/group';
 
 @Component()
 export class UserGroupService {
@@ -106,7 +106,6 @@ export class UserGroupService {
                 throw new DisplayException('"userGroupCategoryId" 不能为空。');
             }
 
-            const a = new UserGroup();
             conn = await this.dbCoreService.getConnection();
             const userGroupMapper = new UserGroupMapper(conn);
             const userGroupquery = DynamicQuery.createIntance<UserGroup>();
@@ -116,7 +115,6 @@ export class UserGroupService {
             const userGroups = await userGroupMapper.selectByDynamicQuery(userGroupquery);
             const groupIds = lodash.map(userGroups, x => x.groupId);
             if (groupIds.length === 0) {
-                await conn.release();
                 return new Promise<UserGroupDto[]>((resolve, reject) => resolve([]));
             }
 
