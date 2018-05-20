@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
-import { AppController, GroupsController } from './controller';
+import { AppController, GroupsController, UserGroupCategoryController } from './controller';
 import { DbCoreService, GroupService, UserGroupCategoryService } from './service';
-import { UserGroupCategoryController } from 'controller/user-group-category.controller';
 
 @Module({
   imports: [],
