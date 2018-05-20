@@ -12,6 +12,10 @@ export class GroupDto {
 
     @ApiModelProperty({ type: String })
     @IsString()
+    public displayName: string;
+
+    @ApiModelProperty({ type: String })
+    @IsString()
     public subject: string;
 
     @ApiModelProperty({ type: String })
