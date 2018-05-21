@@ -9,6 +9,8 @@ import { UpdateUserGroupDto } from './update-user-group.dto';
 import { UserGroupDto } from './user-group.dto';
 import { CreateUserDto } from './create-user.dto';
 import { UpdateUserDto } from './update-user.dto';
+import { CreateUserDetailDto } from './create-user-detail.dto';
+import { UpdateUserDetailDto } from './update-user-detail.dto';
 
 export {
     CreateGroupDto,
@@ -22,4 +24,6 @@ export {
     UserGroupDto,
     CreateUserDto,
     UpdateUserDto,
+    CreateUserDetailDto,
+    UpdateUserDetailDto,
 };

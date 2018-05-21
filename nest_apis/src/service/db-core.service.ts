@@ -15,7 +15,6 @@ export class DbCoreService {
                 process.env.ENABLE_DATABASE_LOG.toLocaleLowerCase().trim() === 'true';
         }
 
-        console.log('enable database log: ' + enableDatabaseLog);
         const config = new MysqlConnectionConfig();
         config.database = process.env.DATABASE_DB;
         config.host = process.env.DATABASE_HOST;

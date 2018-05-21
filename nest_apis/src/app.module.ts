@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
-import { AppController, GroupsController, UserGroupCategoryController, UserGroupController, UserController } from './controller';
+import {
+  AppController,
+  GroupsController,
+  UserGroupCategoryController,
+  UserGroupController,
+  UserController,
+  UserDetailController,
+} from './controller';
 import {
   DbCoreService,
   GroupService,
   UserGroupCategoryService,
   UserGroupService,
   UserService,
+  UserDetailService,
 } from './service';
 
 @Module({
@@ -15,12 +23,15 @@ import {
     GroupsController,
     UserController,
     UserGroupController,
-    UserGroupCategoryController],
+    UserGroupCategoryController,
+    UserDetailController,
+  ],
   components: [
     DbCoreService,
     GroupService,
     UserGroupService,
     UserGroupCategoryService,
+    UserDetailService,
     UserService],
 })
 export class AppModule { }

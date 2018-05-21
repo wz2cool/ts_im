@@ -3,6 +3,7 @@ import { GroupsController } from './groups.controller';
 import { UserGroupCategoryController } from './user-group-category.controller';
 import { UserGroupController } from './user-group.controller';
 import { UserController } from './user.controller';
+import { UserDetailController } from './user-detail.controller';
 
 export {
     AppController,
@@ -10,4 +11,5 @@ export {
     UserGroupController,
     UserGroupCategoryController,
     UserController,
+    UserDetailController,
 };
