@@ -4,6 +4,7 @@ import { UserGroupMapper } from './user-group.mapper';
 import { UserMapper } from './user.mapper';
 import { UserDetailMapper } from './user-detail.mapper';
 import { UserFriendMapper } from './user-friend.mapper';
+import { UserFriendCategoryMapper } from './user-friend-category.mapper';
 
 export {
     GroupMapper,
@@ -12,4 +13,5 @@ export {
     UserMapper,
     UserDetailMapper,
     UserFriendMapper,
+    UserFriendCategoryMapper,
 };

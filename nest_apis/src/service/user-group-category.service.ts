@@ -70,9 +70,6 @@ export class UserGroupCategoryService {
             const mapper = new UserGroupCategoryMapper(conn);
             const effectRows = await mapper.updateByPrimaryKeySelective(entity);
             console.log('effectRows: ', effectRows);
-            if (effectRows === 0) {
-                throw new DisplayException(`未能找到对应的分组。id: ${userGroupCategoryId}`);
-            }
             await conn.commit();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {
@@ -101,9 +98,6 @@ export class UserGroupCategoryService {
             const mapper = new UserGroupCategoryMapper(conn);
             const effectRows = await mapper.deleteByPrimaryKey(userGroupCategoryId);
             console.log('effectRows: ', effectRows);
-            if (effectRows === 0) {
-                throw new DisplayException(`未能找到对应的分组。id: ${userGroupCategoryId}`);
-            }
             await conn.commit();
             return new Promise<void>((resolve, reject) => resolve());
         } catch (error) {

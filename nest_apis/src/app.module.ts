@@ -7,6 +7,7 @@ import {
   UserController,
   UserDetailController,
   UserFriendController,
+  UserFriendCategoryController,
 } from './controller';
 import {
   DbCoreService,
@@ -16,6 +17,7 @@ import {
   UserService,
   UserDetailService,
   UserFriendService,
+  UserFriendCategoryService,
 } from './service';
 
 @Module({
@@ -28,6 +30,7 @@ import {
     UserGroupCategoryController,
     UserDetailController,
     UserFriendController,
+    UserFriendCategoryController,
   ],
   components: [
     DbCoreService,
@@ -36,6 +39,7 @@ import {
     UserGroupCategoryService,
     UserDetailService,
     UserFriendService,
+    UserFriendCategoryService,
     UserService],
 })
 export class AppModule { }
