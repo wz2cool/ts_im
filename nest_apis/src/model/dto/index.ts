@@ -11,6 +11,7 @@ import { CreateUserDto } from './create-user.dto';
 import { UpdateUserDto } from './update-user.dto';
 import { CreateUserDetailDto } from './create-user-detail.dto';
 import { UpdateUserDetailDto } from './update-user-detail.dto';
+import { CreateUserFriendDto } from './create-user-friend.dto';
 
 export {
     CreateGroupDto,
@@ -26,4 +27,5 @@ export {
     UpdateUserDto,
     CreateUserDetailDto,
     UpdateUserDetailDto,
+    CreateUserFriendDto,
 };

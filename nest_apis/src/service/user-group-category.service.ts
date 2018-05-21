@@ -22,7 +22,7 @@ import { UserGroup } from '../model/entity/table/user-group';
 @Component()
 export class UserGroupCategoryService {
     constructor(private readonly dbCoreService: DbCoreService) {
-        console.log('UserGroupService init');
+        console.log('UserGroupCategoryService init');
     }
 
     public async createUserGroupCategory(createUserGroupCategoryDto: CreateUserGroupCategoryDto): Promise<number> {

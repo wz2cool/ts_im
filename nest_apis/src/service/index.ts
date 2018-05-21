@@ -4,6 +4,7 @@ import { UserGroupService } from './user-group.service';
 import { UserGroupCategoryService } from './user-group-category.service';
 import { UserService } from './user.service';
 import { UserDetailService } from './user-detail.service';
+import { UserFriendService } from './user-friend.service';
 
 export {
     DbCoreService,
@@ -12,4 +13,5 @@ export {
     UserGroupService,
     UserService,
     UserDetailService,
+    UserFriendService,
 };

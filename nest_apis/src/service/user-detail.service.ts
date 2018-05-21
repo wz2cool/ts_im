@@ -9,7 +9,7 @@ import { UserDetailMapper } from '../mapper';
 @Component()
 export class UserDetailService {
     constructor(private readonly dbCoreService: DbCoreService) {
-        console.log('UserGroupService init');
+        console.log('UserDetailService init');
     }
 
     public async createUserDetail(createUserDetailDto: CreateUserDetailDto): Promise<number> {
