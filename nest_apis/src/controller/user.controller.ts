@@ -15,7 +15,7 @@ import {
 import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
 import { UserService } from '../service';
 import { LoggingInterceptor } from '../common/interceptors';
-import { CreateUserDto, UpdateUserDto } from 'model/dto';
+import { CreateUserDto, UpdateUserDto } from '../model/dto';
 
 @Controller('user')
 @ApiUseTags('user')

@@ -1,11 +1,11 @@
 import { Component } from '@nestjs/common';
-import { DbCoreService } from '.';
+import { DbCoreService } from './db-core.service';
 import { CreateUserDto, UpdateUserDto } from 'model/dto';
 import { IConnection, CommonHelper } from 'tsbatis';
 import { User } from '../model/entity/table/user';
 import { Deleted } from '../constant';
 import { DisplayException } from '../model/exception';
-import { UserMapper } from 'mapper';
+import { UserMapper } from '../mapper';
 
 @Component()
 export class UserService {
