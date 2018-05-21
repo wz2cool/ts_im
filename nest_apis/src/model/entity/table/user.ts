@@ -17,8 +17,6 @@ export class User extends TableEntity {
     public createTime: Date;
     @column('update_time', false, false)
     public updateTime: Date;
-    @column('deleted', false, false)
-    public deleted: number;
 
     public getTableName(): string {
         return 'user';

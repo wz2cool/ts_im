@@ -3,7 +3,7 @@ import { ApiModelProperty } from '@nestjs/swagger';
 
 export class CreateUserGroupDto {
     @ApiModelProperty({ type: 'integer' })
-    @IsString()
+    @IsNumber()
     readonly groupId: number;
 
     @ApiModelProperty({ type: 'integer' })
