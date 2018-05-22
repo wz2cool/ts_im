@@ -8,6 +8,7 @@ import { UserFriendService } from './user-friend.service';
 import { UserFriendCategoryService } from './user-friend-category.service';
 import { UserConversationService } from './user-conversation.service';
 import { RequestService } from './requst.service';
+import { MessageService } from './message.service';
 
 export {
     DbCoreService,
@@ -20,4 +21,5 @@ export {
     UserFriendCategoryService,
     UserConversationService,
     RequestService,
+    MessageService,
 };

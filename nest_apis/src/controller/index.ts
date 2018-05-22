@@ -8,6 +8,7 @@ import { UserFriendController } from './user-friend.controller';
 import { UserFriendCategoryController } from './user-friend-category.controller';
 import { UserConversationController } from './user-conversation.controller';
 import { RequestController } from './request.controller';
+import { MessageController } from './message.controller';
 
 export {
     AppController,
@@ -20,4 +21,5 @@ export {
     UserFriendCategoryController,
     UserConversationController,
     RequestController,
+    MessageController,
 };
