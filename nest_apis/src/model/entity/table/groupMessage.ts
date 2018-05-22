@@ -5,8 +5,6 @@ export class GroupMessage extends TableEntity {
     public id: number;
     @column('group_id', false, false)
     public groupId: number;
-    @column('user_id', false, false)
-    public userId: number;
     @column('message_id', false, false)
     public messageId: number;
     @column('send_time', false, false)

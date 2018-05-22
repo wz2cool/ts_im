@@ -7,6 +7,9 @@ import { UserFriendMapper } from './user-friend.mapper';
 import { UserFriendCategoryMapper } from './user-friend-category.mapper';
 import { UserConversationMapper } from './user-conversation.mapper';
 import { RequestMapper } from './request.mapper';
+import { MessageMapper } from './message.mapper';
+import { PrivateMessageMapper } from './private-message.mapper';
+import { GroupMessageMapper } from './group-message.mapper';
 
 export {
     GroupMapper,
@@ -18,4 +21,7 @@ export {
     UserFriendCategoryMapper,
     UserConversationMapper,
     RequestMapper,
+    MessageMapper,
+    PrivateMessageMapper,
+    GroupMessageMapper,
 };
