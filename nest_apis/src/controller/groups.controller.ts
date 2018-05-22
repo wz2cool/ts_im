@@ -18,12 +18,12 @@ export class GroupsController {
         return await this.groupDbService.createGroup(dto);
     }
 
-    @Put(':groupId')
-    @ApiImplicitParam({ name: 'groupId', type: 'integer' })
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
     async update(
-        @Param('groupId', new ParseIntPipe()) groupId: number,
+        @Param('id', new ParseIntPipe()) id: number,
         @Body() dto: UpdateGroupDto) {
-        return await this.groupDbService.updateGroup(groupId, dto);
+        return await this.groupDbService.updateGroup(id, dto);
     }
 
     @Get()
@@ -36,9 +36,9 @@ export class GroupsController {
         return await this.groupDbService.getGroups(pageNum, pageSize);
     }
 
-    @Get(':groupId')
-    @ApiImplicitParam({ name: 'groupId', type: 'integer' })
-    async getGroupById(@Param('groupId', new ParseIntPipe()) groupId: number) {
-        return await this.groupDbService.getGroupById(groupId);
+    @Get(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async getGroupById(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.groupDbService.getGroupById(id);
     }
 }

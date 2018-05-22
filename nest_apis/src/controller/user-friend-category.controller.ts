@@ -31,16 +31,15 @@ export class UserFriendCategoryController {
         return await this.userFriendCategoryService.createUserFriendCategory(createUserFriendCategoryDto);
     }
 
-
-    @Put(':userFriendCategoryId')
-    @ApiImplicitParam({ name: 'userFriendCategoryId', type: 'integer' })
-    async update(@Param('userFriendCategoryId', new ParseIntPipe()) userFriendCategoryId: number, @Body() dto: UpdateUserFriendCategoryDto) {
-        return await this.userFriendCategoryService.updateUserFriendCategory(userFriendCategoryId, dto);
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async update(@Param('id', new ParseIntPipe()) id: number, @Body() dto: UpdateUserFriendCategoryDto) {
+        return await this.userFriendCategoryService.updateUserFriendCategory(id, dto);
     }
 
-    @Delete(':userFriendCategoryId')
-    @ApiImplicitParam({ name: 'userFriendCategoryId', type: 'integer' })
-    public async delete(@Param('userFriendCategoryId', new ParseIntPipe()) userFriendCategoryId: number) {
-        return await this.userFriendCategoryService.deleteUserFriendCategory(userFriendCategoryId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    public async delete(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userFriendCategoryService.deleteUserFriendCategory(id);
     }
 }

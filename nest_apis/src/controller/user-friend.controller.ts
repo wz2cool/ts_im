@@ -31,9 +31,9 @@ export class UserFriendController {
         return await this.userFriendService.createUserFriend(createUserFriendDto);
     }
 
-    @Delete(':userFriendId')
-    @ApiImplicitParam({ name: 'userFriendId', type: 'integer' })
-    public async deleteUserFriend(@Param('userFriendId', new ParseIntPipe()) userFriendId: number) {
-        return await this.userFriendService.deleteUserFriend(userFriendId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    public async deleteUserFriend(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userFriendService.deleteUserFriend(id);
     }
 }

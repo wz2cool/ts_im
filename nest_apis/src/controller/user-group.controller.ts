@@ -27,15 +27,15 @@ export class UserGroupController {
         return await this.userGroupService.createUserGroup(dto);
     }
 
-    @Put(':userGroupId')
-    @ApiImplicitParam({ name: 'userGroupId', type: 'integer' })
-    async update(@Param('userGroupId', new ParseIntPipe()) userGroupId: number, @Body() dto: UpdateUserGroupDto) {
-        return await this.userGroupService.updateUserGroup(userGroupId, dto);
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async update(@Param('id', new ParseIntPipe()) id: number, @Body() dto: UpdateUserGroupDto) {
+        return await this.userGroupService.updateUserGroup(id, dto);
     }
 
-    @Delete(':userGroupId')
-    @ApiImplicitParam({ name: 'userGroupId', type: 'integer' })
-    async delete(@Param('userGroupId', new ParseIntPipe()) userGroupId: number) {
-        return await this.userGroupService.deleteUserGroup(userGroupId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async delete(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userGroupService.deleteUserGroup(id);
     }
 }

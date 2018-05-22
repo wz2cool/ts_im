@@ -31,15 +31,15 @@ export class UserController {
         return await this.userService.createUser(createUserDto);
     }
 
-    @Put(':userId')
-    @ApiImplicitParam({ name: 'userId', type: 'integer' })
-    async update(@Param('userId', new ParseIntPipe()) userId: number, @Body() dto: UpdateUserDto) {
-        return await this.userService.updateUser(userId, dto);
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async update(@Param('id', new ParseIntPipe()) id: number, @Body() dto: UpdateUserDto) {
+        return await this.userService.updateUser(id, dto);
     }
 
-    @Delete(':userId')
-    @ApiImplicitParam({ name: 'userId', type: 'integer' })
-    async delete(@Param('userId', new ParseIntPipe()) userId: number) {
-        return await this.userService.deleteUser(userId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async delete(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userService.deleteUser(id);
     }
 }

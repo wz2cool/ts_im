@@ -20,22 +20,22 @@ export class UserGroupCategoryController {
         return await this.userGroupCategoryService.createUserGroupCategory(dto);
     }
 
-    @Put(':userGroupCategoryId')
-    @ApiImplicitParam({ name: 'userGroupCategoryId', type: 'integer' })
-    async update(@Param('userGroupCategoryId', new ParseIntPipe()) categoryId: number, dto: UpdateUserGroupCategoryDto) {
-        return await this.userGroupCategoryService.updateUserGroupCategory(categoryId, dto);
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async update(@Param('id', new ParseIntPipe()) id: number, dto: UpdateUserGroupCategoryDto) {
+        return await this.userGroupCategoryService.updateUserGroupCategory(id, dto);
     }
 
-    @Delete(':userGroupCategoryId')
-    @ApiImplicitParam({ name: 'userGroupCategoryId', type: 'integer' })
-    async delete(@Param('userGroupCategoryId', new ParseIntPipe()) categoryId: number) {
-        return await this.userGroupCategoryService.deleteUserGroupCategory(categoryId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async delete(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userGroupCategoryService.deleteUserGroupCategory(id);
     }
 
-    @Get(':userGroupCategoryId/groups')
-    @ApiImplicitParam({ name: 'userGroupCategoryId', type: 'integer' })
+    @Get(':id/groups')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
     @ApiResponse({ status: 200, description: '分类下的组', type: GroupDto, isArray: true })
-    async getGroupsByUserCategoryId(@Param('userGroupCategoryId', new ParseIntPipe()) categoryId: number) {
-        return await this.userGroupService.getGroupsByUserCategoryId(categoryId);
+    async getGroupsByUserCategoryId(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userGroupService.getGroupsByUserCategoryId(id);
     }
 }

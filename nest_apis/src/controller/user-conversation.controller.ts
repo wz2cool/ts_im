@@ -18,15 +18,15 @@ export class UserConversationController {
         return await this.userConversationService.create(dto);
     }
 
-    @Put(':userConverationId')
-    @ApiImplicitParam({ name: 'userConverationId', type: 'integer' })
-    async update(@Param('userConverationId', new ParseIntPipe()) userConverationId: number, @Body() dto: UpdateUserConversationDto) {
-        return await this.userConversationService.update(userConverationId, dto);
+    @Put(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async update(@Param('id', new ParseIntPipe()) id: number, @Body() dto: UpdateUserConversationDto) {
+        return await this.userConversationService.update(id, dto);
     }
 
-    @Delete(':userConverationId')
-    @ApiImplicitParam({ name: 'userConverationId', type: 'integer' })
-    async delete(@Param('userConverationId', new ParseIntPipe()) userGroupId: number) {
-        return await this.userConversationService.delete(userGroupId);
+    @Delete(':id')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    async delete(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userConversationService.delete(id);
     }
 }
