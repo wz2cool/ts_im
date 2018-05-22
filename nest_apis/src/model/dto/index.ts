@@ -16,6 +16,7 @@ import { CreateUserFriendCategoryDto } from './create-user-friend-category.dto';
 import { UpdateUserFriendCategoryDto } from './update-user-friend-category.dto';
 import { CreateUserConversationDto } from './create-user-converstion.dto';
 import { UpdateUserConversationDto } from './update-user-converstion.dto';
+import { CreateRequestDto } from './create-request.dto';
 
 export {
     CreateGroupDto,
@@ -36,4 +37,5 @@ export {
     UpdateUserFriendCategoryDto,
     CreateUserConversationDto,
     UpdateUserConversationDto,
+    CreateRequestDto,
 };

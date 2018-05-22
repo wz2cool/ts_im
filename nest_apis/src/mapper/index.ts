@@ -6,6 +6,7 @@ import { UserDetailMapper } from './user-detail.mapper';
 import { UserFriendMapper } from './user-friend.mapper';
 import { UserFriendCategoryMapper } from './user-friend-category.mapper';
 import { UserConversationMapper } from './user-conversation.mapper';
+import { RequestMapper } from './request.mapper';
 
 export {
     GroupMapper,
@@ -16,4 +17,5 @@ export {
     UserFriendMapper,
     UserFriendCategoryMapper,
     UserConversationMapper,
+    RequestMapper,
 };

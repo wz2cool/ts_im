@@ -13,10 +13,12 @@ export class Request extends TableEntity {
     public remark: string;
     @column('match_id', false, false)
     public matchId: number;
-    @column('create_time', false, false)
-    public createTime: Date;
     @column('status', false, false)
     public status: number;
+    @column('create_time', false, false)
+    public createTime: Date;
+    @column('update_time', false, false)
+    public updateTime: Date;
 
     public getTableName(): string {
         return 'request';
