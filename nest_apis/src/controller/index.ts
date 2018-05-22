@@ -6,6 +6,7 @@ import { UserController } from './user.controller';
 import { UserDetailController } from './user-detail.controller';
 import { UserFriendController } from './user-friend.controller';
 import { UserFriendCategoryController } from './user-friend-category.controller';
+import { UserConversationController } from './user-conversation.controller';
 
 export {
     AppController,
@@ -16,4 +17,5 @@ export {
     UserDetailController,
     UserFriendController,
     UserFriendCategoryController,
+    UserConversationController,
 };

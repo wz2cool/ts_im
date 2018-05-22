@@ -24,7 +24,7 @@ export class GroupService {
         console.log('GroupDbService init');
     }
 
-    public async  createGroup(createGroupDto: CreateGroupDto): Promise<number> {
+    public async createGroup(createGroupDto: CreateGroupDto): Promise<number> {
         let conn: IConnection;
         let beginTrans: boolean = false;
         try {

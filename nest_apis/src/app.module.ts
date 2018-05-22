@@ -8,6 +8,7 @@ import {
   UserDetailController,
   UserFriendController,
   UserFriendCategoryController,
+  UserConversationController,
 } from './controller';
 import {
   DbCoreService,
@@ -18,6 +19,7 @@ import {
   UserDetailService,
   UserFriendService,
   UserFriendCategoryService,
+  UserConversationService,
 } from './service';
 
 @Module({
@@ -31,6 +33,7 @@ import {
     UserDetailController,
     UserFriendController,
     UserFriendCategoryController,
+    UserConversationController,
   ],
   components: [
     DbCoreService,
@@ -40,6 +43,8 @@ import {
     UserDetailService,
     UserFriendService,
     UserFriendCategoryService,
-    UserService],
+    UserService,
+    UserConversationService,
+  ],
 })
 export class AppModule { }

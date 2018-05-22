@@ -13,7 +13,7 @@ export class GroupsController {
     }
 
     @Post()
-    @ApiResponse({ status: 200, description: '返回插入的ID', type: 'integer' })
+    @ApiResponse({ status: 201, description: '返回插入的ID', type: 'integer' })
     async create(@Body() dto: CreateGroupDto) {
         return await this.groupDbService.createGroup(dto);
     }

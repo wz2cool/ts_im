@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { UserDetailService } from './user-detail.service';
 import { UserFriendService } from './user-friend.service';
 import { UserFriendCategoryService } from './user-friend-category.service';
+import { UserConversationService } from './user-conversation.service';
 
 export {
     DbCoreService,
@@ -16,4 +17,5 @@ export {
     UserDetailService,
     UserFriendService,
     UserFriendCategoryService,
+    UserConversationService,
 };
