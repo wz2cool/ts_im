@@ -1,7 +1,9 @@
+import * as lodash from 'lodash';
+
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import { CreateUserFriendCategoryDto, UpdateUserFriendCategoryDto } from '../model/dto';
-import { IConnection, CommonHelper } from 'tsbatis';
+import { CreateUserFriendCategoryDto, UpdateUserFriendCategoryDto, UserFriendCategoryDto } from '../model/dto';
+import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator, SortDescriptor, SortDirection } from 'tsbatis';
 import { UserDetail } from '../model/entity/table/userDetail';
 import { DisplayException } from '../model/exception';
 import { UserFriendCategoryMapper } from '../mapper';
@@ -101,6 +103,32 @@ export class UserFriendCategoryService {
         }
     }
 
+    public async getUserFriendCategoriesByUserId(userId: number): Promise<UserFriendCategoryDto[]> {
+        let conn: IConnection;
+        try {
+            if (CommonHelper.isNullOrUndefined(userId)) {
+                throw new DisplayException('"userId" 不能为空。');
+            }
+            conn = await this.dbCoreService.getConnection();
+            const mapper = new UserFriendCategoryMapper(conn);
+            const query = DynamicQuery.createIntance<UserFriendCategory>();
+            const userIdFilter = new FilterDescriptor<UserFriendCategory>((g) => g.userId, FilterOperator.EQUAL, userId);
+            const idSort = new SortDescriptor<UserFriendCategory>((g) => g.id, SortDirection.DESC);
+            query.addFilters(userIdFilter);
+            query.addSorts(idSort);
+            const enities = await mapper.selectByDynamicQuery(query);
+            await conn.commit();
+            const result = lodash.map(enities, x => this.entityToDto(x));
+            return new Promise<UserFriendCategoryDto[]>((resolve, reject) => resolve(result));
+        } catch (error) {
+            return new Promise<UserFriendCategoryDto[]>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+        }
+    }
+
     private isDtoEmpty(dto: any): boolean {
         return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
@@ -122,5 +150,13 @@ export class UserFriendCategoryService {
         userFriendCategory.categoryIndex = updateUserFriendCategoryDto.categoryIndex;
         userFriendCategory.updateTime = new Date();
         return userFriendCategory;
+    }
+
+    private entityToDto(entity: UserFriendCategory): UserFriendCategoryDto {
+        const dto = new UserFriendCategoryDto();
+        dto.id = entity.id;
+        dto.categoryName = entity.categoryName;
+        dto.categoryIndex = entity.categoryIndex;
+        return dto;
     }
 }

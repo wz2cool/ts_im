@@ -19,6 +19,7 @@ import { UpdateUserConversationDto } from './update-user-converstion.dto';
 import { CreateRequestDto } from './create-request.dto';
 import { CreatePrivateMessageDto } from './create-private-message.dto';
 import { CreateGroupMessageDto } from './create-group-message.dto';
+import { UserFriendCategoryDto } from './user-friend-category.dto';
 
 export {
     CreateGroupDto,
@@ -42,4 +43,5 @@ export {
     CreateRequestDto,
     CreatePrivateMessageDto,
     CreateGroupMessageDto,
+    UserFriendCategoryDto,
 };

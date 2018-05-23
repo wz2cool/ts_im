@@ -27,7 +27,7 @@ const plugins = [
   }),
   new webpack.DefinePlugin({
     VERSION: JSON.stringify("5fa3b9"),
-    API_URL: JSON.stringify("http://wz2cool.wicp.net:2001"),
+    API_URL: JSON.stringify("http://localhost:3000"),
   })
 ];
 
