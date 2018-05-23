@@ -6,6 +6,10 @@ import * as Models from './models';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import initStore from './store';
+import { Environment } from './constants';
+
+console.log('Version: ', Environment.getVersion());
+console.log('AppURL: ', Environment.getApiUrl());
 
 const store = initStore();
 

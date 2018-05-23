@@ -15,6 +15,7 @@ const htmlTemplatePath = isDevelopment ?
   "src/client/index.dev.ejs" :
   "src/client/index.ejs";
 
+
 const plugins = [
   new CheckerPlugin(),
   new HtmlWebpackPlugin({
@@ -24,6 +25,10 @@ const plugins = [
     },
     inject: true
   }),
+  new webpack.DefinePlugin({
+    VERSION: JSON.stringify("5fa3b9"),
+    API_URL: JSON.stringify("http://wz2cool.wicp.net:2001"),
+  })
 ];
 
 if (isAnalyze) {
