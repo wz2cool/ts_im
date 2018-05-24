@@ -3,8 +3,8 @@ import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import { UserFriendCategoryDto } from '../models/dto';
 
 export class HttpService {
-  private readonly apiURL: string = Environment.getApiUrl();
-  public getUserGroupCateogories(userId: string): AxiosPromise<UserFriendCategoryDto[]> {
+  private static readonly apiURL: string = Environment.getApiUrl();
+  public static getUserGroupCateogories(userId: number): AxiosPromise<UserFriendCategoryDto[]> {
     const url = `${this.apiURL}/users/${userId}/userFriendCategories`;
     return axios.get(url);
   }

@@ -1,15 +1,28 @@
 import * as React from 'react';
 import { Collapse, Layout } from 'antd';
 import CardLink from '../../components/CardLink';
+import { fetchUserCategories } from '../../actions/userCategoryAction';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { } from '../../reducers/userCategoryReducer';
 
 const { Header, Footer, Sider, Content } = Layout;
 const Panel = Collapse.Panel;
 
-export interface FriendProps {
-
+interface FriendProps {
+  userId: number;
+  fetchUserCategories: (userId: number) => void;
 }
 
-export default class Friend extends React.Component<FriendProps, any> {
+interface FriendState {
+  userId: number;
+}
+
+export class Friend extends React.Component<FriendProps, any> {
+  componentWillMount() {
+    this.props.fetchUserCategories(this.props.userId);
+  }
+
   render() {
     const imageUrl1 = 'https://avatars3.githubusercontent.com/u/4081993?s=64v=4';
     const imageUrl2 = 'https://avatars3.githubusercontent.com/u/11556152?s=64v=4';
@@ -35,3 +48,13 @@ export default class Friend extends React.Component<FriendProps, any> {
     );
   }
 }
+
+const mapStateToProps = (state: FriendState) => ({
+  userId: state.userId
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchUserCategories: (id: number) => dispatch(fetchUserCategories(id))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Friend);
