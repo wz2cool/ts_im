@@ -113,9 +113,10 @@ export class UserFriendCategoryService {
             const mapper = new UserFriendCategoryMapper(conn);
             const query = DynamicQuery.createIntance<UserFriendCategory>();
             const userIdFilter = new FilterDescriptor<UserFriendCategory>((g) => g.userId, FilterOperator.EQUAL, userId);
+            const indexSort = new SortDescriptor<UserFriendCategory>((g) => g.categoryIndex);
             const idSort = new SortDescriptor<UserFriendCategory>((g) => g.id, SortDirection.DESC);
             query.addFilters(userIdFilter);
-            query.addSorts(idSort);
+            query.addSorts(indexSort, idSort);
             const enities = await mapper.selectByDynamicQuery(query);
             await conn.commit();
             const result = lodash.map(enities, x => this.entityToDto(x));
