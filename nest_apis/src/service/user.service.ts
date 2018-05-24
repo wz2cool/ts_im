@@ -3,13 +3,16 @@ import { DbCoreService } from './db-core.service';
 import { CreateUserDto, UpdateUserDto } from 'model/dto';
 import { IConnection, CommonHelper } from 'tsbatis';
 import { User } from '../model/entity/table/user';
-import { Deleted } from '../constant';
+import { Deleted, DefaultValue } from '../constant';
 import { DisplayException } from '../model/exception';
-import { UserMapper } from '../mapper';
+import { UserMapper, UserFriendCategoryMapper, UserGroupCategoryMapper } from '../mapper';
+import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
+import { UserGroupCategory } from '../model/entity/table/user-group-category';
 
 @Component()
 export class UserService {
-    constructor(private readonly dbCoreService: DbCoreService) {
+    constructor(
+        private readonly dbCoreService: DbCoreService) {
         console.log('UserService init');
     }
 
@@ -24,9 +27,31 @@ export class UserService {
             conn = await this.dbCoreService.getConnection();
             await conn.beginTransaction();
             beginTrans = true;
-            const mapper = new UserMapper(conn);
-            const effectRows = await mapper.insertSelective(user);
-            console.log('effectRows: ', effectRows);
+            const userMapper = new UserMapper(conn);
+            let effectRows = await userMapper.insertSelective(user);
+            console.log('create user: ', effectRows);
+
+            // create defualt user Category
+            const userFriendCategoryMapper = new UserFriendCategoryMapper(conn);
+            const userFriendCategoryEntity = new UserFriendCategory();
+            userFriendCategoryEntity.userId = user.id;
+            userFriendCategoryEntity.categoryIndex = DefaultValue.NO_FRIEND_CATEGORY_INDEX;
+            userFriendCategoryEntity.categoryName = DefaultValue.NO_FRIEND_CATEGROY_NAME;
+            userFriendCategoryEntity.createTime = new Date();
+            userFriendCategoryEntity.updateTime = new Date();
+            effectRows = await userFriendCategoryMapper.insertSelective(userFriendCategoryEntity);
+            console.log('create default user category: ', effectRows);
+
+            // create default group category
+            const userGroupCategoryMapper = new UserGroupCategoryMapper(conn);
+            const userGroupCategoryEntity = new UserGroupCategory();
+            userGroupCategoryEntity.userId = user.id;
+            userGroupCategoryEntity.categoryIndex = DefaultValue.NO_GROUP_CATEGORY_INDEX;
+            userGroupCategoryEntity.categoryName = DefaultValue.NO_GROUP_CATEGORY_NAME;
+            userGroupCategoryEntity.createTime = new Date();
+            userGroupCategoryEntity.updateTime = new Date();
+            effectRows = await userGroupCategoryMapper.insertSelective(userGroupCategoryEntity);
+            console.log('create default group category: ', effectRows);
             await conn.commit();
             return new Promise<number>((resolve, reject) => resolve(user.id));
         } catch (error) {
