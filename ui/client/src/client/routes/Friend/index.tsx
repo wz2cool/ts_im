@@ -4,7 +4,7 @@ import CardLink from '../../components/CardLink';
 import { fetchUserCategories } from '../../actions/userCategoryAction';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { } from '../../reducers/userCategoryReducer';
+import { UserCategoryState } from '../../reducers/userData';
 
 const { Header, Footer, Sider, Content } = Layout;
 const Panel = Collapse.Panel;
@@ -15,11 +15,12 @@ interface FriendProps {
 }
 
 interface FriendState {
-  userId: number;
+  userData: UserCategoryState;
 }
 
 export class Friend extends React.Component<FriendProps, any> {
   componentWillMount() {
+    console.log(`test: ${this.props.userId}`);
     this.props.fetchUserCategories(this.props.userId);
   }
 
@@ -49,11 +50,13 @@ export class Friend extends React.Component<FriendProps, any> {
   }
 }
 
-const mapStateToProps = (state: FriendState) => ({
-  userId: state.userId
-});
+const mapStateToProps = (state: FriendState) => {
+  return {
+    userId: state.userData.userId
+  };
+};
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch: any) => ({
   fetchUserCategories: (id: number) => dispatch(fetchUserCategories(id))
 });
 

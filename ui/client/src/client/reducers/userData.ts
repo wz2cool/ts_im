@@ -1,10 +1,19 @@
 import { Action, AnyAction } from 'redux';
 import actionTypes from '../actionTypes';
 import { assign } from 'lodash';
+import { UserFriendCategoryDto } from '../models/dto';
 
-const initialState = {
-  items: [],
+export interface UserCategoryState {
+  loading: boolean;
+  userId: number;
+  items: UserFriendCategoryDto[];
+  error: Error;
+}
+
+const initialState: UserCategoryState = {
   loading: false,
+  userId: 5000,
+  items: [],
   error: null
 };
 
@@ -26,8 +35,7 @@ export default (state = initialState, action: AnyAction) => {
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
-        items: []
+        error: action.payload.error
       };
     default:
       return state;
