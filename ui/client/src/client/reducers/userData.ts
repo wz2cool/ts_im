@@ -12,7 +12,7 @@ export interface UserCategoryState {
 
 const initialState: UserCategoryState = {
   loading: false,
-  userId: 5000,
+  userId: 1,
   items: [],
   error: null
 };

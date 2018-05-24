@@ -7,9 +7,9 @@ export const fetchUserCategoriesBegin = () => ({
   type: actionTypes.FETCH_USER_CATEGORY_BEGIN
 });
 
-export const fetchUserCategoriesSuccess = (userCategories: UserFriendCategoryDto[]) => ({
+export const fetchUserCategoriesSuccess = (userFriendCategories: UserFriendCategoryDto[]) => ({
   type: actionTypes.FETCH_USER_CATEGORY_SUCCESS,
-  payload: { userCategories }
+  payload: { userFriendCategories }
 });
 
 export const fetchUserCategoriesError = (error: any) => ({
