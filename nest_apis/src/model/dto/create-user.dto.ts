@@ -21,4 +21,8 @@ export class CreateUserDto {
     @ApiModelProperty({ type: String, required: false })
     @IsString()
     readonly displayName: string;
+
+    @ApiModelProperty({ type: String, required: false })
+    @IsString()
+    readonly imageUrl: string;
 }

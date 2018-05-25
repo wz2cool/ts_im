@@ -1,11 +1,13 @@
 import { Component } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserDetailDto, UpdateUserDetailDto, CreateUserFriendDto } from '../model/dto';
-import { IConnection, CommonHelper } from 'tsbatis';
+import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator } from 'tsbatis';
 import { UserDetail } from '../model/entity/table/userDetail';
 import { DisplayException } from '../model/exception';
-import { UserDetailMapper, UserFriendMapper } from '../mapper';
+import { UserDetailMapper, UserFriendMapper, UserFriendCategoryMapper } from '../mapper';
 import { UserFriend } from '../model/entity/table/userFriend';
+import { DefaultValue } from 'constant';
+import { UserFriendCategory } from 'model/entity/table/userFriendCategory';
 
 @Component()
 export class UserFriendService {
@@ -72,10 +74,11 @@ export class UserFriendService {
         return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
 
-    private createDtoToEntity(createUserDetailDto: CreateUserFriendDto): UserFriend {
+    private createDtoToEntity(createUserFriendDto: CreateUserFriendDto): UserFriend {
         const userFriend = new UserFriend();
-        userFriend.friendUserId = createUserDetailDto.friendUserId;
-        userFriend.userId = createUserDetailDto.userId;
+        userFriend.friendUserId = createUserFriendDto.friendUserId;
+        userFriend.userId = createUserFriendDto.userId;
+        userFriend.userFriendCategoryId = createUserFriendDto.userId * (-1);
         userFriend.createTime = new Date();
         return userFriend;
     }

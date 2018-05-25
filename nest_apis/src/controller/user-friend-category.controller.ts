@@ -13,16 +13,24 @@ import {
     ParseIntPipe,
 } from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
-import { UserFriendCategoryService } from '../service';
+import { UserFriendCategoryService, UserService } from '../service';
 import { LoggingInterceptor } from '../common/interceptors';
-import { CreateUserDto, UpdateUserDto, CreateUserFriendDto, CreateUserFriendCategoryDto, UpdateUserFriendCategoryDto } from '../model/dto';
+import {
+    CreateUserDto,
+    UpdateUserDto,
+    CreateUserFriendDto,
+    CreateUserFriendCategoryDto,
+    UpdateUserFriendCategoryDto,
+    UserBaseInfoDto,
+} from '../model/dto';
 
 @Controller('userFriendCategory')
 @ApiUseTags('userFriendCategory')
 @UseInterceptors(LoggingInterceptor)
 export class UserFriendCategoryController {
     constructor(
-        private readonly userFriendCategoryService: UserFriendCategoryService) {
+        private readonly userFriendCategoryService: UserFriendCategoryService,
+        private readonly userService: UserService) {
     }
 
     @Post()
@@ -41,5 +49,12 @@ export class UserFriendCategoryController {
     @ApiImplicitParam({ name: 'id', type: 'integer' })
     public async delete(@Param('id', new ParseIntPipe()) id: number) {
         return await this.userFriendCategoryService.deleteUserFriendCategory(id);
+    }
+
+    @Get(':id/users')
+    @ApiImplicitParam({ name: 'id', type: 'integer' })
+    @ApiResponse({ status: 200, isArray: true, type: UserBaseInfoDto })
+    public async getUsersByUserFriendCategoryId(@Param('id', new ParseIntPipe()) id: number) {
+        return await this.userService.getUsersByUserFriendCategoryId(id);
     }
 }

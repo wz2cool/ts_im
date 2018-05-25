@@ -20,6 +20,7 @@ import { CreateRequestDto } from './create-request.dto';
 import { CreatePrivateMessageDto } from './create-private-message.dto';
 import { CreateGroupMessageDto } from './create-group-message.dto';
 import { UserFriendCategoryDto } from './user-friend-category.dto';
+import { UserBaseInfoDto } from './user-base-info.dto';
 
 export {
     CreateGroupDto,
@@ -44,4 +45,5 @@ export {
     CreatePrivateMessageDto,
     CreateGroupMessageDto,
     UserFriendCategoryDto,
+    UserBaseInfoDto,
 };

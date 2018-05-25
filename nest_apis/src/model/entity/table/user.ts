@@ -13,6 +13,8 @@ export class User extends TableEntity {
     public password: string;
     @column('display_name', false, false)
     public displayName: string;
+    @column('image_url', false, false)
+    public imageUrl: string;
     @column('create_time', false, false)
     public createTime: Date;
     @column('update_time', false, false)

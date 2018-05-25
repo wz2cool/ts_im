@@ -7,6 +7,8 @@ export class UserFriend extends TableEntity {
     public userId: number;
     @column('friend_user_id', false, false)
     public friendUserId: number;
+    @column('user_friend_category_id', false, false)
+    public userFriendCategoryId: number;
     @column('create_time', false, false)
     public createTime: Date;
 
