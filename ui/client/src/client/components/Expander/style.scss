@@ -35,17 +35,18 @@
         font-family: anticon !important;
         content: "\E61F"
       }
+      &.expanded {
+        transform: rotate(90deg);
+      }
     }
   }
   &>.content {
-    height: auto;
-    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    -webkit-transition: -webkit-transform .24s;
+    transition: -webkit-transform .24s;
+    transition: transform .24s;
+    transition: transform .24s, -webkit-transform .24s;
   }
   &>.content.hidden {
-    height: 0;
-    overflow: hidden;
-  }
-  &>.content.show {
-    height: auto;
+    display: none;
   }
 }

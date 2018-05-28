@@ -21,6 +21,7 @@ export const fetchUsersByFriendCategoryIdError = (error: any) => ({
 
 export const fetchUsersByFriendCategoryId = (userFriendCategoryId: number) => {
   return (dispatch: Dispatch<any>) => {
+    console.log('url: ', userFriendCategoryId);
     dispatch(fetchUsersByFriendCategoryIdBegin());
     return HttpService.getUsersByUserFriendCategoryId(userFriendCategoryId)
       .then(response => {

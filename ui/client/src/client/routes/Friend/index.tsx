@@ -44,13 +44,19 @@ export class Friend extends React.Component<FriendProps, any> {
               return (<Panel header={p.categoryName} key={p.id.toString()} />);
             })}
           </Collapse> */}
-          <Expander header="test">
-            <CardLink
-              to="/chat"
-              imageUrl="https://avatars3.githubusercontent.com/u/11556152?s=64v=4"
-              title="张三"
-              subTitle="在线" />
-          </Expander>
+          {
+            this.props.userFriendCategories.map((p, i) => {
+              console.log(p.categoryName);
+              return (
+                <Expander header={p.categoryName} key={p.id} expanded={() => fetchUsersByFriendCategoryId(p.id)}>
+                  {
+                    (p.userBaseInfos || []).map((user, j) => {
+                      return (<div key={user.id}>123</div>);
+                    }
+                  }
+                </Expander>);
+            })
+          }
         </Sider>
         <Content style={{ backgroundColor: '#F0F2F5' }}>
           {this.props.children}
@@ -83,3 +89,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(Friend);
             <Panel header="朋友" key="2">
               <CardLink to={`/chat/${2}`} imageUrl={imageUrl2} title="李四" subTitle="在线" />
             </Panel> */
+
+
+
+            // {
+            //   p.userBaseInfos.map((user, j) => {
+            //     return (
+            //       <CardLink
+            //         key={user.id}
+            //         to="/chat"
+            //         imageUrl="https://avatars3.githubusercontent.com/u/11556152?s=64v=4"
+            //         title="张三"
+            //         subTitle="在线" />
+            //     );
+            //   }
+            // }
