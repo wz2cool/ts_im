@@ -27,7 +27,7 @@ const plugins = [
   }),
   new webpack.DefinePlugin({
     VERSION: JSON.stringify("5fa3b9"),
-    API_URL: JSON.stringify("http://localhost:3000"),
+    API_URL: JSON.stringify("http://localhost:3000/ts_im_api"),
   })
 ];
 

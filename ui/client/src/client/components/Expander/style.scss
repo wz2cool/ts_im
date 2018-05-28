@@ -1,0 +1,51 @@
+.expander {
+  border-bottom: 1px solid #d9d9d9;
+  &>.header {
+    height: 46px;
+    line-height: 22px;
+    padding: 12px 0 12px 40px;
+    color: rgba(0, 0, 0, .85);
+    cursor: pointer;
+    position: relative;
+    &>.arrow {
+      font-style: normal;
+      vertical-align: baseline;
+      text-align: center;
+      text-transform: none;
+      line-height: 1;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-transform: rotate(0);
+      -ms-transform: rotate(0);
+      transform: rotate(0);
+      font-size: 12px;
+      position: absolute;
+      display: inline-block;
+      line-height: 46px;
+      vertical-align: top;
+      -webkit-transition: -webkit-transform .24s;
+      transition: -webkit-transform .24s;
+      transition: transform .24s;
+      transition: transform .24s, -webkit-transform .24s;
+      top: 0;
+      left: 16px;
+      &::before {
+        display: block;
+        font-family: anticon !important;
+        content: "\E61F"
+      }
+    }
+  }
+  &>.content {
+    height: auto;
+    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  }
+  &>.content.hidden {
+    height: 0;
+    overflow: hidden;
+  }
+  &>.content.show {
+    height: auto;
+  }
+}

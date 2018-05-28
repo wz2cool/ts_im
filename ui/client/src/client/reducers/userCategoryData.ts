@@ -14,7 +14,7 @@ export interface UserCategoryState {
 
 const initialState: UserCategoryState = {
   loading: false,
-  userId: 8,
+  userId: 16,
   items: [],
   error: null
 };
@@ -38,18 +38,20 @@ export default (state = initialState, action: AnyAction) => {
       };
       return result;
     case actionTypes.FETCH_USER_CATEGORY_FAILURE:
-      return {
+      result = {
         ...state,
         loading: false,
         error: action.payload.error,
         items: [],
       };
+      return result;
     case actionTypes.FETCH_USERS_BY_FRIEND_CATEGORY_ID_BEGIN:
-      return {
+      result = {
         ...state,
         loading: true,
         error: null
       };
+      return result;
     case actionTypes.FETCH_USERS_BY_FRIEND_CATEGORY_ID_SUCCESS:
       const userInfos: UserBaseInfoDto[] = action.payload.userInfos;
       if (userInfos.length === 0) {
@@ -61,18 +63,20 @@ export default (state = initialState, action: AnyAction) => {
       if (userCategoryDto) {
         userCategoryDto.userBaseInfos = userInfos;
       }
-      return {
+      result = {
         ...state,
         loading: false,
         items: state.items,
         error: null
       };
+      return result;
     case actionTypes.FETCH_USERS_BY_FRIEND_CATEGORY_ID_FAILURE:
-      return {
+      result = {
         ...state,
         loading: false,
         error: action.payload.error
       };
+      return result;
     default:
       return state;
   }
