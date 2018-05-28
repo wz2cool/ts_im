@@ -20,7 +20,7 @@ export const fetchUserCategoriesError = (error: any) => ({
 export const fetchUserCategories = (userId: number) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserCategoriesBegin());
-    return HttpService.getUserGroupCateogories(userId)
+    return HttpService.getUserFriendCateogories(userId)
       .then(response => {
         if (response.status !== 200) {
           throw Error(response.statusText);
@@ -32,4 +32,4 @@ export const fetchUserCategories = (userId: number) => {
         dispatch(fetchUserCategoriesError(err));
       });
   };
-}
+};

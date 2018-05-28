@@ -1,3 +1,4 @@
-import { UserFriendCategoryDto } from './user-friend-category.dto';
+import { UserFriendCategoryDto } from './userFriendCategoryDto';
+import { UserBaseInfoDto } from './userBaseInfoDto';
 
-export { UserFriendCategoryDto };
+export { UserFriendCategoryDto, UserBaseInfoDto };

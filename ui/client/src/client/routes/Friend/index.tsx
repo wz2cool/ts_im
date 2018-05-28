@@ -4,7 +4,7 @@ import CardLink from '../../components/CardLink';
 import { fetchUserCategories } from '../../actions/userCategoryAction';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { UserCategoryState } from '../../reducers/userData';
+import { UserCategoryState } from '../../reducers/userCategoryData';
 import { UserFriendCategoryDto } from '../../models/dto';
 
 const { Header, Footer, Sider, Content } = Layout;

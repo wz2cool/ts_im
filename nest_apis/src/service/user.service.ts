@@ -38,7 +38,7 @@ export class UserService {
             const userFriendCategoryMapper = new UserFriendCategoryMapper(conn);
             const userFriendCategoryEntity = new UserFriendCategory();
             userFriendCategoryEntity.userId = user.id;
-            userFriendCategoryEntity.categoryIndex = user.id * (-1);
+            userFriendCategoryEntity.categoryIndex = DefaultValue.NO_FRIEND_CATEGORY_INDEX;
             userFriendCategoryEntity.categoryName = DefaultValue.NO_FRIEND_CATEGROY_NAME;
             userFriendCategoryEntity.createTime = new Date();
             userFriendCategoryEntity.updateTime = new Date();
@@ -49,7 +49,7 @@ export class UserService {
             const userGroupCategoryMapper = new UserGroupCategoryMapper(conn);
             const userGroupCategoryEntity = new UserGroupCategory();
             userGroupCategoryEntity.userId = user.id;
-            userGroupCategoryEntity.categoryIndex = user.id * (-1);
+            userGroupCategoryEntity.categoryIndex = DefaultValue.NO_GROUP_CATEGORY_INDEX;
             userGroupCategoryEntity.categoryName = DefaultValue.NO_GROUP_CATEGORY_NAME;
             userGroupCategoryEntity.createTime = new Date();
             userGroupCategoryEntity.updateTime = new Date();

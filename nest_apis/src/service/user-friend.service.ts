@@ -6,7 +6,7 @@ import { UserDetail } from '../model/entity/table/userDetail';
 import { DisplayException } from '../model/exception';
 import { UserDetailMapper, UserFriendMapper, UserFriendCategoryMapper } from '../mapper';
 import { UserFriend } from '../model/entity/table/userFriend';
-import { DefaultValue } from 'constant';
+import { DefaultValue } from '../constant';
 import { UserFriendCategory } from 'model/entity/table/userFriendCategory';
 
 @Component()
@@ -22,6 +22,7 @@ export class UserFriendService {
             if (this.isDtoEmpty(createUserFriendDto)) {
                 throw new DisplayException('参数不能为空');
             }
+
             const userFriend = this.createDtoToEntity(createUserFriendDto);
             conn = await this.dbCoreService.getConnection();
             await conn.beginTransaction();
@@ -78,7 +79,7 @@ export class UserFriendService {
         const userFriend = new UserFriend();
         userFriend.friendUserId = createUserFriendDto.friendUserId;
         userFriend.userId = createUserFriendDto.userId;
-        userFriend.userFriendCategoryId = createUserFriendDto.userId * (-1);
+        userFriend.userFriendCategoryId = createUserFriendDto.userFriendCategoryId;
         userFriend.createTime = new Date();
         return userFriend;
     }
