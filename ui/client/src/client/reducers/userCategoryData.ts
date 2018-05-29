@@ -53,7 +53,7 @@ export default (state = initialState, action: AnyAction) => {
       };
       return result;
     case actionTypes.FETCH_USERS_BY_FRIEND_CATEGORY_ID_SUCCESS:
-      const userInfos: UserBaseInfoDto[] = action.payload.userInfos;
+      const userInfos: UserBaseInfoDto[] = action.payload.userBaseInfos;
       if (userInfos.length === 0) {
         return state;
       }
@@ -63,10 +63,11 @@ export default (state = initialState, action: AnyAction) => {
       if (userCategoryDto) {
         userCategoryDto.userBaseInfos = userInfos;
       }
+
       result = {
         ...state,
         loading: false,
-        items: state.items,
+        items: lodash.assign([], state.items),
         error: null
       };
       return result;

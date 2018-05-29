@@ -17,6 +17,7 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('ts_im_api')
     .setBasePath('/ts_im_api')
+    .setSchemes('http', 'https')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/ts_im_api_swagger', app, document);
