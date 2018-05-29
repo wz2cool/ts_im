@@ -25,6 +25,18 @@ export class Expander extends React.Component<ExpanderProps, ExpanderState> {
     this.setState({ isOpen: !this.state.isOpen });
   }
 
+  componentDidMount() {
+    if (this.state.isOpen) {
+      if (this.props.expanded) {
+        this.props.expanded();
+      }
+    } else {
+      if (this.props.collapsed) {
+        this.props.collapsed();
+      }
+    }
+  }
+
   componentDidUpdate(prevProps: ExpanderProps, prevState: ExpanderState) {
     if (prevState.isOpen !== this.state.isOpen) {
       if (this.state.isOpen) {

@@ -17,6 +17,16 @@ export const fetchUserCategoriesError = (error: any) => ({
   payload: { error }
 });
 
+export const expanedUserCategory = (categoryId: number) => ({
+  type: actionTypes.EXPAND_USER_CATEGORY,
+  payload: { categoryId }
+});
+
+export const collapseUserCategory = (categoryId: number) => ({
+  type: actionTypes.COLLASPE_USER_CATEGORY,
+  payload: { categoryId }
+});
+
 export const fetchUserCategories = (userId: number) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserCategoriesBegin());

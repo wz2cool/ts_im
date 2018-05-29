@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Collapse, Layout } from 'antd';
 import CardLink from '../../components/CardLink';
 import { Expander } from '../../components';
-import { fetchUserCategories } from '../../actions/userCategoryAction';
+import { fetchUserCategories, expanedUserCategory, collapseUserCategory } from '../../actions/userCategoryAction';
 import { fetchUsersByFriendCategoryId } from '../../actions/userBaseInfoAction';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -18,6 +18,8 @@ interface FriendProps {
   activeCategoryIds: string[];
   fetchUserCategories: (userId: number) => void;
   fetchUsersByFriendCategoryId: (categoryId: number) => void;
+  expanedUserCategory: (categoryId: number) => void;
+  collapseUserCategory: (categoryId: number) => void;
 }
 
 interface FriendState {
@@ -26,7 +28,9 @@ interface FriendState {
 
 export class Friend extends React.Component<FriendProps, any> {
   componentWillMount() {
-    this.props.fetchUserCategories(this.props.userId);
+    if (!this.props.userFriendCategories || this.props.userFriendCategories.length === 0) {
+      this.props.fetchUserCategories(this.props.userId);
+    }
   }
 
   render() {
@@ -41,7 +45,12 @@ export class Friend extends React.Component<FriendProps, any> {
                 <Expander
                   header={p.categoryName}
                   key={p.id}
-                  expanded={() => this.props.fetchUsersByFriendCategoryId(p.id)}
+                  isOpen={p.isOpen}
+                  expanded={() => {
+                    this.props.expanedUserCategory(p.id);
+                    this.props.fetchUsersByFriendCategoryId(p.id);
+                  }}
+                  collapsed={() => this.props.collapseUserCategory(p.id)}
                 >
                   {
                     (p.userBaseInfos || []).map((user, j) => {
@@ -76,7 +85,9 @@ const mapStateToProps = (state: FriendState) => {
 
 const mapDispatchToProps = (dispatch: any) => ({
   fetchUserCategories: (id: number) => dispatch(fetchUserCategories(id)),
-  fetchUsersByFriendCategoryId: (id: number) => dispatch(fetchUsersByFriendCategoryId(id)),
+  fetchUsersByFriendCategoryId: (categoryId: number) => dispatch(fetchUsersByFriendCategoryId(categoryId)),
+  expanedUserCategory: (categoryId: number) => dispatch(expanedUserCategory(categoryId)),
+  collapseUserCategory: (categoryId: number) => dispatch(collapseUserCategory(categoryId)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Friend);

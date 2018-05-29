@@ -57,7 +57,6 @@ export default (state = initialState, action: AnyAction) => {
       if (userInfos.length === 0) {
         return state;
       }
-
       const userCategoryId = userInfos[0].userFriendCategoryId;
       const userCategoryDto = lodash.find(state.items, x => x.id === userCategoryId);
       if (userCategoryDto) {
@@ -78,7 +77,39 @@ export default (state = initialState, action: AnyAction) => {
         error: action.payload.error
       };
       return result;
+    case actionTypes.EXPAND_USER_CATEGORY:
+      return handle_EXPAND_USER_CATEGORY(state, action.payload.categoryId);
+    case actionTypes.COLLASPE_USER_CATEGORY:
+      return handle_COLLASPE_USER_CATEGORY(state, action.payload.categoryId);
     default:
       return state;
   }
 };
+
+function handle_EXPAND_USER_CATEGORY(oldState: UserCategoryState, userCateogoryId: number): UserCategoryState {
+  let result: UserCategoryState;
+  const userCategoryDto = lodash.find(oldState.items, x => x.id === userCateogoryId);
+  if (!userCategoryDto) {
+    return oldState;
+  }
+  userCategoryDto.isOpen = true;
+  result = {
+    ...oldState,
+    items: lodash.assign([], oldState.items),
+  };
+  return result;
+}
+
+function handle_COLLASPE_USER_CATEGORY(oldState: UserCategoryState, userCateogoryId: number): UserCategoryState {
+  let result: UserCategoryState;
+  const userCategoryDto = lodash.find(oldState.items, x => x.id === userCateogoryId);
+  if (!userCategoryDto) {
+    return oldState;
+  }
+  userCategoryDto.isOpen = false;
+  result = {
+    ...oldState,
+    items: lodash.assign([], oldState.items),
+  };
+  return result;
+}
