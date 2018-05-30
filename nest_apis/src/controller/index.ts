@@ -9,6 +9,7 @@ import { UserFriendCategoryController } from './user-friend-category.controller'
 import { UserConversationController } from './user-conversation.controller';
 import { RequestController } from './request.controller';
 import { MessageController } from './message.controller';
+import { AuthController } from './auth.controller';
 
 export {
     AppController,
@@ -22,4 +23,5 @@ export {
     UserConversationController,
     RequestController,
     MessageController,
+    AuthController,
 };

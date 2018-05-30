@@ -11,6 +11,7 @@ import {
   UserConversationController,
   RequestController,
   MessageController,
+  AuthController,
 } from './controller';
 import {
   DbCoreService,
@@ -24,6 +25,7 @@ import {
   UserConversationService,
   RequestService,
   MessageService,
+  AuthService,
 } from './service';
 
 @Module({
@@ -40,6 +42,7 @@ import {
     UserConversationController,
     RequestController,
     MessageController,
+    AuthController,
   ],
   components: [
     DbCoreService,
@@ -53,6 +56,7 @@ import {
     UserConversationService,
     RequestService,
     MessageService,
+    AuthService,
   ],
 })
 export class AppModule { }

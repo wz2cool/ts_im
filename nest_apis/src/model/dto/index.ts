@@ -21,6 +21,8 @@ import { CreatePrivateMessageDto } from './create-private-message.dto';
 import { CreateGroupMessageDto } from './create-group-message.dto';
 import { UserFriendCategoryDto } from './user-friend-category.dto';
 import { UserBaseInfoDto } from './user-base-info.dto';
+import { UserLoginInfoDto } from './user-login-info.dto';
+import { JwtTokenDto } from './jwt-token.dto';
 
 export {
     CreateGroupDto,
@@ -46,4 +48,6 @@ export {
     CreateGroupMessageDto,
     UserFriendCategoryDto,
     UserBaseInfoDto,
+    UserLoginInfoDto,
+    JwtTokenDto,
 };

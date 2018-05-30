@@ -1,8 +1,20 @@
 import * as lodash from 'lodash';
+import * as crypto from 'crypto';
+
 import { Component, Query } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import { CreateUserDto, UpdateUserDto, UserBaseInfoDto } from '../model/dto';
-import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator, SortDescriptor, SortDirection } from 'tsbatis';
+import { CreateUserDto, UpdateUserDto, UserBaseInfoDto, UserLoginInfoDto } from '../model/dto';
+import {
+    IConnection,
+    CommonHelper,
+    DynamicQuery,
+    FilterDescriptor,
+    FilterOperator,
+    SortDescriptor,
+    SortDirection,
+    FilterGroupDescriptor,
+    FilterCondition,
+} from 'tsbatis';
 import { User } from '../model/entity/table/user';
 import { Deleted, DefaultValue } from '../constant';
 import { DisplayException } from '../model/exception';
@@ -10,7 +22,6 @@ import { UserMapper, UserFriendCategoryMapper, UserGroupCategoryMapper, UserFrie
 import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
 import { UserGroupCategory } from '../model/entity/table/user-group-category';
 import { UserFriend } from 'model/entity/table/userFriend';
-import { loadavg } from 'os';
 
 @Component()
 export class UserService {
@@ -151,6 +162,39 @@ export class UserService {
         }
     }
 
+    public async getUserByLoginInfo(userLoginInfo: UserLoginInfoDto): Promise<User> {
+        let conn: IConnection;
+        try {
+            if (this.isDtoEmpty(userLoginInfo)) {
+                throw new DisplayException('参数不能为空');
+            }
+
+            conn = await this.dbCoreService.getConnection();
+            const userMapper = new UserMapper(conn);
+            const query = DynamicQuery.createIntance<User>();
+            const md5Pwd = this.cryptPwd(userLoginInfo.password);
+            const passwordFilter = new FilterDescriptor<User>((g) => g.password, FilterOperator.EQUAL, md5Pwd);
+            const identityFilterGroup = new FilterGroupDescriptor();
+            const userNameFilter = new FilterDescriptor<User>(
+                FilterCondition.OR, (g) => g.userName, FilterOperator.EQUAL, userLoginInfo.identity);
+            const emailFilter = new FilterDescriptor<User>(
+                FilterCondition.OR, (g) => g.email, FilterOperator.EQUAL, userLoginInfo.identity);
+            const mobileFilter = new FilterDescriptor<User>(
+                FilterCondition.OR, (g) => g.mobile, FilterOperator.EQUAL, userLoginInfo.identity);
+            identityFilterGroup.filters.push(userNameFilter, emailFilter, mobileFilter);
+            query.addFilters(passwordFilter, identityFilterGroup);
+            const userEntities = await userMapper.selectByDynamicQuery(query);
+            const result = userEntities.length === 0 ? null : userEntities[0];
+            return new Promise<User>((resolve, reject) => resolve(result));
+        } catch (error) {
+            return new Promise<User>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+        }
+    }
+
     private isDtoEmpty(dto: any): boolean {
         return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
@@ -160,7 +204,7 @@ export class UserService {
         user.displayName = createUserDto.displayName;
         user.email = createUserDto.email;
         user.mobile = createUserDto.mobile;
-        user.password = createUserDto.mobile;
+        user.password = this.cryptPwd(createUserDto.password);
         user.userName = createUserDto.userName;
         user.imageUrl = createUserDto.imageUrl;
         user.createTime = new Date();
@@ -174,7 +218,7 @@ export class UserService {
         user.displayName = updateUserDto.displayName;
         user.email = updateUserDto.email;
         user.mobile = updateUserDto.mobile;
-        user.password = updateUserDto.mobile;
+        user.password = this.cryptPwd(updateUserDto.password);
         user.imageUrl = updateUserDto.imageUrl;
         user.updateTime = new Date();
         return user;
@@ -187,5 +231,10 @@ export class UserService {
         dto.userName = user.userName;
         dto.imageUrl = user.imageUrl;
         return dto;
+    }
+
+    private cryptPwd(password: string): string {
+        const md5 = crypto.createHash('md5');
+        return md5.update(password).digest('hex');
     }
 }
