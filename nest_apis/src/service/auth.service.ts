@@ -1,14 +1,14 @@
 import * as jwt from 'jsonwebtoken';
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { JwtPayload } from '../model/interface';
 import { UserService } from './user.service';
 import { JwtTokenDto, UserLoginInfoDto } from '../model/dto';
 import { CommonHelper } from 'tsbatis';
 import { DisplayException } from '../model/exception';
 
-@Component()
+@Injectable()
 export class AuthService {
-    private constructor(private readonly userService: UserService) {
+    constructor(private readonly userService: UserService) {
     }
 
     // identity can be username, email, mobile

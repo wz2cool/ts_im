@@ -2,12 +2,10 @@ import { Get, Controller, Post, Body, Put, Delete, Request, Response, Param, Que
 import { CreateRequestDto, CreatePrivateMessageDto, CreateGroupDto, CreateGroupMessageDto } from '../model/dto';
 import { MessageService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('message')
 @ApiUseTags('message')
-@UseInterceptors(LoggingInterceptor)
 export class MessageController {
     constructor(private readonly messageService: MessageService) {
     }

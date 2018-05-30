@@ -1,12 +1,10 @@
 import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors, Delete, ParseIntPipe } from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { UserDetailService } from '../service';
 import { CreateUserDetailDto, UpdateUserDetailDto } from '../model/dto';
 
 @Controller('userDetail')
 @ApiUseTags('userDetail')
-@UseInterceptors(LoggingInterceptor)
 export class UserDetailController {
     constructor(
         private readonly userDetailService: UserDetailService) {

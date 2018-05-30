@@ -1,7 +1,7 @@
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { ConnectionFactory, MysqlConnectionConfig, IConnection, CommonHelper } from 'tsbatis';
 
-@Component()
+@Injectable()
 export class DbCoreService {
     readonly connectionFactory;
     constructor() {

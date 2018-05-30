@@ -2,12 +2,10 @@ import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseI
 import { CreateGroupDto, UpdateGroupDto, GroupPageDto, CreateUserGroupCategoryDto, GroupDto, UpdateUserGroupCategoryDto } from '../model/dto';
 import { GroupService, UserGroupCategoryService, UserGroupService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('userGroupCategory')
 @ApiUseTags('userGroupCategory')
-@UseInterceptors(LoggingInterceptor)
 export class UserGroupCategoryController {
     constructor(
         private readonly userGroupCategoryService: UserGroupCategoryService,

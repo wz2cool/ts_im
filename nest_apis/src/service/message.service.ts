@@ -1,5 +1,5 @@
 import * as lodash from 'lodash';
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreatePrivateMessageDto, CreateGroupMessageDto } from '../model/dto';
 import {
@@ -21,7 +21,7 @@ import { ConversationType } from '../constant';
 import { PrivateMessage } from '../model/entity/table/privateMessage';
 import { GroupMessage } from '../model/entity/table/groupMessage';
 
-@Component()
+@Injectable()
 export class MessageService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('MessageService init');

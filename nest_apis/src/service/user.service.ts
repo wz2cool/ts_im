@@ -1,7 +1,7 @@
 import * as lodash from 'lodash';
 import * as crypto from 'crypto';
 
-import { Component, Query } from '@nestjs/common';
+import { Component, Query, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserDto, UpdateUserDto, UserBaseInfoDto, UserLoginInfoDto } from '../model/dto';
 import {
@@ -23,7 +23,7 @@ import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
 import { UserGroupCategory } from '../model/entity/table/user-group-category';
 import { UserFriend } from 'model/entity/table/userFriend';
 
-@Component()
+@Injectable()
 export class UserService {
     constructor(
         private readonly dbCoreService: DbCoreService) {

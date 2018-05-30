@@ -1,4 +1,4 @@
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserConversationDto, UpdateUserConversationDto } from 'model/dto';
 import { IConnection, CommonHelper } from 'tsbatis';
@@ -6,7 +6,7 @@ import { UserConversation } from '../model/entity/table/userConversation';
 import { DisplayException } from '../model/exception';
 import { UserConversationMapper } from '../mapper';
 
-@Component()
+@Injectable()
 export class UserConversationService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('UserConversationService init');

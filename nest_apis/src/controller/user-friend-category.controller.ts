@@ -14,7 +14,6 @@ import {
 } from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
 import { UserFriendCategoryService, UserService } from '../service';
-import { LoggingInterceptor } from '../common/interceptors';
 import {
     CreateUserDto,
     UpdateUserDto,
@@ -26,7 +25,6 @@ import {
 
 @Controller('userFriendCategory')
 @ApiUseTags('userFriendCategory')
-@UseInterceptors(LoggingInterceptor)
 export class UserFriendCategoryController {
     constructor(
         private readonly userFriendCategoryService: UserFriendCategoryService,

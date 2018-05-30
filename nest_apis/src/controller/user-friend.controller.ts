@@ -14,12 +14,10 @@ import {
 } from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
 import { UserService, UserFriendService } from '../service';
-import { LoggingInterceptor } from '../common/interceptors';
 import { CreateUserDto, UpdateUserDto, CreateUserFriendDto } from '../model/dto';
 
 @Controller('userFriend')
 @ApiUseTags('userFriend')
-@UseInterceptors(LoggingInterceptor)
 export class UserFriendController {
     constructor(
         private readonly userFriendService: UserFriendService) {

@@ -14,13 +14,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^4.5.9",
-    "@nestjs/core": "^4.5.10",
-    "@nestjs/microservices": "^4.5.8",
+    "@nestjs/common": "~5.0.1",
+    "@nestjs/core": "~5.0.1",
+    "@nestjs/microservices": "~5.0.1",
     "@nestjs/passport": "~1.0.10",
-    "@nestjs/swagger": "~1.2.2",
-    "@nestjs/testing": "^4.5.5",
-    "@nestjs/websockets": "^4.5.8",
+    "@nestjs/swagger": "~2.0.2",
+    "@nestjs/testing": "~5.0.1",
+    "@nestjs/websockets": "~5.0.1",
+    "class-transformer": "^0.1.9",
+    "class-validator": "~0.8.5",
     "jsonwebtoken": "~8.2.1",
     "lodash": "^4.17.10",
     "mysql": "~2.15.0",
@@ -28,7 +30,7 @@
     "passport-http-bearer": "~1.0.1",
     "passport-jwt": "~4.0.0",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.6",
+    "rxjs": "~6.2.0",
     "tsbatis": "~0.2.1"
   },
   "devDependencies": {

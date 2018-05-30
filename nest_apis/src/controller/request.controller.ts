@@ -2,12 +2,10 @@ import { Get, Controller, Post, Body, Put, Delete, Request, Response, Param, Que
 import { CreateRequestDto } from '../model/dto';
 import { RequestService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('request')
 @ApiUseTags('request')
-@UseInterceptors(LoggingInterceptor)
 export class RequestController {
     constructor(private readonly requestService: RequestService) {
     }

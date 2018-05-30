@@ -1,6 +1,6 @@
 import * as lodash from 'lodash';
 
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserFriendCategoryDto, UpdateUserFriendCategoryDto, UserFriendCategoryDto } from '../model/dto';
 import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator, SortDescriptor, SortDirection } from 'tsbatis';
@@ -10,7 +10,7 @@ import { UserFriendCategoryMapper } from '../mapper';
 import { UserFriend } from '../model/entity/table/userFriend';
 import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
 
-@Component()
+@Injectable()
 export class UserFriendCategoryService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('UserFriendCategoryService init');

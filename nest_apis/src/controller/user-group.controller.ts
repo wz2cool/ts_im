@@ -10,12 +10,10 @@ import {
 } from '../model/dto';
 import { GroupService, UserGroupCategoryService, UserGroupService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('userGroup')
 @ApiUseTags('userGroup')
-@UseInterceptors(LoggingInterceptor)
 export class UserGroupController {
     constructor(
         private readonly userGroupService: UserGroupService) {

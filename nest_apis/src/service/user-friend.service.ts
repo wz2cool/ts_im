@@ -1,4 +1,4 @@
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserDetailDto, UpdateUserDetailDto, CreateUserFriendDto } from '../model/dto';
 import { IConnection, CommonHelper, DynamicQuery, FilterDescriptor, FilterOperator } from 'tsbatis';
@@ -9,7 +9,7 @@ import { UserFriend } from '../model/entity/table/userFriend';
 import { DefaultValue } from '../constant';
 import { UserFriendCategory } from 'model/entity/table/userFriendCategory';
 
-@Component()
+@Injectable()
 export class UserFriendService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('UserFriendService init');

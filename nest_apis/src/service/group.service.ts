@@ -1,5 +1,5 @@
 import * as lodash from 'lodash';
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateGroupDto, UpdateGroupDto, GroupDto, GroupPageDto } from '../model/dto';
 import {
@@ -18,7 +18,7 @@ import { GroupMapper, UserGroupMapper } from '../mapper';
 import { DisplayException } from '../model/exception';
 import { UserGroup } from '../model/entity/table/user-group';
 
-@Component()
+@Injectable()
 export class GroupService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('GroupDbService init');

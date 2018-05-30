@@ -28,6 +28,8 @@ import {
   AuthService,
 } from './service';
 
+import { JwtStrategy } from './jwt/jwt.strategy';
+
 @Module({
   imports: [],
   controllers: [
@@ -44,7 +46,7 @@ import {
     MessageController,
     AuthController,
   ],
-  components: [
+  providers: [
     DbCoreService,
     GroupService,
     UserGroupService,
@@ -57,6 +59,7 @@ import {
     RequestService,
     MessageService,
     AuthService,
+    JwtStrategy,
   ],
 })
 export class AppModule { }

@@ -2,12 +2,10 @@ import { Get, Controller, Post, Body, Put, Delete, Request, Response, Param, Que
 import { CreateUserConversationDto, UpdateUserConversationDto } from '../model/dto';
 import { UserConversationService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../common/interceptors';
 import { ParseIntPipe } from '@nestjs/common';
 
 @Controller('userConversation')
 @ApiUseTags('userConversation')
-@UseInterceptors(LoggingInterceptor)
 export class UserConversationController {
     constructor(private readonly userConversationService: UserConversationService) {
     }

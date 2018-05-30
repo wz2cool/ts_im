@@ -1,4 +1,4 @@
-import { Component } from '@nestjs/common';
+import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserDetailDto, UpdateUserDetailDto } from 'model/dto';
 import { IConnection, CommonHelper } from 'tsbatis';
@@ -6,7 +6,7 @@ import { UserDetail } from '../model/entity/table/userDetail';
 import { DisplayException } from '../model/exception';
 import { UserDetailMapper } from '../mapper';
 
-@Component()
+@Injectable()
 export class UserDetailService {
     constructor(private readonly dbCoreService: DbCoreService) {
         console.log('UserDetailService init');
