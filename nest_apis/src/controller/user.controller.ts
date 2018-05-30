@@ -17,9 +17,11 @@ import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
 import { UserService, UserFriendCategoryService } from '../service';
 import { CreateUserDto, UpdateUserDto, UserFriendCategoryDto } from '../model/dto';
 import { AuthGuard } from '@nestjs/passport';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('users')
 @ApiUseTags('users')
+@UseInterceptors(LoggingInterceptor)
 export class UserController {
     constructor(
         private readonly userService: UserService,

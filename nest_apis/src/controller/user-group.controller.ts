@@ -11,9 +11,11 @@ import {
 import { GroupService, UserGroupCategoryService, UserGroupService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('userGroup')
 @ApiUseTags('userGroup')
+@UseInterceptors(LoggingInterceptor)
 export class UserGroupController {
     constructor(
         private readonly userGroupService: UserGroupService) {

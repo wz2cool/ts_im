@@ -22,9 +22,11 @@ import {
     UpdateUserFriendCategoryDto,
     UserBaseInfoDto,
 } from '../model/dto';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('userFriendCategory')
 @ApiUseTags('userFriendCategory')
+@UseInterceptors(LoggingInterceptor)
 export class UserFriendCategoryController {
     constructor(
         private readonly userFriendCategoryService: UserFriendCategoryService,

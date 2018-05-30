@@ -3,9 +3,11 @@ import { CreateGroupDto, UpdateGroupDto, GroupPageDto } from '../model/dto';
 import { GroupService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('groups')
 @ApiUseTags('groups')
+@UseInterceptors(LoggingInterceptor)
 export class GroupsController {
     constructor(private readonly groupDbService: GroupService) {
     }

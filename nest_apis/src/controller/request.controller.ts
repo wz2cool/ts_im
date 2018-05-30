@@ -3,9 +3,11 @@ import { CreateRequestDto } from '../model/dto';
 import { RequestService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('request')
 @ApiUseTags('request')
+@UseInterceptors(LoggingInterceptor)
 export class RequestController {
     constructor(private readonly requestService: RequestService) {
     }

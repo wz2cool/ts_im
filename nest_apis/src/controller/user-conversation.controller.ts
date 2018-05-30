@@ -3,9 +3,11 @@ import { CreateUserConversationDto, UpdateUserConversationDto } from '../model/d
 import { UserConversationService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('userConversation')
 @ApiUseTags('userConversation')
+@UseInterceptors(LoggingInterceptor)
 export class UserConversationController {
     constructor(private readonly userConversationService: UserConversationService) {
     }

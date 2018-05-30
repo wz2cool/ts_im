@@ -3,9 +3,11 @@ import { CreateRequestDto, CreatePrivateMessageDto, CreateGroupDto, CreateGroupM
 import { MessageService } from '../service';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @Controller('message')
 @ApiUseTags('message')
+@UseInterceptors(LoggingInterceptor)
 export class MessageController {
     constructor(private readonly messageService: MessageService) {
     }
