@@ -1,11 +1,13 @@
-import { Controller, Get, UseGuards, Post, Body } from '@nestjs/common';
+import { Controller, Get, UseGuards, Post, Body, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from '../service/auth.service';
 import { UserLoginInfoDto, JwtTokenDto } from '../model/dto';
 import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
+import { LoggingInterceptor } from '../common/interceptors';
 
 @ApiUseTags('auth')
 @Controller('auth')
+@UseInterceptors(LoggingInterceptor)
 export class AuthController {
     constructor(private readonly authService: AuthService) {
 
