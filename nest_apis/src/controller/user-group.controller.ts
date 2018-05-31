@@ -1,4 +1,4 @@
-import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors, Delete } from '@nestjs/common';
+import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors, Delete, UseGuards } from '@nestjs/common';
 import {
     CreateGroupDto,
     UpdateGroupDto,
@@ -9,13 +9,17 @@ import {
     UpdateUserGroupDto,
 } from '../model/dto';
 import { GroupService, UserGroupCategoryService, UserGroupService } from '../service';
-import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
+import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
 import { LoggingInterceptor } from '../common/interceptors';
+import { jwtAuthOptions } from '../jwt';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('userGroup')
 @ApiUseTags('userGroup')
 @UseInterceptors(LoggingInterceptor)
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt', jwtAuthOptions))
 export class UserGroupController {
     constructor(
         private readonly userGroupService: UserGroupService) {

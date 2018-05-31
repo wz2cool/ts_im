@@ -1,13 +1,17 @@
-import { Get, Controller, Post, Body, Put, Delete, Request, Response, Param, Query, UseInterceptors } from '@nestjs/common';
+import { Get, Controller, Post, Body, Put, Delete, Request, Response, Param, Query, UseInterceptors, UseGuards } from '@nestjs/common';
 import { CreateUserConversationDto, UpdateUserConversationDto } from '../model/dto';
 import { UserConversationService } from '../service';
-import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags } from '@nestjs/swagger';
+import { ApiImplicitParam, ApiResponse, ApiImplicitQuery, ApiUseTags, ApiBearerAuth } from '@nestjs/swagger';
 import { ParseIntPipe } from '@nestjs/common';
 import { LoggingInterceptor } from '../common/interceptors';
+import { AuthGuard } from '@nestjs/passport';
+import { jwtAuthOptions } from '../jwt';
 
 @Controller('userConversation')
 @ApiUseTags('userConversation')
 @UseInterceptors(LoggingInterceptor)
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt', jwtAuthOptions))
 export class UserConversationController {
     constructor(private readonly userConversationService: UserConversationService) {
     }

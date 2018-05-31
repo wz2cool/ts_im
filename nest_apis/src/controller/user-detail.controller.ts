@@ -1,12 +1,16 @@
-import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors, Delete, ParseIntPipe } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
+import { Get, Controller, Post, Body, Put, Request, Response, Param, Query, UseInterceptors, Delete, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ApiUseTags, ApiResponse, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { UserDetailService } from '../service';
 import { CreateUserDetailDto, UpdateUserDetailDto } from '../model/dto';
 import { LoggingInterceptor } from '../common/interceptors';
+import { AuthGuard } from '@nestjs/passport';
+import { jwtAuthOptions } from '../jwt';
 
 @Controller('userDetail')
 @ApiUseTags('userDetail')
 @UseInterceptors(LoggingInterceptor)
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt', jwtAuthOptions))
 export class UserDetailController {
     constructor(
         private readonly userDetailService: UserDetailService) {

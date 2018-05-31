@@ -11,8 +11,9 @@ import {
     Query,
     Delete,
     ParseIntPipe,
+    UseGuards,
 } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
+import { ApiUseTags, ApiResponse, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { UserFriendCategoryService, UserService } from '../service';
 import {
     CreateUserDto,
@@ -23,10 +24,14 @@ import {
     UserBaseInfoDto,
 } from '../model/dto';
 import { LoggingInterceptor } from '../common/interceptors';
+import { AuthGuard } from '@nestjs/passport';
+import { jwtAuthOptions } from '../jwt';
 
 @Controller('userFriendCategory')
 @ApiUseTags('userFriendCategory')
 @UseInterceptors(LoggingInterceptor)
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt', jwtAuthOptions))
 export class UserFriendCategoryController {
     constructor(
         private readonly userFriendCategoryService: UserFriendCategoryService,
