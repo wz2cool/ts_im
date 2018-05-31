@@ -13,15 +13,18 @@ import {
     ParseIntPipe,
     UseGuards,
 } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiImplicitParam } from '@nestjs/swagger';
+import { ApiUseTags, ApiResponse, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
 import { UserService, UserFriendCategoryService } from '../service';
 import { CreateUserDto, UpdateUserDto, UserFriendCategoryDto } from '../model/dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LoggingInterceptor } from '../common/interceptors';
+import { jwtAuthOptions } from '../jwt';
 
 @Controller('users')
 @ApiUseTags('users')
 @UseInterceptors(LoggingInterceptor)
+@ApiBearerAuth()
+@UseGuards(AuthGuard('jwt', jwtAuthOptions))
 export class UserController {
     constructor(
         private readonly userService: UserService,
@@ -47,7 +50,6 @@ export class UserController {
     }
 
     @Get(':id/userFriendCategories')
-    @UseGuards(AuthGuard('jwt'))
     @ApiImplicitParam({ name: 'id', type: 'integer' })
     @ApiResponse({ status: 200, isArray: true, type: UserFriendCategoryDto })
     async getUserFriendCategoriesByUserId(@Param('id', new ParseIntPipe()) id: number) {
