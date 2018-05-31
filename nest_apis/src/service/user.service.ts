@@ -129,7 +129,7 @@ export class UserService {
         }
     }
 
-    public async getUsersByUserFriendCategoryId(userFriendCategoryId: number): Promise<UserBaseInfoDto[]> {
+    public async getUserBaseInfosByUserFriendCategoryId(userFriendCategoryId: number): Promise<UserBaseInfoDto[]> {
         let conn: IConnection;
         try {
             conn = await this.dbCoreService.getConnection();
@@ -162,7 +162,7 @@ export class UserService {
         }
     }
 
-    public async getUserByLoginInfo(userLoginInfo: UserLoginInfoDto): Promise<User> {
+    public async getUserBaseInfoByLoginInfo(userLoginInfo: UserLoginInfoDto): Promise<UserBaseInfoDto> {
         let conn: IConnection;
         try {
             if (this.isDtoEmpty(userLoginInfo)) {
@@ -184,10 +184,10 @@ export class UserService {
             identityFilterGroup.filters.push(userNameFilter, emailFilter, mobileFilter);
             query.addFilters(passwordFilter, identityFilterGroup);
             const userEntities = await userMapper.selectByDynamicQuery(query);
-            const result = userEntities.length === 0 ? null : userEntities[0];
-            return new Promise<User>((resolve, reject) => resolve(result));
+            const result = userEntities.length === 0 ? null : this.entityToUserBaseInfoDto(userEntities[0]);
+            return new Promise<UserBaseInfoDto>((resolve, reject) => resolve(result));
         } catch (error) {
-            return new Promise<User>((resolve, reject) => reject(error));
+            return new Promise<UserBaseInfoDto>((resolve, reject) => reject(error));
         } finally {
             if (!CommonHelper.isNullOrUndefined(conn)) {
                 await conn.release();

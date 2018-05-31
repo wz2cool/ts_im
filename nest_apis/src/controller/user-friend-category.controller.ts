@@ -60,6 +60,6 @@ export class UserFriendCategoryController {
     @ApiImplicitParam({ name: 'id', type: 'integer' })
     @ApiResponse({ status: 200, isArray: true, type: UserBaseInfoDto })
     public async getUsersByUserFriendCategoryId(@Param('id', new ParseIntPipe()) id: number) {
-        return await this.userService.getUsersByUserFriendCategoryId(id);
+        return await this.userService.getUserBaseInfosByUserFriendCategoryId(id);
     }
 }

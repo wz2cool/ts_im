@@ -45,8 +45,8 @@ export class RedisService {
     public get(key: string): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.client.get(key, (err, reply) => {
-                if (CommonHelper.isNullOrUndefined(reply)) {
-                    resolve();
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(reply);
                 } else {
                     reject(err);
                 }
@@ -57,8 +57,8 @@ export class RedisService {
     public mget(keys: string[]): Promise<string[]> {
         return new Promise<string[]>((resolve, reject) => {
             this.client.mget(keys, (err, reply) => {
-                if (CommonHelper.isNullOrUndefined(reply)) {
-                    resolve();
+                if (CommonHelper.isNullOrUndefined(err)) {
+                    resolve(reply);
                 } else {
                     reject(err);
                 }
