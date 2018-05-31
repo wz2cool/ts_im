@@ -33,6 +33,7 @@ export class AuthService {
     public async validateUser(payload: JwtPayload): Promise<any> {
         // put some validation logic here
         // for example query user by id/email/username
+        // do this is redis.
         return {};
     }
 }

@@ -26,6 +26,7 @@ import {
   RequestService,
   MessageService,
   AuthService,
+  RedisService,
 } from './service';
 
 import { JwtStrategy } from './jwt/jwt.strategy';
@@ -60,6 +61,7 @@ import { JwtStrategy } from './jwt/jwt.strategy';
     MessageService,
     AuthService,
     JwtStrategy,
+    RedisService,
   ],
 })
 export class AppModule { }

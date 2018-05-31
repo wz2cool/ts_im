@@ -10,6 +10,7 @@ import { UserConversationService } from './user-conversation.service';
 import { RequestService } from './requst.service';
 import { MessageService } from './message.service';
 import { AuthService } from './auth.service';
+import { RedisService } from './redis.service';
 
 export {
     DbCoreService,
@@ -24,4 +25,5 @@ export {
     RequestService,
     MessageService,
     AuthService,
+    RedisService,
 };
