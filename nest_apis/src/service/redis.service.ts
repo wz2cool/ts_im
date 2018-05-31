@@ -42,6 +42,30 @@ export class RedisService {
         });
     }
 
+    public get(key: string): Promise<string> {
+        return new Promise<string>((resolve, reject) => {
+            this.client.get(key, (err, reply) => {
+                if (CommonHelper.isNullOrUndefined(reply)) {
+                    resolve();
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    public mget(keys: string[]): Promise<string[]> {
+        return new Promise<string[]>((resolve, reject) => {
+            this.client.mget(keys, (err, reply) => {
+                if (CommonHelper.isNullOrUndefined(reply)) {
+                    resolve();
+                } else {
+                    reject(err);
+                }
+            });
+        });
+    }
+
     private clientOnReady(): void {
         console.log('redis ready');
     }
