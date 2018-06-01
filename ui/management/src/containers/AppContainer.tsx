@@ -1,9 +1,12 @@
 import * as React from "react";
 import { HashRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import Header from "../components/Header";
+import { Layout } from 'antd';
+import NavMenu from "../components/NavMenu";
 import createRoutes from "../routes";
 import createStore from "../store/createStore";
+
+import './style.scss';
 
 const initialState = (window as any).__INITIAL_STATE__;
 const store = createStore(initialState);
@@ -16,12 +19,12 @@ const RouteWithSubRoutes = (route: any) => (
       // pass the sub-routes down to keep nesting
       <route.component {...props} routes={route.routes} />
     )}
-    // children={props => [
-    //   route.routes &&
-    //     route.routes.map((r: any, index: number) => (
-    //       <RouteWithSubRoutes key={index} {...r} />
-    //     )),
-    // ]}
+  // children={props => [
+  //   route.routes &&
+  //     route.routes.map((r: any, index: number) => (
+  //       <RouteWithSubRoutes key={index} {...r} />
+  //     )),
+  // ]}
   />
 );
 
@@ -30,14 +33,18 @@ export default class AppContainer extends React.Component<any, any> {
     return (
       <Provider store={store}>
         <HashRouter>
-          <div>
-            <Header />
-            <div className="content">
-              {routes.map((route: any, index: number) => (
-                <RouteWithSubRoutes key={index} {...route} />
-              ))}
-            </div>
-          </div>
+          <Layout className="root_layout">
+            <Layout.Sider>
+              <NavMenu />
+            </Layout.Sider>
+            <Layout.Content>
+              <div className="content">
+                {routes.map((route: any, index: number) => (
+                  <RouteWithSubRoutes key={index} {...route} />
+                ))}
+              </div>
+            </Layout.Content>
+          </Layout>
         </HashRouter>
       </Provider>
     );

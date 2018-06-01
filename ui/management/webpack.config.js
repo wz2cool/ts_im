@@ -21,10 +21,21 @@ const config = {
   },
   module: {
     rules: [{
-      test: /\.tsx?$/,
-      loaders: ["babel-loader", "awesome-typescript-loader"],
-      exclude: /node_modules/,
-    }, ],
+        test: /\.tsx?$/,
+        loaders: ["babel-loader", "awesome-typescript-loader"],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css?$/,
+        loaders: ["style-loader", "css-loader"],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.scss?$/,
+        loaders: ["style-loader", "css-loader"],
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
