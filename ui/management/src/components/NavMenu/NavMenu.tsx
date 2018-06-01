@@ -10,6 +10,11 @@ class NavMenu extends React.Component {
             <Menu.Item>用户</Menu.Item>
           </Menu>
         </Menu.SubMenu>
+        <Menu.SubMenu title="子菜单">
+          <Menu theme="dark">
+            <Menu.Item>用户</Menu.Item>
+          </Menu>
+        </Menu.SubMenu>
       </Menu>
     );
   }
