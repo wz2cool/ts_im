@@ -15,6 +15,10 @@ export class User extends TableEntity {
     public displayName: string;
     @column('image_url', false, false)
     public imageUrl: string;
+    @column('source', false, false)
+    public source: number;
+    @column('active', false, false)
+    public active: number;
     @column('create_time', false, false)
     public createTime: Date;
     @column('update_time', false, false)

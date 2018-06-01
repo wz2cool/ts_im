@@ -16,7 +16,7 @@ import {
     FilterCondition,
 } from 'tsbatis';
 import { User } from '../model/entity/table/user';
-import { Deleted, DefaultValue } from '../constant';
+import { Deleted, DefaultValue, UserActive } from '../constant';
 import { DisplayException } from '../model/exception';
 import { UserMapper, UserFriendCategoryMapper, UserGroupCategoryMapper, UserFriendMapper } from '../mapper';
 import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
@@ -89,6 +89,34 @@ export class UserService {
             await conn.beginTransaction();
             beginTrans = true;
             const mapper = new UserMapper(conn);
+            const effectRows = await mapper.updateByPrimaryKeySelective(user);
+            console.log('effectRows: ', effectRows);
+            await conn.commit();
+            return new Promise<void>((resolve, reject) => resolve());
+        } catch (error) {
+            if (beginTrans) {
+                await conn.rollback();
+            }
+            return new Promise<void>((resolve, reject) => reject(error));
+        } finally {
+            if (!CommonHelper.isNullOrUndefined(conn)) {
+                await conn.release();
+            }
+        }
+    }
+
+    public async activeUser(userId: number): Promise<void> {
+        let conn: IConnection;
+        let beginTrans: boolean = false;
+        try {
+            conn = await this.dbCoreService.getConnection();
+            await conn.beginTransaction();
+            beginTrans = true;
+            const mapper = new UserMapper(conn);
+            const user = new User();
+            user.id = userId;
+            user.active = UserActive.ACTIVE;
+            user.updateTime = new Date();
             const effectRows = await mapper.updateByPrimaryKeySelective(user);
             console.log('effectRows: ', effectRows);
             await conn.commit();
@@ -207,6 +235,8 @@ export class UserService {
         user.password = this.cryptPwd(createUserDto.password);
         user.userName = createUserDto.userName;
         user.imageUrl = createUserDto.imageUrl;
+        user.source = createUserDto.source;
+        user.active = UserActive.PENDING;
         user.createTime = new Date();
         user.updateTime = new Date();
         return user;
@@ -230,6 +260,8 @@ export class UserService {
         dto.displayName = user.displayName;
         dto.userName = user.userName;
         dto.imageUrl = user.imageUrl;
+        dto.email = user.email;
+        dto.mobile = user.mobile;
         return dto;
     }
 

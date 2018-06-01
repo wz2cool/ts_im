@@ -1,11 +1,7 @@
 import { IsString, IsInt, IsBoolean, IsNumber } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
 
-export class UserBaseInfoDto {
-    @ApiModelProperty({ type: 'integer', required: false })
-    @IsNumber()
-    id: number;
-
+export class UserFilterDto {
     @ApiModelProperty({ type: String, required: false })
     @IsString()
     userName: string;
@@ -22,7 +18,11 @@ export class UserBaseInfoDto {
     @IsString()
     mobile: string;
 
-    @ApiModelProperty({ type: String, required: false })
-    @IsString()
-    imageUrl: string;
+    @ApiModelProperty({ type: 'integer', required: false })
+    @IsNumber()
+    source: number;
+
+    @ApiModelProperty({ type: 'integer', required: false })
+    @IsNumber()
+    active: number;
 }

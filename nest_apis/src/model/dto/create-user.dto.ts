@@ -1,5 +1,6 @@
 import { IsString, IsInt, IsBoolean, IsNumber } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
+import { isNumber } from 'util';
 
 export class CreateUserDto {
     @ApiModelProperty({ type: String })
@@ -25,4 +26,8 @@ export class CreateUserDto {
     @ApiModelProperty({ type: String, required: false })
     @IsString()
     readonly imageUrl: string;
+
+    @ApiModelProperty({ type: 'integer' })
+    @IsNumber()
+    readonly source: number;
 }
