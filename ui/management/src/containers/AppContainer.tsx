@@ -19,22 +19,34 @@ const RouteWithSubRoutes = (route: any) => (
       // pass the sub-routes down to keep nesting
       <route.component {...props} routes={route.routes} />
     )}
-  // children={props => [
-  //   route.routes &&
-  //     route.routes.map((r: any, index: number) => (
-  //       <RouteWithSubRoutes key={index} {...r} />
-  //     )),
-  // ]}
   />
 );
 
-export default class AppContainer extends React.Component<any, any> {
+interface AppContainerProps { };
+
+interface AppContainerState {
+  collapsed: boolean,
+};
+
+export default class AppContainer extends React.Component<AppContainerProps, AppContainerState> {
+  state: AppContainerState = {
+    collapsed: false,
+  }
+
+  onCollapse = (collapsed: boolean) => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  }
+
   public render() {
     return (
       <Provider store={store}>
         <HashRouter>
           <Layout className="root_layout">
-            <Layout.Sider>
+            <Layout.Sider
+              collapsible
+              collapsed={this.state.collapsed}
+              onCollapse={this.onCollapse}>
               <NavMenu />
             </Layout.Sider>
             <Layout.Content>

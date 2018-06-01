@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { Menu } from 'antd';
+import { Menu, Icon } from 'antd';
 
 class NavMenu extends React.Component {
   public render(): JSX.Element {
     return (
       <Menu mode="inline" theme="dark">
-        <Menu.SubMenu title="子菜单">
-          <Menu theme="dark">
-            <Menu.Item>用户</Menu.Item>
-          </Menu>
-        </Menu.SubMenu>
-        <Menu.SubMenu title="子菜单">
-          <Menu theme="dark">
-            <Menu.Item>用户</Menu.Item>
-          </Menu>
-        </Menu.SubMenu>
+        <Menu.Item>
+          <Icon type="user" />
+          <span>用户管理</span>
+        </Menu.Item>
+        <Menu.Item>
+          <Icon type="team" />
+          <span>群组管理</span>
+        </Menu.Item>
       </Menu>
     );
   }
