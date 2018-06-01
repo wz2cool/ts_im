@@ -1,27 +1,27 @@
 // ------------------------------------
 // Constants
 // ------------------------------------
-export const EXPLORE = "EXPLORE";
+export const USER_MANAGEMENT = "USER_MANAGEMENT";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function explore(value = "explore") {
+export function userManagement(value = "USER_MANAGEMENT") {
   return {
-    type: EXPLORE,
+    type: USER_MANAGEMENT,
     payload: value,
   };
 }
 
 export const actions = {
-  explore,
+  userManagement,
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [EXPLORE]: (state: any, action: any) => action.payload,
+  [USER_MANAGEMENT]: (state: any, action: any) => action.payload,
 };
 
 // ------------------------------------

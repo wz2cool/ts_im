@@ -5,11 +5,11 @@ import { reducer } from "./modules/UserManagement";
 
 export default (store: any) => {
   // inject reducer
-  injectReducer(store, { key: "explore", reducer });
+  injectReducer(store, { key: "userManagement", reducer });
 
   const LoadableComponent = Loadable({
     loader: () =>
-      import(/* webpackChunkName: "explore" */ "./components/UserManagement"),
+      import(/* webpackChunkName: "userManagement" */ "./components/UserManagement"),
     loading: () => null,
   });
 

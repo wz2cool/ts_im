@@ -23,7 +23,6 @@ const RouteWithSubRoutes = (route: any) => (
 );
 
 interface AppContainerProps {
-  location: any;
 };
 
 interface AppContainerState {
