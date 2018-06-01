@@ -22,7 +22,9 @@ const RouteWithSubRoutes = (route: any) => (
   />
 );
 
-interface AppContainerProps { };
+interface AppContainerProps {
+  location: any;
+};
 
 interface AppContainerState {
   collapsed: boolean,
@@ -47,6 +49,7 @@ export default class AppContainer extends React.Component<AppContainerProps, App
               collapsible
               collapsed={this.state.collapsed}
               onCollapse={this.onCollapse}>
+              <div className="logo"></div>
               <NavMenu />
             </Layout.Sider>
             <Layout.Content>
