@@ -4,9 +4,9 @@ import { Menu } from 'antd';
 class NavMenu extends React.Component {
   public render(): JSX.Element {
     return (
-      <Menu mode="vertical">
+      <Menu mode="inline" theme="dark">
         <Menu.SubMenu title="子菜单">
-          <Menu>
+          <Menu theme="dark">
             <Menu.Item>用户</Menu.Item>
           </Menu>
         </Menu.SubMenu>
