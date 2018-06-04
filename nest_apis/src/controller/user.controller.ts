@@ -13,9 +13,9 @@ import {
     ParseIntPipe,
     UseGuards,
 } from '@nestjs/common';
-import { ApiUseTags, ApiResponse, ApiImplicitParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiUseTags, ApiResponse, ApiImplicitParam, ApiBearerAuth, ApiImplicitQuery } from '@nestjs/swagger';
 import { UserService, UserFriendCategoryService } from '../service';
-import { CreateUserDto, UpdateUserDto, UserFriendCategoryDto } from '../model/dto';
+import { CreateUserDto, UpdateUserDto, UserFriendCategoryDto, UserFilterDto, UserInfoPageDto } from '../model/dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LoggingInterceptor } from '../common/interceptors';
 import { jwtAuthOptions } from '../jwt';
@@ -54,5 +54,16 @@ export class UserController {
     @ApiResponse({ status: 200, isArray: true, type: UserFriendCategoryDto })
     async getUserFriendCategoriesByUserId(@Param('id', new ParseIntPipe()) id: number) {
         return await this.userFriendCategoryService.getUserFriendCategoriesByUserId(id);
+    }
+
+    @Post('paging')
+    @ApiImplicitQuery({ name: 'pageNum', type: 'integer' })
+    @ApiImplicitQuery({ name: 'pageSize', type: 'integer' })
+    @ApiResponse({ status: 201, description: '返回分页的用户信息', type: UserInfoPageDto })
+    async getUserPagingByFilter(
+        @Body() userFilterDto: UserFilterDto,
+        @Query('pageNum') pageNum: number,
+        @Query('pageSize') pageSize: number) {
+        return await this.userService.getUserInfoPagingByFilter(userFilterDto, pageNum, pageSize);
     }
 }

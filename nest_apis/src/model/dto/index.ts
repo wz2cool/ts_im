@@ -23,6 +23,9 @@ import { UserFriendCategoryDto } from './user-friend-category.dto';
 import { UserBaseInfoDto } from './user-base-info.dto';
 import { UserLoginInfoDto } from './user-login-info.dto';
 import { JwtTokenDto } from './jwt-token.dto';
+import { UserInfoDto } from './user-info.dto';
+import { UserFilterDto } from './user-filter.dto';
+import { UserInfoPageDto } from './user-info-page.dto';
 
 export {
     CreateGroupDto,
@@ -50,4 +53,7 @@ export {
     UserBaseInfoDto,
     UserLoginInfoDto,
     JwtTokenDto,
+    UserInfoDto,
+    UserFilterDto,
+    UserInfoPageDto,
 };
