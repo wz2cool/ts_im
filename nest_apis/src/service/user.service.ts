@@ -238,6 +238,8 @@ export class UserService {
             conn = await this.dbCoreService.getConnection();
             const userMapper = new UserMapper(conn);
             const query = DynamicQuery.createIntance<User>();
+            const idSort = new SortDescriptor<User>(x => x.id, SortDirection.DESC);
+            query.addSorts(idSort);
             if (!CommonHelper.isNullOrUndefined(userFilterDto.active)) {
                 const activeFilter = new FilterDescriptor<User>(x => x.active, FilterOperator.EQUAL, userFilterDto.active);
                 query.addFilters(activeFilter);
