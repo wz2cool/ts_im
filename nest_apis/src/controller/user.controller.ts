@@ -56,7 +56,7 @@ export class UserController {
         return await this.userFriendCategoryService.getUserFriendCategoriesByUserId(id);
     }
 
-    @Post('paging')
+    @Post('filter')
     @ApiImplicitQuery({ name: 'pageNum', type: 'integer' })
     @ApiImplicitQuery({ name: 'pageSize', type: 'integer' })
     @ApiResponse({ status: 201, description: '返回分页的用户信息', type: UserInfoPageDto })

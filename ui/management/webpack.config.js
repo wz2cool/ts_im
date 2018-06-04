@@ -42,6 +42,7 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      API_URL: JSON.stringify("http://localhost:3000/ts_im_api"),
       VERSION: JSON.stringify(PACKAGE.version),
       "process.env.NODE_ENV": JSON.stringify(NODE_ENV),
     }),
