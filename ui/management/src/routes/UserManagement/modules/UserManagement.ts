@@ -1,39 +1,79 @@
-import * as lodash from 'lodash';
+import * as lodash from "lodash";
+import { UserHttpService } from "../services";
 
-import { UserInfoPageDto } from "../../../models/dto";
+import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
+import { Dispatch } from "redux";
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 export const FETCH_USER_INFO_PAGE_BEGIN = "FETCH_USER_INFO_PAGE_BEGIN";
 export const FETCH_USER_INFO_PAGE_SUCCESS = "FETCH_USER_INFO_PAGE_SUCCESS";
+export const FETCH_USER_INFO_PAGE_FAILED = "FETCH_USER_INFO_PAGE_FAILED";
 
 // ------------------------------------
 // Actions
 // ------------------------------------
-export function fetchUserInfoPageBegin(value = true) {
+export const fetchUserInfoPageBegin = () => {
   return {
     type: FETCH_USER_INFO_PAGE_BEGIN,
-    payload: value,
   };
-}
+};
 
-export function fetchUserInfoPageSuccess(value: UserInfoPageDto) {
+export const fetchUserInfoPageSuccess = (value: UserInfoPageDto) => {
   return {
     type: FETCH_USER_INFO_PAGE_SUCCESS,
     payload: value,
   };
-}
+};
+
+export const fetchUserInfoPageFailed = (value: Error) => {
+  return {
+    type: FETCH_USER_INFO_PAGE_FAILED,
+    payload: value,
+  };
+};
+
+export const fetchUserInfoPage = (
+  filter: UserFilterDto,
+  pageNum: number,
+  pageSize: number,
+) => {
+  return (dispatch: Dispatch<any>) => {
+    dispatch(fetchUserInfoPageBegin());
+    return UserHttpService.getUserInfosByFilter(filter, pageNum, pageSize)
+      .then(response => {
+        if (response.status !== 200) {
+          throw Error(response.statusText);
+        }
+
+        dispatch(fetchUserInfoPageSuccess(response.data));
+      })
+      .catch(err => {
+        dispatch(fetchUserInfoPageFailed(err));
+      });
+  };
+};
 
 export const actions = {
   fetchUserInfoPageBegin,
+  fetchUserInfoPageSuccess,
+  fetchUserInfoPageFailed,
 };
 
 // ------------------------------------
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_USER_INFO_PAGE_BEGIN]: (state: UserManagementState, action: any) => { lodash.assign(state, { loading: action.payload }) },
+  [FETCH_USER_INFO_PAGE_BEGIN]: (state: UserManagementState, action: any) => {
+    lodash.assign(state, { loading: true });
+  },
+  [FETCH_USER_INFO_PAGE_SUCCESS]: (state: UserManagementState, action: any) => {
+    lodash.assign(state, { userInfoPage: action.payload, loading: false });
+  },
+  [FETCH_USER_INFO_PAGE_FAILED]: (state: UserManagementState, action: any) => {
+    lodash.assign(state, { error: action.payload, loading: false });
+  },
 };
 
 // ------------------------------------
