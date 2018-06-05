@@ -84,28 +84,25 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_USER_INFO_PAGE_BEGIN]: (
-    state: ReducerState,
-    action: AnyAction,
-  ) => {
+  [FETCH_USER_INFO_PAGE_BEGIN]: (state: ReducerState, action: AnyAction) => {
     return lodash.assign({}, state, { loading: true });
   },
-  [FETCH_USER_INFO_PAGE_SUCCESS]: (
-    state: ReducerState,
-    action: AnyAction,
-  ) => {
+  [FETCH_USER_INFO_PAGE_SUCCESS]: (state: ReducerState, action: AnyAction) => {
     return lodash.assign({}, state, {
       userInfoPage: action.payload,
       loading: false,
     });
   },
-  [FETCH_USER_INFO_PAGE_FAILED]: (
-    state: ReducerState,
-    action: AnyAction,
-  ) => {
+  [FETCH_USER_INFO_PAGE_FAILED]: (state: ReducerState, action: AnyAction) => {
     return lodash.assign({}, state, { error: action.payload, loading: false });
   },
-  [PAGE_NUM_CHANGE]: (state: ReducerState, action: AnyAction) => {},
+  [PAGE_NUM_CHANGE]: (state: ReducerState, action: AnyAction) => {
+    return lodash.assign({}, state, { pageNum: action.payload });
+  },
+  [PAGE_SIZE_CHANGE]: (state: ReducerState, action: AnyAction) => {
+    console.log("page size change: ", action.payload);
+    return lodash.assign({}, state, { pageSize: action.payload });
+  },
 };
 
 // ------------------------------------

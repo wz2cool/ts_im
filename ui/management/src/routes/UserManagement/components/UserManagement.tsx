@@ -19,6 +19,8 @@ export interface DispatchToProps {
     pageNum: number,
     pageSize: number,
   ) => void;
+  pageNumChange: (pageNum: number) => void;
+  pageSizeChange: (pageSize: number) => void;
 }
 
 export interface OwnProps extends RouteComponentProps<any> {}
@@ -42,8 +44,11 @@ class UserManagement extends React.Component<
   UserManagementState
 > {
   componentDidMount(): void {
-    const filter = new UserFilterDto();
-    this.props.fetchUserInfoPage(filter, 1, 1);
+    this.props.fetchUserInfoPage(
+      this.props.userFilter,
+      this.props.pageNum,
+      this.props.pageSize,
+    );
   }
 
   public render(): JSX.Element {
@@ -81,16 +86,37 @@ class UserManagement extends React.Component<
         dataSource={this.props.userInfoPage.entites}
         loading={this.props.loading}
         pagination={{
+          pageSizeOptions: ["1", "2", "10", "20", "30", "40", "50"],
           showQuickJumper: true,
           showSizeChanger: true,
+          current: this.props.pageNum,
           pageSize: this.props.userInfoPage.pageSize,
           total: this.props.userInfoPage.total,
-          // onChange: this.pageNumChanged,
-          // onShowSizeChange:
+          onChange: this.pageNumChange,
+          onShowSizeChange: this.pageSizeChange,
         }}
       />
     );
   }
+
+  private pageNumChange = (pageNum: number) => {
+    this.props.pageNumChange(pageNum);
+    this.props.fetchUserInfoPage(
+      this.props.userFilter,
+      pageNum,
+      this.props.pageSize,
+    );
+  };
+
+  private pageSizeChange = (pageNum: number, pageSize: number) => {
+    this.props.pageNumChange(pageNum);
+    this.props.pageSizeChange(pageSize);
+    this.props.fetchUserInfoPage(
+      this.props.userFilter,
+      pageNum,
+      pageSize,
+    );
+  };
 }
 
 export default UserManagement;
