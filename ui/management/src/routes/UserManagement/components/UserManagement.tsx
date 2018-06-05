@@ -1,8 +1,10 @@
 import * as React from "react";
 
-import { Table } from "antd";
+import { Table, Layout } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
+
+import "./style.scss";
 
 export interface StateToProps {
   loading: boolean;
@@ -86,21 +88,26 @@ class UserManagement extends React.Component<
     ];
 
     return (
-      <Table
-        columns={columns}
-        dataSource={this.props.userInfoPage.entites}
-        loading={this.props.loading}
-        pagination={{
-          pageSizeOptions: ["1", "2", "10", "20", "30", "40", "50"],
-          showQuickJumper: true,
-          showSizeChanger: true,
-          current: this.props.pageNum,
-          pageSize: this.props.userInfoPage.pageSize,
-          total: this.props.userInfoPage.total,
-          onChange: this.pageNumChange,
-          onShowSizeChange: this.pageSizeChange,
-        }}
-      />
+      <Layout className="layout_user_management">
+        <Layout.Header>asdfas</Layout.Header>
+        <Layout.Content>
+          <Table
+            columns={columns}
+            dataSource={this.props.userInfoPage.entites}
+            loading={this.props.loading}
+            pagination={{
+              pageSizeOptions: ["1", "2", "10", "20", "30", "40", "50"],
+              showQuickJumper: true,
+              showSizeChanger: true,
+              current: this.props.pageNum,
+              pageSize: this.props.userInfoPage.pageSize,
+              total: this.props.userInfoPage.total,
+              onChange: this.pageNumChange,
+              onShowSizeChange: this.pageSizeChange,
+            }}
+          />
+        </Layout.Content>
+      </Layout>
     );
   }
 

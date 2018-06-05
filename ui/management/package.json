@@ -14,6 +14,7 @@
     "antd": "~3.5.4",
     "axios": "~0.18.0",
     "es6-promise": "~4.2.4",
+    "lodash": "~4.17.10",
     "react": "~16.4.0",
     "react-dom": "~16.4.0",
     "react-loadable": "~5.4.0",
@@ -22,8 +23,7 @@
     "react-router-dom": "~4.2.2",
     "redux": "~4.0.0",
     "redux-thunk": "~2.3.0",
-    "styled-components": "~3.3.0",
-    "lodash": "~4.17.10"
+    "styled-components": "~3.3.0"
   },
   "devDependencies": {
     "@types/lodash": "~4.14.109",
@@ -41,7 +41,9 @@
     "cross-env": "~5.1.6",
     "css-loader": "^0.28.11",
     "html-webpack-plugin": "~3.2.0",
+    "node-sass": "^4.9.0",
     "prettier": "~1.13.2",
+    "sass-loader": "^7.0.2",
     "style-loader": "~0.21.0",
     "tslint": "~5.10.0",
     "typescript": "~2.8.3",

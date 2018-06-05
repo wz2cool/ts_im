@@ -32,7 +32,7 @@ const config = {
       },
       {
         test: /\.scss?$/,
-        loaders: ["style-loader", "css-loader"],
+        loaders: ["style-loader", "css-loader", "sass-loader"],
         exclude: /node_modules/,
       },
     ],
