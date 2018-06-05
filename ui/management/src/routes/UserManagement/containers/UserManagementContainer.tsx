@@ -3,18 +3,18 @@ import { connect } from "react-redux";
 import UserManagement, {
   StateToProps,
   DispatchToProps,
-  UserManagementState,
 } from "../components/UserManagement";
-import { fetchUserInfoPage } from "../modules/UserManagement";
+import { fetchUserInfoPage, ReducerState } from "../modules/UserManagement";
 import { UserFilterDto } from "../../../models/dto";
 
 const mapStateToProps = (state: any): StateToProps => {
-  const myState = state.userManagement as UserManagementState;
-  console.log("myState");
-  console.log(myState);
+  const myState: ReducerState = state.userManagement;
   return {
     loading: myState.loading,
     userInfoPage: myState.userInfoPage,
+    userFilter: myState.userFilter,
+    pageNum: myState.pageNum,
+    pageSize: myState.pageSize,
     error: myState.error,
   };
 };

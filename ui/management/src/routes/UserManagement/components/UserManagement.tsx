@@ -7,7 +7,10 @@ import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
 export interface StateToProps {
   loading: boolean;
   userInfoPage: UserInfoPageDto;
+  userFilter: UserFilterDto;
   error?: Error;
+  pageNum: number;
+  pageSize: number;
 }
 
 export interface DispatchToProps {
@@ -24,10 +27,14 @@ export interface UserManagementProps
     DispatchToProps,
     OwnProps {}
 
+// local state
 export interface UserManagementState {
-  loading: boolean;
-  userInfoPage: UserInfoPageDto;
-  error?: Error;
+  // loading: boolean;
+  // userInfoPage: UserInfoPageDto;
+  // userFilter: UserFilterDto;
+  // error?: Error;
+  // pageNum: number;
+  // pageSize: number;
 }
 
 class UserManagement extends React.Component<
@@ -78,6 +85,8 @@ class UserManagement extends React.Component<
           showSizeChanger: true,
           pageSize: this.props.userInfoPage.pageSize,
           total: this.props.userInfoPage.total,
+          // onChange: this.pageNumChanged,
+          // onShowSizeChange:
         }}
       />
     );
