@@ -44,11 +44,16 @@ class UserManagement extends React.Component<
   UserManagementState
 > {
   componentDidMount(): void {
-    this.props.fetchUserInfoPage(
-      this.props.userFilter,
-      this.props.pageNum,
-      this.props.pageSize,
-    );
+    if (
+      !this.props.userInfoPage.entites ||
+      this.props.userInfoPage.entites.length === 0
+    ) {
+      this.props.fetchUserInfoPage(
+        this.props.userFilter,
+        this.props.pageNum,
+        this.props.pageSize,
+      );
+    }
   }
 
   public render(): JSX.Element {
@@ -111,11 +116,7 @@ class UserManagement extends React.Component<
   private pageSizeChange = (pageNum: number, pageSize: number) => {
     this.props.pageNumChange(pageNum);
     this.props.pageSizeChange(pageSize);
-    this.props.fetchUserInfoPage(
-      this.props.userFilter,
-      pageNum,
-      pageSize,
-    );
+    this.props.fetchUserInfoPage(this.props.userFilter, pageNum, pageSize);
   };
 }
 
