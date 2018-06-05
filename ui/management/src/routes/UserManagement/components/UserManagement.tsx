@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Table, Icon, Divider } from "antd";
+import { Table } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
 
@@ -36,72 +36,48 @@ class UserManagement extends React.Component<
 > {
   componentDidMount(): void {
     const filter = new UserFilterDto();
-    this.props.fetchUserInfoPage(filter, 1, 10);
+    this.props.fetchUserInfoPage(filter, 1, 1);
   }
 
   public render(): JSX.Element {
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-        render: (text: string) => <a href="javascript:;">{text}</a>,
+        title: "ID",
+        dataIndex: "id",
+        key: "id",
       },
       {
-        title: "Age",
-        dataIndex: "age",
-        key: "age",
+        title: "用户名",
+        dataIndex: "userName",
+        key: "userName",
       },
       {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
+        title: "别名",
+        dataIndex: "displayName",
+        key: "displayName",
       },
       {
-        title: "Action",
-        key: "action",
-        render: (text: string, record: any) => (
-          <span>
-            <a href="javascript:;">Action 一 {record.name}</a>
-            <Divider type="vertical" />
-            <a href="javascript:;">Delete</a>
-            <Divider type="vertical" />
-            <a href="javascript:;" className="ant-dropdown-link">
-              More actions <Icon type="down" />
-            </a>
-          </span>
-        ),
-      },
-    ];
-
-    const data = [
-      {
-        key: "1",
-        name: "John Brown",
-        age: 32,
-        address: "New York No. 1 Lake Park",
+        title: "手机",
+        dataIndex: "mobile",
+        key: "mobile",
       },
       {
-        key: "2",
-        name: "Jim Green",
-        age: 42,
-        address: "London No. 1 Lake Park",
-      },
-      {
-        key: "3",
-        name: "Joe Black",
-        age: 32,
-        address: "Sidney No. 1 Lake Park",
+        title: "邮箱",
+        dataIndex: "email",
+        key: "email",
       },
     ];
 
     return (
       <Table
         columns={columns}
-        dataSource={data}
+        dataSource={this.props.userInfoPage.entites}
         loading={this.props.loading}
         pagination={{
-        
+          showQuickJumper: true,
+          showSizeChanger: true,
+          pageSize: this.props.userInfoPage.pageSize,
+          total: this.props.userInfoPage.total,
         }}
       />
     );

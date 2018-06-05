@@ -20,6 +20,7 @@ export class UserHttpService {
     pageNum: number,
     pageSize: number,
   ): AxiosPromise<UserInfoPageDto> {
+    console.log("get data");
     const url = `${
       this.apiURL
     }/users/filter/?pageNum=${pageNum}&pageSize=${pageSize}`;

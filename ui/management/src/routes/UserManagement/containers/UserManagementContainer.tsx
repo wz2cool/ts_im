@@ -8,11 +8,12 @@ import UserManagement, {
 import { fetchUserInfoPage } from "../modules/UserManagement";
 import { UserFilterDto } from "../../../models/dto";
 
-const mapStateToProps = (state: UserManagementState): StateToProps => {
+const mapStateToProps = (state: any): StateToProps => {
+  const myState = state.userManagement as UserManagementState;
   return {
-    loading: state.loading,
-    userInfoPage: state.userInfoPage,
-    error: state.error,
+    loading: myState.loading,
+    userInfoPage: myState.userInfoPage,
+    error: myState.error,
   };
 };
 

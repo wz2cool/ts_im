@@ -46,11 +46,6 @@ export const fetchUserInfoPage = (
     return userHttpService
       .getUserInfosByFilter(filter, pageNum, pageSize)
       .then(response => {
-        if (response.status !== 200) {
-          throw Error(response.statusText);
-        }
-
-        console.log("get data success");
         dispatch(fetchUserInfoPageSuccess(response.data));
       })
       .catch(err => {
@@ -103,6 +98,5 @@ const initialState: UserManagementState = {
 
 export function reducer(state = initialState, action: any) {
   const handler = ACTION_HANDLERS[action.type];
-
   return handler ? handler(state, action) : state;
 }
