@@ -10,6 +10,8 @@ import { UserFilterDto } from "../../../models/dto";
 
 const mapStateToProps = (state: any): StateToProps => {
   const myState = state.userManagement as UserManagementState;
+  console.log("myState");
+  console.log(myState);
   return {
     loading: myState.loading,
     userInfoPage: myState.userInfoPage,

@@ -68,13 +68,13 @@ const ACTION_HANDLERS = {
     state: UserManagementState,
     action: AnyAction,
   ) => {
-    return lodash.assign(state, { loading: true });
+    return lodash.assign({}, state, { loading: true });
   },
   [FETCH_USER_INFO_PAGE_SUCCESS]: (
     state: UserManagementState,
     action: AnyAction,
   ) => {
-    return lodash.assign(state, {
+    return lodash.assign({}, state, {
       userInfoPage: action.payload,
       loading: false,
     });
@@ -83,7 +83,7 @@ const ACTION_HANDLERS = {
     state: UserManagementState,
     action: AnyAction,
   ) => {
-    return lodash.assign(state, { error: action.payload, loading: false });
+    return lodash.assign({}, state, { error: action.payload, loading: false });
   },
 };
 
