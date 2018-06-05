@@ -1,21 +1,29 @@
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import UserManagement from "../components/UserManagement";
-import { locationChange } from "../../../store/location";
+import UserManagement, {
+  StateToProps,
+  DispatchToProps,
+} from "../components/UserManagement";
+import { fetchUserInfoPage } from "../modules/UserManagement";
+import { UserFilterDto } from "../../../models/dto";
 
-const mapStateToProps = (state: any) => {
-    return { hello: "hello", state };
+const mapStateToProps = (state: any): StateToProps => {
+  return state;
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        locationChange: () => dispatch(locationChange("/home")),
-    };
+const mapDispatchToProps = (dispatch: any): DispatchToProps => {
+  return {
+    fetchUserInfoPage: (
+      filter: UserFilterDto,
+      pageNum: number,
+      pageSize: number,
+    ) => dispatch(fetchUserInfoPage(filter, pageNum, pageSize)),
+  };
 };
 
-const UserManagementContainer: any = connect(
-    mapStateToProps,
-    mapDispatchToProps,
+const UserManagementContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps,
 )(UserManagement);
 
 export default withRouter(UserManagementContainer);

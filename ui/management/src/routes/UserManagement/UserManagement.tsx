@@ -4,13 +4,17 @@ import { injectReducer } from "../../store/reducers";
 import { reducer } from "./modules/UserManagement";
 
 export default (store: any) => {
-  // inject reducer
-  injectReducer(store, { key: "userManagement", reducer });
-
   const LoadableComponent = Loadable({
     loader: () =>
-      import(/* webpackChunkName: "userManagement" */ "./components/UserManagement"),
+      import(/* webpackChunkName: "userManagement" */ "./containers/UserManagementContainer"),
     loading: () => null,
+    render: (loaded, props) => {
+      // inject reducer
+      injectReducer(store, { key: "userManagement", reducer });
+
+      const Component = loaded.default;
+      return <Component {...props} />;
+    },
   });
 
   class UserManagement extends React.Component {

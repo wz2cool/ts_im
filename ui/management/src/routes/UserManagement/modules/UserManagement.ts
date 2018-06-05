@@ -2,8 +2,9 @@ import * as lodash from "lodash";
 import { UserHttpService } from "../services";
 
 import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
-import { Dispatch } from "redux";
+import { Dispatch, AnyAction } from "redux";
 
+const userHttpService = UserHttpService.getInstance();
 // ------------------------------------
 // Constants
 // ------------------------------------
@@ -41,12 +42,13 @@ export const fetchUserInfoPage = (
 ) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserInfoPageBegin());
-    return UserHttpService.getUserInfosByFilter(filter, pageNum, pageSize)
+    return userHttpService.getUserInfosByFilter(filter, pageNum, pageSize)
       .then(response => {
         if (response.status !== 200) {
           throw Error(response.statusText);
         }
 
+        console.log("get data success");
         dispatch(fetchUserInfoPageSuccess(response.data));
       })
       .catch(err => {
@@ -65,14 +67,26 @@ export const actions = {
 // Action Handlers
 // ------------------------------------
 const ACTION_HANDLERS = {
-  [FETCH_USER_INFO_PAGE_BEGIN]: (state: UserManagementState, action: any) => {
-    lodash.assign(state, { loading: true });
+  [FETCH_USER_INFO_PAGE_BEGIN]: (
+    state: UserManagementState,
+    action: AnyAction,
+  ) => {
+    return lodash.assign(state, { loading: true });
   },
-  [FETCH_USER_INFO_PAGE_SUCCESS]: (state: UserManagementState, action: any) => {
-    lodash.assign(state, { userInfoPage: action.payload, loading: false });
+  [FETCH_USER_INFO_PAGE_SUCCESS]: (
+    state: UserManagementState,
+    action: AnyAction,
+  ) => {
+    return lodash.assign(state, {
+      userInfoPage: action.payload,
+      loading: false,
+    });
   },
-  [FETCH_USER_INFO_PAGE_FAILED]: (state: UserManagementState, action: any) => {
-    lodash.assign(state, { error: action.payload, loading: false });
+  [FETCH_USER_INFO_PAGE_FAILED]: (
+    state: UserManagementState,
+    action: AnyAction,
+  ) => {
+    return lodash.assign(state, { error: action.payload, loading: false });
   },
 };
 

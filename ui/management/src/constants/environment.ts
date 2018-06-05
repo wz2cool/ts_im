@@ -1,5 +1,6 @@
 declare const VERSION: string;
 declare const API_URL: string;
+declare const TOKEN: string;
 export class Environment {
   public static getVersion() {
     return VERSION;
@@ -9,6 +10,9 @@ export class Environment {
     return API_URL;
   }
 
-  private constructor() {
+  public static getToken() {
+    return TOKEN;
   }
+
+  private constructor() {}
 }

@@ -230,7 +230,7 @@ export class UserService {
     public async getUserInfoPagingByFilter(userFilterDto: UserFilterDto, pageNum: number, pageSize: number): Promise<UserInfoPageDto> {
         let conn: IConnection;
         try {
-            if (this.isDtoEmpty(userFilterDto)) {
+            if (CommonHelper.isNullOrUndefined(userFilterDto)) {
                 throw new DisplayException('参数不能为空');
             }
 
