@@ -23,6 +23,7 @@ export class UserHttpService {
     const url = `${
       this.apiURL
     }/users/filter/?pageNum=${pageNum}&pageSize=${pageSize}`;
-    return axios.post(url, UserFilterDto, this.config);
+    console.log(this.config);
+    return axios.post(url, UserFilterDto);
   }
 }
