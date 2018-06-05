@@ -3,6 +3,7 @@ import { UserHttpService } from "../services";
 
 import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
 import { Dispatch, AnyAction } from "redux";
+import { UserManagementState } from "../components/UserManagement";
 
 const userHttpService = UserHttpService.getInstance();
 // ------------------------------------
@@ -42,7 +43,8 @@ export const fetchUserInfoPage = (
 ) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserInfoPageBegin());
-    return userHttpService.getUserInfosByFilter(filter, pageNum, pageSize)
+    return userHttpService
+      .getUserInfosByFilter(filter, pageNum, pageSize)
       .then(response => {
         if (response.status !== 200) {
           throw Error(response.statusText);
@@ -93,15 +95,9 @@ const ACTION_HANDLERS = {
 // ------------------------------------
 // Reducer
 // ------------------------------------
-export interface UserManagementState {
-  loading: boolean;
-  userInfoPage?: UserInfoPageDto;
-  error?: Error;
-}
-
 const initialState: UserManagementState = {
   loading: false,
-  userInfoPage: undefined,
+  userInfoPage: new UserInfoPageDto(),
   error: undefined,
 };
 

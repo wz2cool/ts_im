@@ -2,9 +2,13 @@ import * as React from "react";
 
 import { Table, Icon, Divider } from "antd";
 import { RouteComponentProps } from "react-router-dom";
-import { UserFilterDto } from "../../../models/dto";
+import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
 
-export interface StateToProps {}
+export interface StateToProps {
+  loading: boolean;
+  userInfoPage: UserInfoPageDto;
+  error?: Error;
+}
 
 export interface DispatchToProps {
   fetchUserInfoPage: (
@@ -19,7 +23,12 @@ export interface UserManagementProps
   extends StateToProps,
     DispatchToProps,
     OwnProps {}
-export interface UserManagementState {}
+
+export interface UserManagementState {
+  loading: boolean;
+  userInfoPage: UserInfoPageDto;
+  error?: Error;
+}
 
 class UserManagement extends React.Component<
   UserManagementProps,
@@ -86,7 +95,16 @@ class UserManagement extends React.Component<
       },
     ];
 
-    return <Table columns={columns} dataSource={data} />;
+    return (
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={this.props.loading}
+        pagination={{
+        
+        }}
+      />
+    );
   }
 }
 
