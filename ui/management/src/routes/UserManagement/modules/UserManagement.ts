@@ -14,6 +14,7 @@ export const FETCH_USER_INFO_PAGE_SUCCESS = "FETCH_USER_INFO_PAGE_SUCCESS";
 export const FETCH_USER_INFO_PAGE_FAILED = "FETCH_USER_INFO_PAGE_FAILED";
 export const PAGE_NUM_CHANGE = "PAGE_NUM_CHANGE";
 export const PAGE_SIZE_CHANGE = "PAGE_SIZE_CHANGE";
+export const SEARCH_FIELD_CHANGE = "SEARCH_FIELD_CHANGE";
 
 // ------------------------------------
 // Actions
@@ -54,6 +55,13 @@ export const pageSizeChange = (value: number): ActionPayload => {
   };
 };
 
+export const searchFieldChange = (filter: UserFilterDto): ActionPayload => {
+  return {
+    type: SEARCH_FIELD_CHANGE,
+    payload: filter,
+  };
+};
+
 export const fetchUserInfoPage = (
   filter: UserFilterDto,
   pageNum: number,
@@ -78,6 +86,7 @@ export const actions = {
   fetchUserInfoPageFailed,
   pageNumChange,
   pageSizeChange,
+  searchFieldChange,
 };
 
 // ------------------------------------
@@ -100,8 +109,10 @@ const ACTION_HANDLERS = {
     return lodash.assign({}, state, { pageNum: action.payload });
   },
   [PAGE_SIZE_CHANGE]: (state: ReducerState, action: AnyAction) => {
-    console.log("page size change: ", action.payload);
     return lodash.assign({}, state, { pageSize: action.payload });
+  },
+  [SEARCH_FIELD_CHANGE]: (state: ReducerState, action: AnyAction) => {
+    return lodash.assign({}, state, { userFilter: action.payload });
   },
 };
 

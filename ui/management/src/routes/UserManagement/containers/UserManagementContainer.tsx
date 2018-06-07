@@ -9,6 +9,7 @@ import {
   ReducerState,
   pageNumChange,
   pageSizeChange,
+  searchFieldChange,
 } from "../modules/UserManagement";
 import { UserFilterDto } from "../../../models/dto";
 
@@ -32,8 +33,9 @@ const mapDispatchToProps = (dispatch: any): DispatchToProps => {
       pageSize: number,
     ) => dispatch(fetchUserInfoPage(filter, pageNum, pageSize)),
     pageNumChange: (pageNum: number) => dispatch(pageNumChange(pageNum)),
-    pageSizeChange: (pageSize: number) =>
-      dispatch(pageSizeChange(pageSize)),
+    pageSizeChange: (pageSize: number) => dispatch(pageSizeChange(pageSize)),
+    searchFieldChange: (filter: UserFilterDto) =>
+      dispatch(searchFieldChange(filter)),
   };
 };
 
