@@ -36,12 +36,7 @@ export interface UserManagementProps
 
 // local state
 export interface UserManagementState {
-  // loading: boolean;
-  // userInfoPage: UserInfoPageDto;
-  // userFilter: UserFilterDto;
-  // error?: Error;
-  // pageNum: number;
-  // pageSize: number;
+  userFilter: UserFilterDto;
 }
 
 class UserManagement extends React.Component<
@@ -97,6 +92,7 @@ class UserManagement extends React.Component<
             <FormItem label="用户名">
               <Input
                 name="userName"
+                ref="input_userName"
                 defaultValue={this.props.userFilter.userName}
                 onChange={e =>
                   this.searchFieldChange(e.target.name, e.target.value)
@@ -157,7 +153,12 @@ class UserManagement extends React.Component<
               </Select>
             </FormItem>
             <FormItem>
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" onClick={this.search}>
+                搜索
+              </Button>
+            </FormItem>
+            <FormItem>
+              <Button type="primary" onClick={() => this.clearFilter()}>
                 搜索
               </Button>
             </FormItem>
@@ -215,6 +216,18 @@ class UserManagement extends React.Component<
     }
     filter[fieldName] = useValue;
     this.props.searchFieldChange(filter);
+  };
+
+  private search = () => {
+    this.props.fetchUserInfoPage(
+      this.props.userFilter,
+      this.props.pageNum,
+      this.props.pageSize,
+    );
+  };
+
+  private clearFilter = () => {
+    console.log("test: ", this.refs.input_userName);
   };
 }
 
