@@ -56,6 +56,7 @@ export const pageSizeChange = (value: number): ActionPayload => {
 };
 
 export const searchFieldChange = (filter: UserFilterDto): ActionPayload => {
+  console.log(filter);
   return {
     type: SEARCH_FIELD_CHANGE,
     payload: filter,

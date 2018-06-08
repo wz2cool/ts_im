@@ -1,4 +1,5 @@
 import * as React from "react";
+import * as lodash from "lodash";
 
 import { Table, Layout, Form, Input, Button, Select } from "antd";
 import { RouteComponentProps } from "react-router-dom";
@@ -35,8 +36,7 @@ export interface UserManagementProps
     OwnProps {}
 
 // local state
-export interface UserManagementState {
-}
+export interface UserManagementState {}
 
 class UserManagement extends React.Component<
   UserManagementProps,
@@ -96,7 +96,6 @@ class UserManagement extends React.Component<
             <FormItem label="用户名">
               <Input
                 name="userName"
-                ref="input_userName"
                 value={this.props.userFilter.userName}
                 onChange={e =>
                   this.searchFieldChange(e.target.name, e.target.value)
@@ -219,7 +218,8 @@ class UserManagement extends React.Component<
       useValue = value;
     }
     filter[fieldName] = useValue;
-    this.props.searchFieldChange(filter);
+    const newFilter = lodash.assign({}, filter);
+    this.props.searchFieldChange(newFilter);
   };
 
   private search = () => {
