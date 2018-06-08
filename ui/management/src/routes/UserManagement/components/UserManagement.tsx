@@ -36,7 +36,6 @@ export interface UserManagementProps
 
 // local state
 export interface UserManagementState {
-  userFilter: UserFilterDto;
 }
 
 class UserManagement extends React.Component<
@@ -98,7 +97,7 @@ class UserManagement extends React.Component<
               <Input
                 name="userName"
                 ref="input_userName"
-                value={this.state.userFilter.userName}
+                value={this.props.userFilter.userName}
                 onChange={e =>
                   this.searchFieldChange(e.target.name, e.target.value)
                 }
@@ -107,7 +106,7 @@ class UserManagement extends React.Component<
             <FormItem label="别名">
               <Input
                 name="displayName"
-                value={this.state.userFilter.displayName}
+                value={this.props.userFilter.displayName}
                 onChange={e =>
                   this.searchFieldChange(e.target.name, e.target.value)
                 }
@@ -116,7 +115,7 @@ class UserManagement extends React.Component<
             <FormItem label="手机">
               <Input
                 name="mobile"
-                value={this.state.userFilter.mobile}
+                value={this.props.userFilter.mobile}
                 onChange={e =>
                   this.searchFieldChange(e.target.name, e.target.value)
                 }
@@ -134,7 +133,7 @@ class UserManagement extends React.Component<
             <FormItem label="来源">
               <Select
                 className="source_select"
-                value={this.state.userFilter.source || 0}
+                value={this.props.userFilter.source || 0}
                 onChange={value => {
                   this.searchFieldChange("source", value);
                 }}
@@ -147,7 +146,7 @@ class UserManagement extends React.Component<
             <FormItem label="状态">
               <Select
                 className="status_select"
-                value={this.state.userFilter.active || 0}
+                value={this.props.userFilter.active || 0}
                 onChange={value => {
                   this.searchFieldChange("active", value);
                 }}
@@ -202,7 +201,7 @@ class UserManagement extends React.Component<
   private pageSizeChange = (pageNum: number, pageSize: number) => {
     this.props.pageNumChange(pageNum);
     this.props.pageSizeChange(pageSize);
-    this.props.fetchUserInfoPage(this.state.userFilter, pageNum, pageSize);
+    this.props.fetchUserInfoPage(this.props.userFilter, pageNum, pageSize);
   };
 
   private searchFieldChange = (fieldName: string, value: any) => {
@@ -220,7 +219,6 @@ class UserManagement extends React.Component<
       useValue = value;
     }
     filter[fieldName] = useValue;
-    this.setState({ userFilter: filter });
     this.props.searchFieldChange(filter);
   };
 
@@ -234,7 +232,6 @@ class UserManagement extends React.Component<
 
   private clearFilter = () => {
     const emptyFilter = new UserFilterDto();
-    this.setState({ userFilter: emptyFilter });
     this.props.searchFieldChange(emptyFilter);
     this.props.fetchUserInfoPage(
       emptyFilter,
