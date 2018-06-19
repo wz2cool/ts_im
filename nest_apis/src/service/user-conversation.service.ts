@@ -1,10 +1,11 @@
 import { Component, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
 import { CreateUserConversationDto, UpdateUserConversationDto } from 'model/dto';
-import { IConnection, CommonHelper } from 'tsbatis';
+import { IConnection } from 'tsbatis';
 import { UserConversation } from '../model/entity/table/userConversation';
 import { DisplayException } from '../model/exception';
 import { UserConversationMapper } from '../mapper';
+import { ObjectUtils } from 'ts-commons';
 
 @Injectable()
 export class UserConversationService {
@@ -34,7 +35,7 @@ export class UserConversationService {
             }
             return new Promise<number>((resolve, reject) => reject(error));
         } finally {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
+            if (!ObjectUtils.isNullOrUndefined(conn)) {
                 await conn.release();
             }
         }
@@ -44,7 +45,7 @@ export class UserConversationService {
         let conn: IConnection;
         let beginTrans: boolean = false;
         try {
-            if (CommonHelper.isNullOrUndefined(id)) {
+            if (ObjectUtils.isNullOrUndefined(id)) {
                 throw new DisplayException('"Id" 不能为空。');
             }
             if (this.isDtoEmpty(dto)) {
@@ -65,7 +66,7 @@ export class UserConversationService {
             }
             return new Promise<void>((resolve, reject) => reject(error));
         } finally {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
+            if (!ObjectUtils.isNullOrUndefined(conn)) {
                 await conn.release();
             }
         }
@@ -75,7 +76,7 @@ export class UserConversationService {
         let conn: IConnection;
         let beginTrans: boolean = false;
         try {
-            if (CommonHelper.isNullOrUndefined(id)) {
+            if (ObjectUtils.isNullOrUndefined(id)) {
                 throw new DisplayException('"id" 不能为空。');
             }
 
@@ -93,14 +94,14 @@ export class UserConversationService {
             }
             return new Promise<void>((resolve, reject) => reject(error));
         } finally {
-            if (!CommonHelper.isNullOrUndefined(conn)) {
+            if (!ObjectUtils.isNullOrUndefined(conn)) {
                 await conn.release();
             }
         }
     }
 
     private isDtoEmpty(dto: any): boolean {
-        return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
+        return ObjectUtils.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
     }
 
     private createDtoToEntity(dto: CreateUserConversationDto): UserConversation {

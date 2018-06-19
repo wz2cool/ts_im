@@ -1,6 +1,6 @@
 import * as lodash from 'lodash';
 import * as crypto from 'crypto';
-import { DateUtils } from 'ts-commons';
+import { DateUtils, ObjectUtils, StringUtils } from 'ts-commons';
 
 import { Component, Query, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
@@ -15,7 +15,6 @@ import {
 } from '../model/dto';
 import {
   IConnection,
-  CommonHelper,
   DynamicQuery,
   FilterDescriptor,
   FilterOperator,
@@ -98,7 +97,7 @@ export class UserService {
       }
       return new Promise<number>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -126,7 +125,7 @@ export class UserService {
       }
       return new Promise<void>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -154,7 +153,7 @@ export class UserService {
       }
       return new Promise<void>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -178,7 +177,7 @@ export class UserService {
       }
       return new Promise<void>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -226,7 +225,7 @@ export class UserService {
     } catch (error) {
       return new Promise<UserBaseInfoDto[]>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -284,7 +283,7 @@ export class UserService {
     } catch (error) {
       return new Promise<UserBaseInfoDto>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
@@ -297,7 +296,7 @@ export class UserService {
   ): Promise<UserInfoPageDto> {
     let conn: IConnection;
     try {
-      if (CommonHelper.isNullOrUndefined(userFilterDto)) {
+      if (ObjectUtils.isNullOrUndefined(userFilterDto)) {
         throw new DisplayException('参数不能为空');
       }
 
@@ -307,7 +306,7 @@ export class UserService {
       const query = DynamicQuery.createIntance<User>();
       const idSort = new SortDescriptor<User>(x => x.id, SortDirection.DESC);
       query.addSorts(idSort);
-      if (!CommonHelper.isNullOrUndefined(userFilterDto.active)) {
+      if (!ObjectUtils.isNullOrUndefined(userFilterDto.active)) {
         const activeFilter = new FilterDescriptor<User>(
           x => x.active,
           FilterOperator.EQUAL,
@@ -315,7 +314,7 @@ export class UserService {
         );
         query.addFilters(activeFilter);
       }
-      if (!CommonHelper.isNullOrUndefined(userFilterDto.source)) {
+      if (!ObjectUtils.isNullOrUndefined(userFilterDto.source)) {
         const sourceFilter = new FilterDescriptor<User>(
           x => x.source,
           FilterOperator.EQUAL,
@@ -323,7 +322,7 @@ export class UserService {
         );
         query.addFilters(sourceFilter);
       }
-      if (CommonHelper.isNotBlank(userFilterDto.displayName)) {
+      if (StringUtils.isNotBlank(userFilterDto.displayName)) {
         const displayNameFilter = new FilterDescriptor<User>(
           x => x.displayName,
           FilterOperator.CONTAINS,
@@ -331,7 +330,7 @@ export class UserService {
         );
         query.addFilters(displayNameFilter);
       }
-      if (CommonHelper.isNotBlank(userFilterDto.email)) {
+      if (StringUtils.isNotBlank(userFilterDto.email)) {
         const emailFilter = new FilterDescriptor<User>(
           x => x.email,
           FilterOperator.CONTAINS,
@@ -339,7 +338,7 @@ export class UserService {
         );
         query.addFilters(emailFilter);
       }
-      if (CommonHelper.isNotBlank(userFilterDto.mobile)) {
+      if (StringUtils.isNotBlank(userFilterDto.mobile)) {
         const mobileFilter = new FilterDescriptor<User>(
           x => x.mobile,
           FilterOperator.CONTAINS,
@@ -347,7 +346,7 @@ export class UserService {
         );
         query.addFilters(mobileFilter);
       }
-      if (CommonHelper.isNotBlank(userFilterDto.userName)) {
+      if (StringUtils.isNotBlank(userFilterDto.userName)) {
         const userNameFilter = new FilterDescriptor<User>(
           x => x.userName,
           FilterOperator.CONTAINS,
@@ -365,14 +364,14 @@ export class UserService {
     } catch (error) {
       return new Promise<UserInfoPageDto>((resolve, reject) => reject(error));
     } finally {
-      if (!CommonHelper.isNullOrUndefined(conn)) {
+      if (!ObjectUtils.isNullOrUndefined(conn)) {
         await conn.release();
       }
     }
   }
 
   private isDtoEmpty(dto: any): boolean {
-    return CommonHelper.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
+    return ObjectUtils.isNullOrUndefined(dto) || JSON.stringify(dto) === '{}';
   }
 
   private createDtoToEntity(createUserDto: CreateUserDto): User {
@@ -432,7 +431,7 @@ export class UserService {
   }
 
   private userPageToUserInfoPageDto(userPage: Page<User>): UserInfoPageDto {
-    if (CommonHelper.isNullOrUndefined(userPage)) {
+    if (ObjectUtils.isNullOrUndefined(userPage)) {
       return null;
     }
     const entities = userPage.getEntities();
