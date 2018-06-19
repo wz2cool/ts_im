@@ -32,6 +32,7 @@
     "redis": "^2.8.0",
     "reflect-metadata": "^0.1.12",
     "rxjs": "~6.2.0",
+    "ts-commons": "0.0.10",
     "tsbatis": "~0.2.1"
   },
   "devDependencies": {

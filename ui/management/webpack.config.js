@@ -42,7 +42,7 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      TOKEN: JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJpYXQiOjE1MjgxNjgyMTQsImV4cCI6MTUyODQyNzQxNH0.PA6IoE7Uz5cwXf5IKgKku_2EnJdo9p3_TUgg6FpxYBQ"),
+      TOKEN: JSON.stringify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE4LCJpYXQiOjE1Mjg0MzYxMjYsImV4cCI6MTUyODY5NTMyNn0.SwPT_eAUTOrKE_qDLQOJ8H_yMO1Q7BK8MuyjDTfQKSQ"),
       API_URL: JSON.stringify("http://localhost:3000/ts_im_api"),
       VERSION: JSON.stringify(PACKAGE.version),
       "process.env.NODE_ENV": JSON.stringify(NODE_ENV),

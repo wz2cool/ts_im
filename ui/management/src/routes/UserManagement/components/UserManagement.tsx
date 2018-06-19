@@ -5,6 +5,7 @@ import { Table, Layout, Form, Input, Button, Select } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
 import { StringUtils, ObjectUtils } from "ts-commons";
+import AddUserModal from "./AddUserModal";
 
 const FormItem = Form.Item;
 import "./style.scss";
@@ -156,13 +157,26 @@ class UserManagement extends React.Component<
               </Select>
             </FormItem>
             <FormItem>
-              <Button type="primary" onClick={this.search}>
+              <Button type="primary" icon="search" onClick={this.search}>
                 搜索
               </Button>
             </FormItem>
             <FormItem>
-              <Button type="default" onClick={() => this.clearFilter()}>
+              <Button
+                type="default"
+                icon="reload"
+                onClick={() => this.clearFilter()}
+              >
                 清空
+              </Button>
+            </FormItem>
+            <FormItem>
+              <Button
+                type="primary"
+                icon="plus-circle-o"
+                onClick={() => this.clearFilter()}
+              >
+                添加
               </Button>
             </FormItem>
           </Form>
@@ -184,6 +198,7 @@ class UserManagement extends React.Component<
             }}
           />
         </Layout.Content>
+        <AddUserModal {...this.props}/>
       </Layout>
     );
   }

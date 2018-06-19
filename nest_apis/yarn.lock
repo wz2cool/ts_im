@@ -5168,6 +5168,10 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
+ts-commons@0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/ts-commons/-/ts-commons-0.0.10.tgz#6eb604c802b29fae6dd47f10bc5df677284267c7"
+
 ts-jest@^21.2.4:
   version "21.2.4"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-21.2.4.tgz#8fbcfbfbf0c58cced10dcc34a5190acc8c5312ef"
