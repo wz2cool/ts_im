@@ -142,11 +142,12 @@ export class UserGroupService {
 
       const groupMapper = new GroupMapper(conn);
       const groupQuery = DynamicQuery.createIntance<Group>();
-      const gorupIdFilter = new FilterDescriptor<Group>(
+      const groupIdFilter = new FilterDescriptor<Group>(
         g => g.id,
         FilterOperator.IN,
         groupIds,
       );
+      groupQuery.addFilters(groupIdFilter);
       const groups = await groupMapper.selectByDynamicQuery(groupQuery);
       const userGroupDtos = lodash.map(userGroups, x => {
         const matchGroup = lodash.find(groups, y => y.id === x.groupId);
