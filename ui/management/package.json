@@ -24,7 +24,7 @@
     "redux": "~4.0.0",
     "redux-thunk": "~2.3.0",
     "styled-components": "~3.3.0",
-    "ts-commons": "0.0.7"
+    "ts-commons": "0.0.12"
   },
   "devDependencies": {
     "@types/lodash": "~4.14.109",
