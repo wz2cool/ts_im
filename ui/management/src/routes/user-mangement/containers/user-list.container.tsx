@@ -5,8 +5,8 @@ import { UserFilterDto } from "../../../models/dto";
 import { fetchUserInfoPage, pageNumChange, pageSizeChange, searchFieldChange } from "../actions/user-list.action";
 
 const mapStateToProps = (state: any): StateToProps => {
-  const myState: ReducerState = state.userManagement;
-  return {
+  const myState: ReducerState = state.userManagement.UserListReducer;
+  const result = {
     loading: myState.loading,
     userInfoPage: myState.userInfoPage,
     userFilter: myState.userFilter,
@@ -14,6 +14,7 @@ const mapStateToProps = (state: any): StateToProps => {
     pageSize: myState.pageSize,
     error: myState.error,
   };
+  return result;
 };
 
 const mapDispatchToProps = (dispatch: any): DispatchToProps => {

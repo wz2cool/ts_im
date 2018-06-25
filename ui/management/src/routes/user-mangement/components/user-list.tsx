@@ -28,6 +28,7 @@ interface UserListProps extends StateToProps, DispatchToProps {}
 
 export class UserList extends React.Component<UserListProps, UserListState> {
   public render(): JSX.Element {
+    console.log(this.props);
     const columns = [
       {
         title: "ID",
