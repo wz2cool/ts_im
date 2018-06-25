@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Loadable from "react-loadable";
 import { injectReducer } from "../../store/reducers";
-import { reducer } from "./modules/UserManagement";
+import { userManagmentReducer } from "./reducers/user-management.reducer";
 import { Loading } from "../../components/loading";
 
 export default (store: any) => {
@@ -10,7 +10,7 @@ export default (store: any) => {
     loading: props => (props.pastDelay ? <Loading /> : null),
     render: (loaded, props) => {
       // inject reducer
-      injectReducer(store, { key: "userManagement", reducer });
+      injectReducer(store, { key: "userManagement", userManagmentReducer });
 
       const Component = loaded.default;
       return <Component {...props} />;
