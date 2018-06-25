@@ -3,6 +3,7 @@ import * as React from "react";
 import { Modal, Form, Input } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
+import { CommonsHelper } from "../../../helpers";
 
 interface AddUserModalState {
   confirmDirty: boolean;
@@ -19,10 +20,7 @@ const formItemLayout = {
   },
 };
 
-class AddUserModal extends React.Component<
-  FormComponentProps,
-  AddUserModalState
-> {
+class AddUserModal extends React.Component<FormComponentProps, AddUserModalState> {
   componentDidMount() {
     this.props.form.validateFields();
     this.setState({ confirmDirty: false });
@@ -33,13 +31,7 @@ class AddUserModal extends React.Component<
     this.setState({ confirmDirty: this.state.confirmDirty || !!value });
   };
 
-  validateUsername = (
-    rule: any,
-    value: any,
-    callback: any,
-    source?: any,
-    options?: any,
-  ) => {
+  validateUsername = (rule: any, value: any, callback: any, source?: any, options?: any) => {
     if (ObjectUtils.isString(value) && RegexUtils.validateUsername(value)) {
       callback();
     } else {
@@ -51,13 +43,31 @@ class AddUserModal extends React.Component<
     }
   };
 
-  validateToNextPassword = (
-    rule: any,
-    value: any,
-    callback: any,
-    source?: any,
-    options?: any,
-  ) => {
+  validateEmail = (rule: any, value: any, callback: any, source?: any, options?: any) => {
+    if (ObjectUtils.isString(value) && RegexUtils.validateEmail(value)) {
+      callback();
+    } else {
+      if (StringUtils.isNotBlank(value)) {
+        callback("请输入有效的邮箱！");
+      } else {
+        callback();
+      }
+    }
+  };
+
+  validateMobile = (rule: any, value: any, callback: any, source?: any, options?: any) => {
+    if (ObjectUtils.isString(value) && CommonsHelper.isMobile(value)) {
+      callback();
+    } else {
+      if (StringUtils.isNotBlank(value)) {
+        callback("请输入有效手机号！");
+      } else {
+        callback();
+      }
+    }
+  };
+
+  validateToNextPassword = (rule: any, value: any, callback: any, source?: any, options?: any) => {
     const form = this.props.form;
     if (!ObjectUtils.isNullOrUndefined(value) && this.state.confirmDirty) {
       form.validateFields(["confirm"], { force: true }, () => {});
@@ -65,18 +75,9 @@ class AddUserModal extends React.Component<
     callback();
   };
 
-  compareToFirstPassword = (
-    rule: any,
-    value: any,
-    callback: any,
-    source?: any,
-    options?: any,
-  ) => {
+  compareToFirstPassword = (rule: any, value: any, callback: any, source?: any, options?: any) => {
     const form = this.props.form;
-    if (
-      !ObjectUtils.isNullOrUndefined(value) &&
-      value !== form.getFieldValue("password")
-    ) {
+    if (!ObjectUtils.isNullOrUndefined(value) && value !== form.getFieldValue("password")) {
       callback("两次密码不匹配!");
     } else {
       callback();
@@ -108,6 +109,9 @@ class AddUserModal extends React.Component<
                   required: true,
                   message: "请填写邮箱！",
                 },
+                {
+                  validator: this.validateEmail,
+                },
               ],
             })(<Input />)}
           </Form.Item>
@@ -117,6 +121,9 @@ class AddUserModal extends React.Component<
                 {
                   required: true,
                   message: "请填写手机号！",
+                },
+                {
+                  validator: this.validateMobile,
                 },
               ],
             })(<Input />)}
