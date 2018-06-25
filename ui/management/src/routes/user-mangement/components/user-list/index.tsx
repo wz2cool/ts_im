@@ -1,8 +1,10 @@
 import * as React from "react";
-import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
+import { UserFilterDto, UserInfoPageDto } from "../../../../models/dto";
 import { Table, Layout, Form, Input, Button, Select } from "antd";
 import { StringUtils, ObjectUtils } from "ts-commons";
 import * as lodash from "lodash";
+
+import "./style.scss";
 
 const FormItem = Form.Item;
 
