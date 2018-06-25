@@ -1,6 +1,6 @@
 import axios, { AxiosPromise, AxiosRequestConfig } from "axios";
 import { Environment } from "../constants";
-import { UserFilterDto, UserInfoPageDto } from "../models/dto";
+import { UserFilterDto, UserInfoPageDto, CreateUserDto } from "../models/dto";
 
 export class UserHttpService {
   private readonly apiURL: string = Environment.getApiUrl();
@@ -19,5 +19,11 @@ export class UserHttpService {
     console.log("get data");
     const url = `${this.apiURL}/users/filter/?pageNum=${pageNum}&pageSize=${pageSize}`;
     return axios.post(url, UserFilterDto, this.config);
+  }
+
+  public createUser(dto: CreateUserDto): AxiosPromise<void> {
+    dto.source = 1;
+    const url = `${this.apiURL}/users`;
+    return axios.post(url, dto, this.config);
   }
 }
