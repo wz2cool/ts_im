@@ -1,0 +1,17 @@
+.layout_user_management {
+    margin: 20px;
+    & .ant-layout-header {
+        background: none;
+        height: auto;
+    }
+    & .user_search_form {
+        margin-bottom: 20px;
+    }
+    .source_select {
+        width: 100px;
+    }
+
+    .status_select {
+        width: 100px;
+    }
+}
