@@ -6,7 +6,7 @@ import { reducer } from "./modules/UserManagement";
 export default (store: any) => {
   const LoadableComponent = Loadable({
     loader: () =>
-      import(/* webpackChunkName: "userManagement" */ "./containers/UserManagementContainer"),
+      import(/* webpackChunkName: "userManagement" */ "./containers/user-management.container"),
     loading: () => null,
     render: (loaded, props) => {
       // inject reducer

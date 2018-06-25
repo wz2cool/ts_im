@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import UserManagement, {
   StateToProps,
   DispatchToProps,
-} from "../components/UserManagement";
+} from "../components/user-management";
 import {
   fetchUserInfoPage,
   ReducerState,

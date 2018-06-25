@@ -5,7 +5,7 @@ import { Table, Layout, Form, Input, Button, Select } from "antd";
 import { RouteComponentProps } from "react-router-dom";
 import { UserFilterDto, UserInfoPageDto } from "../../../models/dto";
 import { StringUtils, ObjectUtils } from "ts-commons";
-import AddUserModal from "./AddUserModal";
+import AddUserModal from "./add-user-modal";
 
 const FormItem = Form.Item;
 import "./style.scss";

@@ -4,7 +4,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../helpers";
-import { UserManagementProps } from "./UserManagement";
+import { UserManagementProps } from "./user-management";
 
 interface AddUserModalState {
   confirmDirty: boolean;
