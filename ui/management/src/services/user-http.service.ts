@@ -22,7 +22,6 @@ export class UserHttpService {
   }
 
   public createUser(dto: CreateUserDto): AxiosPromise<void> {
-    dto.source = 1;
     const url = `${this.apiURL}/users`;
     return axios.post(url, dto, this.config);
   }

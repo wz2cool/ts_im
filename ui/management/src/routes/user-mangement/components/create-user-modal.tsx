@@ -6,11 +6,11 @@ import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../helpers";
 import { UserManagementProps } from "./user-management";
 
-interface AddUserModalState {
+interface CreateUserModalState {
   confirmDirty: boolean;
 }
 
-interface AddUserModalProps extends FormComponentProps, UserManagementProps {}
+interface CreateUserModalProps extends FormComponentProps, UserManagementProps {}
 
 const formItemLayout = {
   labelCol: {
@@ -23,7 +23,7 @@ const formItemLayout = {
   },
 };
 
-class AddUserModal extends React.Component<AddUserModalProps, AddUserModalState> {
+class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserModalState> {
   componentDidMount() {
     this.props.form.validateFields();
     this.setState({ confirmDirty: false });
@@ -183,4 +183,4 @@ class AddUserModal extends React.Component<AddUserModalProps, AddUserModalState>
   }
 }
 
-export default Form.create()(AddUserModal);
+export default Form.create()(CreateUserModal);
