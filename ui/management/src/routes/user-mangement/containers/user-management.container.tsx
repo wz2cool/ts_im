@@ -1,6 +1,9 @@
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
 import * as React from "react";
+import { userManagmentReducer } from "../reducers/user-management.reducer";
+
+export { userManagmentReducer };
 
 interface UserManagementProps extends RouteComponentProps<any> {}
 
