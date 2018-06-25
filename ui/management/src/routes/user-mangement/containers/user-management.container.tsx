@@ -1,6 +1,16 @@
-import { withRouter } from "react-router-dom";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import { connect } from "react-redux";
-import { UserManagement } from "../components/user-management";
+import * as React from "react";
+
+interface UserManagementProps extends RouteComponentProps<any> {}
+
+interface UserManagementState {}
+
+export class UserManagement extends React.Component<UserManagementProps, UserManagementState> {
+  public render(): JSX.Element {
+    return <span>UserManagement</span>;
+  }
+}
 
 const UserManagementContainer = connect()(UserManagement);
 export default withRouter(UserManagementContainer);
