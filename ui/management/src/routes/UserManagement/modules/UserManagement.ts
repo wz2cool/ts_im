@@ -1,7 +1,7 @@
 import * as lodash from "lodash";
-import { UserHttpService } from "../services";
+import { UserHttpService } from "../../../services";
 
-import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
+import { UserInfoPageDto, UserFilterDto, CreateUserDto } from "../../../models/dto";
 import { Dispatch, AnyAction } from "redux";
 import { ActionPayload } from "../../../models/interface";
 
@@ -15,6 +15,7 @@ export const FETCH_USER_INFO_PAGE_FAILED = "FETCH_USER_INFO_PAGE_FAILED";
 export const PAGE_NUM_CHANGE = "PAGE_NUM_CHANGE";
 export const PAGE_SIZE_CHANGE = "PAGE_SIZE_CHANGE";
 export const SEARCH_FIELD_CHANGE = "SEARCH_FIELD_CHANGE";
+export const CREATE_USER_BEGIN = "CREATE_USER_BEGIN";
 
 // ------------------------------------
 // Actions
@@ -25,9 +26,7 @@ export const fetchUserInfoPageBegin = (): ActionPayload => {
   };
 };
 
-export const fetchUserInfoPageSuccess = (
-  value: UserInfoPageDto,
-): ActionPayload => {
+export const fetchUserInfoPageSuccess = (value: UserInfoPageDto): ActionPayload => {
   return {
     type: FETCH_USER_INFO_PAGE_SUCCESS,
     payload: value,
@@ -63,11 +62,7 @@ export const searchFieldChange = (filter: UserFilterDto): ActionPayload => {
   };
 };
 
-export const fetchUserInfoPage = (
-  filter: UserFilterDto,
-  pageNum: number,
-  pageSize: number,
-) => {
+export const fetchUserInfoPage = (filter: UserFilterDto, pageNum: number, pageSize: number) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserInfoPageBegin());
     return userHttpService
@@ -79,6 +74,10 @@ export const fetchUserInfoPage = (
         dispatch(fetchUserInfoPageFailed(err));
       });
   };
+};
+
+export const createUser = (dto: CreateUserDto) => {
+
 };
 
 export const actions = {

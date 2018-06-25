@@ -1,13 +1,16 @@
 import * as React from "react";
 
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Button } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../helpers";
+import { UserManagementProps } from "./UserManagement";
 
 interface AddUserModalState {
   confirmDirty: boolean;
 }
+
+interface AddUserModalProps extends FormComponentProps, UserManagementProps {}
 
 const formItemLayout = {
   labelCol: {
@@ -20,11 +23,21 @@ const formItemLayout = {
   },
 };
 
-class AddUserModal extends React.Component<FormComponentProps, AddUserModalState> {
+class AddUserModal extends React.Component<AddUserModalProps, AddUserModalState> {
   componentDidMount() {
     this.props.form.validateFields();
     this.setState({ confirmDirty: false });
   }
+
+  handleSubmit = (e: any) => {
+    console.log("handleSubmit");
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (ObjectUtils.isNullOrUndefined(err)) {
+        console.log("Received values of form: ", values);
+      }
+    });
+  };
 
   handleConfirmBlur = (e: any) => {
     const value = e.target.value;
@@ -88,7 +101,7 @@ class AddUserModal extends React.Component<FormComponentProps, AddUserModalState
     const { getFieldDecorator } = this.props.form;
     return (
       <Modal title="添加用户" visible={true}>
-        <Form>
+        <Form onSubmit={this.handleSubmit}>
           <Form.Item {...formItemLayout} label="用户名">
             {getFieldDecorator("username", {
               rules: [
@@ -155,7 +168,14 @@ class AddUserModal extends React.Component<FormComponentProps, AddUserModalState
             })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
           </Form.Item>
           <Form.Item {...formItemLayout} label="昵称">
-            <Input />
+            {getFieldDecorator("displayName", {
+              rules: [],
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
+            <Button type="primary" htmlType="submit">
+              提交
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

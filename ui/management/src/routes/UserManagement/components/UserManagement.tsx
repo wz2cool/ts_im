@@ -20,44 +20,27 @@ export interface StateToProps {
 }
 
 export interface DispatchToProps {
-  fetchUserInfoPage: (
-    filter: UserFilterDto,
-    pageNum: number,
-    pageSize: number,
-  ) => void;
+  fetchUserInfoPage: (filter: UserFilterDto, pageNum: number, pageSize: number) => void;
   pageNumChange: (pageNum: number) => void;
   pageSizeChange: (pageSize: number) => void;
   searchFieldChange: (filter: UserFilterDto) => void;
 }
 
 export interface OwnProps extends RouteComponentProps<any> {}
-export interface UserManagementProps
-  extends StateToProps,
-    DispatchToProps,
-    OwnProps {}
+export interface UserManagementProps extends StateToProps, DispatchToProps, OwnProps {}
 
 // local state
-export interface UserManagementState {}
+interface UserManagementState {}
 
-class UserManagement extends React.Component<
-  UserManagementProps,
-  UserManagementState
-> {
+class UserManagement extends React.Component<UserManagementProps, UserManagementState> {
   constructor(props: UserManagementProps) {
     super(props);
     this.state = { userFilter: this.props.userFilter };
   }
 
   componentDidMount(): void {
-    if (
-      !this.props.userInfoPage.entites ||
-      this.props.userInfoPage.entites.length === 0
-    ) {
-      this.props.fetchUserInfoPage(
-        this.props.userFilter,
-        this.props.pageNum,
-        this.props.pageSize,
-      );
+    if (!this.props.userInfoPage.entites || this.props.userInfoPage.entites.length === 0) {
+      this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
     }
   }
 
@@ -95,40 +78,16 @@ class UserManagement extends React.Component<
         <Layout.Header>
           <Form className="user_search_form" layout="inline">
             <FormItem label="用户名">
-              <Input
-                name="userName"
-                value={this.props.userFilter.userName}
-                onChange={e =>
-                  this.searchFieldChange(e.target.name, e.target.value)
-                }
-              />
+              <Input name="userName" value={this.props.userFilter.userName} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
             </FormItem>
             <FormItem label="别名">
-              <Input
-                name="displayName"
-                value={this.props.userFilter.displayName}
-                onChange={e =>
-                  this.searchFieldChange(e.target.name, e.target.value)
-                }
-              />
+              <Input name="displayName" value={this.props.userFilter.displayName} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
             </FormItem>
             <FormItem label="手机">
-              <Input
-                name="mobile"
-                value={this.props.userFilter.mobile}
-                onChange={e =>
-                  this.searchFieldChange(e.target.name, e.target.value)
-                }
-              />
+              <Input name="mobile" value={this.props.userFilter.mobile} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
             </FormItem>
             <FormItem label="邮箱">
-              <Input
-                name="email"
-                defaultValue={this.props.userFilter.email}
-                onChange={e =>
-                  this.searchFieldChange(e.target.name, e.target.value)
-                }
-              />
+              <Input name="email" defaultValue={this.props.userFilter.email} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
             </FormItem>
             <FormItem label="来源">
               <Select
@@ -162,20 +121,12 @@ class UserManagement extends React.Component<
               </Button>
             </FormItem>
             <FormItem>
-              <Button
-                type="default"
-                icon="reload"
-                onClick={() => this.clearFilter()}
-              >
+              <Button type="default" icon="reload" onClick={() => this.clearFilter()}>
                 清空
               </Button>
             </FormItem>
             <FormItem>
-              <Button
-                type="primary"
-                icon="plus-circle-o"
-                onClick={() => this.clearFilter()}
-              >
+              <Button type="primary" icon="plus-circle-o" onClick={() => this.clearFilter()}>
                 添加
               </Button>
             </FormItem>
@@ -198,18 +149,14 @@ class UserManagement extends React.Component<
             }}
           />
         </Layout.Content>
-        <AddUserModal {...this.props}/>
+        <AddUserModal {...this.props} />
       </Layout>
     );
   }
 
   private pageNumChange = (pageNum: number) => {
     this.props.pageNumChange(pageNum);
-    this.props.fetchUserInfoPage(
-      this.props.userFilter,
-      pageNum,
-      this.props.pageSize,
-    );
+    this.props.fetchUserInfoPage(this.props.userFilter, pageNum, this.props.pageSize);
   };
 
   private pageSizeChange = (pageNum: number, pageSize: number) => {
@@ -224,10 +171,7 @@ class UserManagement extends React.Component<
 
     if (ObjectUtils.isNullOrUndefined(value) || value === 0) {
       useValue = undefined;
-    } else if (
-      ObjectUtils.isString(value) &&
-      StringUtils.isBlank(value as string)
-    ) {
+    } else if (ObjectUtils.isString(value) && StringUtils.isBlank(value as string)) {
       useValue = undefined;
     } else {
       useValue = value;
@@ -238,21 +182,13 @@ class UserManagement extends React.Component<
   };
 
   private search = () => {
-    this.props.fetchUserInfoPage(
-      this.props.userFilter,
-      this.props.pageNum,
-      this.props.pageSize,
-    );
+    this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
   };
 
   private clearFilter = () => {
     const emptyFilter = new UserFilterDto();
     this.props.searchFieldChange(emptyFilter);
-    this.props.fetchUserInfoPage(
-      emptyFilter,
-      this.props.pageNum,
-      this.props.pageSize,
-    );
+    this.props.fetchUserInfoPage(emptyFilter, this.props.pageNum, this.props.pageSize);
   };
 }
 
