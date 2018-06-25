@@ -9,7 +9,7 @@ export default (store: any) => {
     loading: props => (props.pastDelay ? <Loading /> : null),
     render: (loaded, props) => {
       // inject reducer
-      const reducer = loaded.userManagmentReducer;
+      const reducer = loaded.userManagementReducer;
       injectReducer(store, { key: "userManagement", reducer });
 
       const Component = loaded.default;
