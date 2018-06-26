@@ -29,6 +29,12 @@ interface UserListState {}
 interface UserListProps extends StateToProps, DispatchToProps {}
 
 export class UserList extends React.Component<UserListProps, UserListState> {
+  componentDidMount(): void {
+    if (!this.props.userInfoPage.entites || this.props.userInfoPage.entites.length === 0) {
+      this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
+    }
+  }
+
   public render(): JSX.Element {
     console.log(this.props);
     const columns = [

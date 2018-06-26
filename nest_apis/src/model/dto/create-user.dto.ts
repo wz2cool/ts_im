@@ -1,6 +1,5 @@
 import { IsString, IsInt, IsBoolean, IsNumber } from 'class-validator';
 import { ApiModelProperty } from '@nestjs/swagger';
-import { isNumber } from 'util';
 
 export class CreateUserDto {
     @ApiModelProperty({ type: String })
