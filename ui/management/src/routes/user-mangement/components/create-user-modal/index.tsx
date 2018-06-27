@@ -161,7 +161,7 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Modal destroyOnClose={false} maskClosable={false} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
+      <Modal destroyOnClose={true} maskClosable={false} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item {...formItemLayout} label="用户名">
             {getFieldDecorator("username", {
