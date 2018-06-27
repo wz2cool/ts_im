@@ -86,7 +86,6 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
   };
 
   handleSubmit = (e: any) => {
-    console.log("handleSubmit");
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (ObjectUtils.isNullOrUndefined(err)) {
