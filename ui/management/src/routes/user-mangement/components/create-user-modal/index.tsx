@@ -1,16 +1,19 @@
 import * as React from "react";
 
-import { Modal, Form, Input, Button } from "antd";
+import { Modal, Form, Input } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
-import { CommonsHelper } from "../../../helpers";
-import { UserManagementProps } from "./user-management";
+import { CommonsHelper } from "../../../../helpers";
 
 interface CreateUserModalState {
+  loading: boolean;
   confirmDirty: boolean;
+  visible: boolean;
 }
 
-interface CreateUserModalProps extends FormComponentProps, UserManagementProps {}
+interface CreateUserModalProps extends FormComponentProps {
+  visible?: boolean;
+}
 
 const formItemLayout = {
   labelCol: {
@@ -24,9 +27,24 @@ const formItemLayout = {
 };
 
 class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserModalState> {
+  constructor(props: CreateUserModalProps) {
+    super(props);
+    this.state = {
+      loading: false,
+      confirmDirty: false,
+      visible: false,
+    };
+  }
+
   componentDidMount() {
     this.props.form.validateFields();
-    this.setState({ confirmDirty: false });
+  }
+
+  componentWillReceiveProps(nextProps: CreateUserModalProps) {
+    const nextVisible: boolean = ObjectUtils.isNullOrUndefined(nextProps.visible) ? false : (nextProps.visible as boolean);
+    if (nextVisible !== this.state.visible) {
+      this.setState({ visible: nextVisible });
+    }
   }
 
   handleSubmit = (e: any) => {
@@ -97,10 +115,18 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     }
   };
 
+  handleModalOk = () => {
+    this.setState({ visible: false });
+  };
+
+  handleModalCanal = () => {
+    this.setState({ visible: false });
+  };
+
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Modal title="添加用户" visible={true}>
+      <Modal title="添加用户" okText="添加" cancelText="取消" visible={this.state.visible} onOk={this.handleModalOk} onCancel={this.handleModalCanal}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item {...formItemLayout} label="用户名">
             {getFieldDecorator("username", {
@@ -172,11 +198,11 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
               rules: [],
             })(<Input />)}
           </Form.Item>
-          <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
+          {/* <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
             <Button type="primary" htmlType="submit">
               提交
             </Button>
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     );

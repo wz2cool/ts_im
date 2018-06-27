@@ -11,7 +11,11 @@ interface UserManagementState {}
 
 export class UserManagement extends React.Component<UserManagementProps, UserManagementState> {
   public render(): JSX.Element {
-    return <UserListContainer />;
+    return (
+      <div>
+        <UserListContainer />
+      </div>
+    );
   }
 }
 
