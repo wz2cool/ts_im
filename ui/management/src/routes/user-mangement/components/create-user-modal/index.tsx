@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Modal, Form, Input } from "antd";
+import { Modal, Form, Input, Button } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../../helpers";
@@ -34,10 +34,6 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
       confirmDirty: false,
       visible: false,
     };
-  }
-
-  componentDidMount() {
-    this.props.form.validateFields();
   }
 
   componentWillReceiveProps(nextProps: CreateUserModalProps) {
@@ -115,10 +111,6 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     }
   };
 
-  handleModalOk = () => {
-    this.setState({ visible: false });
-  };
-
   handleModalCanal = () => {
     this.setState({ visible: false });
   };
@@ -126,7 +118,7 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Modal title="添加用户" okText="添加" cancelText="取消" visible={this.state.visible} onOk={this.handleModalOk} onCancel={this.handleModalCanal}>
+      <Modal destroyOnClose={true} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item {...formItemLayout} label="用户名">
             {getFieldDecorator("username", {
@@ -198,11 +190,11 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
               rules: [],
             })(<Input />)}
           </Form.Item>
-          {/* <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
+          <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
             <Button type="primary" htmlType="submit">
               提交
             </Button>
-          </Form.Item> */}
+          </Form.Item>
         </Form>
       </Modal>
     );
