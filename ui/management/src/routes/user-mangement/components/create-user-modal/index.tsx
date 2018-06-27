@@ -1,9 +1,13 @@
 import * as React from "react";
 
-import { Modal, Form, Input, Button } from "antd";
+import { Modal, Form, Input, Button, message } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../../helpers";
+import { CreateUserDto } from "../../../../models/dto";
+import { UserHttpService } from "../../../../services/user-http.service";
+
+const httpService = UserHttpService.getInstance();
 
 interface CreateUserModalState {
   loading: boolean;
@@ -43,12 +47,39 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     }
   }
 
+  createUser = async (values: any) => {
+    const dto = new CreateUserDto();
+    dto.displayName = values.displayName;
+    dto.email = values.email;
+    dto.imageUrl = values.imageUrl;
+    dto.mobile = values.mobile;
+    dto.password = values.password;
+    dto.userName = values.username;
+    dto.source = 1;
+
+    this.setState({ loading: true });
+    try {
+      await httpService.createUser(dto);
+      this.setState({ visible: false });
+    } catch (e) {
+      let errMsg = "未知错误: " + e.message;
+      console.log(e);
+      if (!ObjectUtils.isNullOrUndefined(e.response) && !ObjectUtils.isNullOrUndefined(e.response.data) && !ObjectUtils.isNullOrUndefined(e.response.data.message)) {
+        errMsg = e.response.data.message;
+      }
+      message.error(errMsg);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   handleSubmit = (e: any) => {
     console.log("handleSubmit");
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (ObjectUtils.isNullOrUndefined(err)) {
         console.log("Received values of form: ", values);
+        this.createUser(values);
       }
     });
   };
@@ -118,7 +149,7 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
   public render(): JSX.Element {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Modal destroyOnClose={true} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
+      <Modal destroyOnClose={false} maskClosable={false} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item {...formItemLayout} label="用户名">
             {getFieldDecorator("username", {
@@ -191,7 +222,7 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
             })(<Input />)}
           </Form.Item>
           <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={this.state.loading}>
               提交
             </Button>
           </Form.Item>

@@ -4,15 +4,7 @@ import { DateUtils, ObjectUtils, StringUtils } from 'ts-commons';
 
 import { Component, Query, Injectable } from '@nestjs/common';
 import { DbCoreService } from './db-core.service';
-import {
-  CreateUserDto,
-  UpdateUserDto,
-  UserBaseInfoDto,
-  UserLoginInfoDto,
-  UserFilterDto,
-  UserInfoDto,
-  UserInfoPageDto,
-} from '../model/dto';
+import { CreateUserDto, UpdateUserDto, UserBaseInfoDto, UserLoginInfoDto, UserFilterDto, UserInfoDto, UserInfoPageDto } from '../model/dto';
 import {
   IConnection,
   DynamicQuery,
@@ -28,16 +20,10 @@ import {
 import { User } from '../model/entity/table/user';
 import { Deleted, DefaultValue, UserActive } from '../constant';
 import { DisplayException } from '../model/exception';
-import {
-  UserMapper,
-  UserFriendCategoryMapper,
-  UserGroupCategoryMapper,
-  UserFriendMapper,
-} from '../mapper';
+import { UserMapper, UserFriendCategoryMapper, UserGroupCategoryMapper, UserFriendMapper } from '../mapper';
 import { UserFriendCategory } from '../model/entity/table/userFriendCategory';
 import { UserGroupCategory } from '../model/entity/table/user-group-category';
 import { UserFriend } from '../model/entity/table/userFriend';
-import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class UserService {
@@ -54,9 +40,19 @@ export class UserService {
       }
       const user = this.createDtoToEntity(createUserDto);
       conn = await this.dbCoreService.getConnection();
+      const userMapper = new UserMapper(conn);
+      if ((await userMapper.selectCountByExample({ userName: createUserDto.userName })) > 0) {
+        throw new DisplayException('用户名已经存在');
+      }
+      if ((await userMapper.selectCountByExample({ mobile: createUserDto.mobile })) > 0) {
+        throw new DisplayException('手机号已经存在');
+      }
+      if ((await userMapper.selectCountByExample({ email: createUserDto.email })) > 0) {
+        throw new DisplayException('邮箱已经存在');
+      }
+
       await conn.beginTransaction();
       beginTrans = true;
-      const userMapper = new UserMapper(conn);
       let effectRows = await userMapper.insertSelective(user);
       console.log('create user: ', effectRows);
 
@@ -64,30 +60,22 @@ export class UserService {
       const userFriendCategoryMapper = new UserFriendCategoryMapper(conn);
       const userFriendCategoryEntity = new UserFriendCategory();
       userFriendCategoryEntity.userId = user.id;
-      userFriendCategoryEntity.categoryIndex =
-        DefaultValue.NO_FRIEND_CATEGORY_INDEX;
-      userFriendCategoryEntity.categoryName =
-        DefaultValue.NO_FRIEND_CATEGROY_NAME;
+      userFriendCategoryEntity.categoryIndex = DefaultValue.NO_FRIEND_CATEGORY_INDEX;
+      userFriendCategoryEntity.categoryName = DefaultValue.NO_FRIEND_CATEGROY_NAME;
       userFriendCategoryEntity.createTime = new Date();
       userFriendCategoryEntity.updateTime = new Date();
-      effectRows = await userFriendCategoryMapper.insertSelective(
-        userFriendCategoryEntity,
-      );
+      effectRows = await userFriendCategoryMapper.insertSelective(userFriendCategoryEntity);
       console.log('create default user category: ', effectRows);
 
       // create default group category
       const userGroupCategoryMapper = new UserGroupCategoryMapper(conn);
       const userGroupCategoryEntity = new UserGroupCategory();
       userGroupCategoryEntity.userId = user.id;
-      userGroupCategoryEntity.categoryIndex =
-        DefaultValue.NO_GROUP_CATEGORY_INDEX;
-      userGroupCategoryEntity.categoryName =
-        DefaultValue.NO_GROUP_CATEGORY_NAME;
+      userGroupCategoryEntity.categoryIndex = DefaultValue.NO_GROUP_CATEGORY_INDEX;
+      userGroupCategoryEntity.categoryName = DefaultValue.NO_GROUP_CATEGORY_NAME;
       userGroupCategoryEntity.createTime = new Date();
       userGroupCategoryEntity.updateTime = new Date();
-      effectRows = await userGroupCategoryMapper.insertSelective(
-        userGroupCategoryEntity,
-      );
+      effectRows = await userGroupCategoryMapper.insertSelective(userGroupCategoryEntity);
       console.log('create default group category: ', effectRows);
       await conn.commit();
       return new Promise<number>((resolve, reject) => resolve(user.id));
@@ -103,10 +91,7 @@ export class UserService {
     }
   }
 
-  public async updateUser(
-    userId: number,
-    updateUserDto: UpdateUserDto,
-  ): Promise<void> {
+  public async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<void> {
     let conn: IConnection;
     let beginTrans: boolean = false;
     try {
@@ -183,45 +168,29 @@ export class UserService {
     }
   }
 
-  public async getUserBaseInfosByUserFriendCategoryId(
-    userFriendCategoryId: number,
-  ): Promise<UserBaseInfoDto[]> {
+  public async getUserBaseInfosByUserFriendCategoryId(userFriendCategoryId: number): Promise<UserBaseInfoDto[]> {
     let conn: IConnection;
     try {
       conn = await this.dbCoreService.getConnection();
       const userFiendMapper = new UserFriendMapper(conn);
       const userFriendQuery = DynamicQuery.createIntance<UserFriend>();
-      const categoryIdFilter = new FilterDescriptor<UserFriend>(
-        g => g.userFriendCategoryId,
-        FilterOperator.EQUAL,
-        userFriendCategoryId,
-      );
+      const categoryIdFilter = new FilterDescriptor<UserFriend>(g => g.userFriendCategoryId, FilterOperator.EQUAL, userFriendCategoryId);
       userFriendQuery.addFilters(categoryIdFilter);
-      const userFriendEntities = await userFiendMapper.selectByDynamicQuery(
-        userFriendQuery,
-      );
+      const userFriendEntities = await userFiendMapper.selectByDynamicQuery(userFriendQuery);
       if (userFriendEntities.length === 0) {
         return new Promise<UserBaseInfoDto[]>((resolve, reject) => resolve([]));
       }
       const friendIds = lodash.map(userFriendEntities, x => x.friendUserId);
       const userMapper = new UserMapper(conn);
       const userQuery = DynamicQuery.createIntance<User>();
-      const userIdFilter = new FilterDescriptor<User>(
-        g => g.id,
-        FilterOperator.IN,
-        friendIds,
-      );
+      const userIdFilter = new FilterDescriptor<User>(g => g.id, FilterOperator.IN, friendIds);
       // TODO: need order by online.
       const idSort = new SortDescriptor<User>(g => g.id, SortDirection.DESC);
       userQuery.addFilters(userIdFilter);
       userQuery.addSorts(idSort);
       const userEntities = await userMapper.selectByDynamicQuery(userQuery);
-      const result = lodash.map(userEntities, x =>
-        this.entityToUserBaseInfoDto(x),
-      );
-      return new Promise<UserBaseInfoDto[]>((resolve, reject) =>
-        resolve(result),
-      );
+      const result = lodash.map(userEntities, x => this.entityToUserBaseInfoDto(x));
+      return new Promise<UserBaseInfoDto[]>((resolve, reject) => resolve(result));
     } catch (error) {
       return new Promise<UserBaseInfoDto[]>((resolve, reject) => reject(error));
     } finally {
@@ -231,9 +200,7 @@ export class UserService {
     }
   }
 
-  public async getUserBaseInfoByLoginInfo(
-    userLoginInfo: UserLoginInfoDto,
-  ): Promise<UserBaseInfoDto> {
+  public async getUserBaseInfoByLoginInfo(userLoginInfo: UserLoginInfoDto): Promise<UserBaseInfoDto> {
     let conn: IConnection;
     try {
       if (this.isDtoEmpty(userLoginInfo)) {
@@ -244,41 +211,15 @@ export class UserService {
       const userMapper = new UserMapper(conn);
       const query = DynamicQuery.createIntance<User>();
       const md5Pwd = this.cryptPwd(userLoginInfo.password);
-      const passwordFilter = new FilterDescriptor<User>(
-        g => g.password,
-        FilterOperator.EQUAL,
-        md5Pwd,
-      );
+      const passwordFilter = new FilterDescriptor<User>(g => g.password, FilterOperator.EQUAL, md5Pwd);
       const identityFilterGroup = new FilterGroupDescriptor();
-      const userNameFilter = new FilterDescriptor<User>(
-        FilterCondition.OR,
-        g => g.userName,
-        FilterOperator.EQUAL,
-        userLoginInfo.identity,
-      );
-      const emailFilter = new FilterDescriptor<User>(
-        FilterCondition.OR,
-        g => g.email,
-        FilterOperator.EQUAL,
-        userLoginInfo.identity,
-      );
-      const mobileFilter = new FilterDescriptor<User>(
-        FilterCondition.OR,
-        g => g.mobile,
-        FilterOperator.EQUAL,
-        userLoginInfo.identity,
-      );
-      identityFilterGroup.filters.push(
-        userNameFilter,
-        emailFilter,
-        mobileFilter,
-      );
+      const userNameFilter = new FilterDescriptor<User>(FilterCondition.OR, g => g.userName, FilterOperator.EQUAL, userLoginInfo.identity);
+      const emailFilter = new FilterDescriptor<User>(FilterCondition.OR, g => g.email, FilterOperator.EQUAL, userLoginInfo.identity);
+      const mobileFilter = new FilterDescriptor<User>(FilterCondition.OR, g => g.mobile, FilterOperator.EQUAL, userLoginInfo.identity);
+      identityFilterGroup.filters.push(userNameFilter, emailFilter, mobileFilter);
       query.addFilters(passwordFilter, identityFilterGroup);
       const userEntities = await userMapper.selectByDynamicQuery(query);
-      const result =
-        userEntities.length === 0
-          ? null
-          : this.entityToUserBaseInfoDto(userEntities[0]);
+      const result = userEntities.length === 0 ? null : this.entityToUserBaseInfoDto(userEntities[0]);
       return new Promise<UserBaseInfoDto>((resolve, reject) => resolve(result));
     } catch (error) {
       return new Promise<UserBaseInfoDto>((resolve, reject) => reject(error));
@@ -289,11 +230,7 @@ export class UserService {
     }
   }
 
-  public async getUserInfoPagingByFilter(
-    userFilterDto: UserFilterDto,
-    pageNum: number,
-    pageSize: number,
-  ): Promise<UserInfoPageDto> {
+  public async getUserInfoPagingByFilter(userFilterDto: UserFilterDto, pageNum: number, pageSize: number): Promise<UserInfoPageDto> {
     let conn: IConnection;
     try {
       if (ObjectUtils.isNullOrUndefined(userFilterDto)) {
@@ -307,58 +244,31 @@ export class UserService {
       const idSort = new SortDescriptor<User>(x => x.id, SortDirection.DESC);
       query.addSorts(idSort);
       if (!ObjectUtils.isNullOrUndefined(userFilterDto.active)) {
-        const activeFilter = new FilterDescriptor<User>(
-          x => x.active,
-          FilterOperator.EQUAL,
-          userFilterDto.active,
-        );
+        const activeFilter = new FilterDescriptor<User>(x => x.active, FilterOperator.EQUAL, userFilterDto.active);
         query.addFilters(activeFilter);
       }
       if (!ObjectUtils.isNullOrUndefined(userFilterDto.source)) {
-        const sourceFilter = new FilterDescriptor<User>(
-          x => x.source,
-          FilterOperator.EQUAL,
-          userFilterDto.source,
-        );
+        const sourceFilter = new FilterDescriptor<User>(x => x.source, FilterOperator.EQUAL, userFilterDto.source);
         query.addFilters(sourceFilter);
       }
       if (StringUtils.isNotBlank(userFilterDto.displayName)) {
-        const displayNameFilter = new FilterDescriptor<User>(
-          x => x.displayName,
-          FilterOperator.CONTAINS,
-          userFilterDto.displayName,
-        );
+        const displayNameFilter = new FilterDescriptor<User>(x => x.displayName, FilterOperator.CONTAINS, userFilterDto.displayName);
         query.addFilters(displayNameFilter);
       }
       if (StringUtils.isNotBlank(userFilterDto.email)) {
-        const emailFilter = new FilterDescriptor<User>(
-          x => x.email,
-          FilterOperator.CONTAINS,
-          userFilterDto.email,
-        );
+        const emailFilter = new FilterDescriptor<User>(x => x.email, FilterOperator.CONTAINS, userFilterDto.email);
         query.addFilters(emailFilter);
       }
       if (StringUtils.isNotBlank(userFilterDto.mobile)) {
-        const mobileFilter = new FilterDescriptor<User>(
-          x => x.mobile,
-          FilterOperator.CONTAINS,
-          userFilterDto.mobile,
-        );
+        const mobileFilter = new FilterDescriptor<User>(x => x.mobile, FilterOperator.CONTAINS, userFilterDto.mobile);
         query.addFilters(mobileFilter);
       }
       if (StringUtils.isNotBlank(userFilterDto.userName)) {
-        const userNameFilter = new FilterDescriptor<User>(
-          x => x.userName,
-          FilterOperator.CONTAINS,
-          userFilterDto.userName,
-        );
+        const userNameFilter = new FilterDescriptor<User>(x => x.userName, FilterOperator.CONTAINS, userFilterDto.userName);
         query.addFilters(userNameFilter);
       }
 
-      const userPage = await userMapper.selectPageRowBoundsByDynamicQuery(
-        query,
-        pageRowBounds,
-      );
+      const userPage = await userMapper.selectPageRowBoundsByDynamicQuery(query, pageRowBounds);
       const result = this.userPageToUserInfoPageDto(userPage);
       return new Promise<UserInfoPageDto>((resolve, reject) => resolve(result));
     } catch (error) {
@@ -389,10 +299,7 @@ export class UserService {
     return user;
   }
 
-  private updateDtoToEntity(
-    userId: number,
-    updateUserDto: UpdateUserDto,
-  ): User {
+  private updateDtoToEntity(userId: number, updateUserDto: UpdateUserDto): User {
     const user = new User();
     user.id = userId;
     user.displayName = updateUserDto.displayName;
@@ -437,13 +344,7 @@ export class UserService {
     const entities = userPage.getEntities();
     const dtoEntities = lodash.map(entities, x => this.entityToUserInfoDto(x));
 
-    return new UserInfoPageDto(
-      userPage.getPageNum(),
-      userPage.getPageSize(),
-      userPage.getTotal(),
-      userPage.getPages(),
-      dtoEntities,
-    );
+    return new UserInfoPageDto(userPage.getPageNum(), userPage.getPageSize(), userPage.getTotal(), userPage.getPages(), dtoEntities);
   }
 
   private cryptPwd(password: string): string {
