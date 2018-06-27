@@ -27,6 +27,8 @@ export interface DispatchToProps {
 
 interface UserListState {
   createUserModalVisible: boolean;
+  createUserModalClosed: () => void;
+  refreshList: () => void;
 }
 
 interface UserListProps extends StateToProps, DispatchToProps {}
@@ -34,7 +36,7 @@ interface UserListProps extends StateToProps, DispatchToProps {}
 export class UserList extends React.Component<UserListProps, UserListState> {
   constructor(props: UserListProps) {
     super(props);
-    this.state = { createUserModalVisible: false };
+    this.state = { createUserModalVisible: false, refreshList: this.refreshList, createUserModalClosed: this.createUserModalClosed };
   }
 
   componentDidMount(): void {
@@ -82,13 +84,21 @@ export class UserList extends React.Component<UserListProps, UserListState> {
                 <Input name="userName" value={this.props.userFilter.userName} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
               </FormItem>
               <FormItem label="别名">
-                <Input name="displayName" value={this.props.userFilter.displayName} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
+                <Input
+                  name="displayName"
+                  value={this.props.userFilter.displayName}
+                  onChange={e => this.searchFieldChange(e.target.name, e.target.value)}
+                />
               </FormItem>
               <FormItem label="手机">
                 <Input name="mobile" value={this.props.userFilter.mobile} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
               </FormItem>
               <FormItem label="邮箱">
-                <Input name="email" defaultValue={this.props.userFilter.email} onChange={e => this.searchFieldChange(e.target.name, e.target.value)} />
+                <Input
+                  name="email"
+                  defaultValue={this.props.userFilter.email}
+                  onChange={e => this.searchFieldChange(e.target.name, e.target.value)}
+                />
               </FormItem>
               <FormItem label="来源">
                 <Select
@@ -151,10 +161,14 @@ export class UserList extends React.Component<UserListProps, UserListState> {
             />
           </Layout.Content>
         </Layout>
-        <CreateUserModal visible={this.state.createUserModalVisible} />
+        <CreateUserModal visible={this.state.createUserModalVisible} refreshList={this.state.refreshList} closed={this.state.createUserModalClosed} />
       </div>
     );
   }
+
+  private refreshList = () => {
+    this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
+  };
 
   private pageNumChange = (pageNum: number) => {
     this.props.pageNumChange(pageNum);
@@ -195,5 +209,10 @@ export class UserList extends React.Component<UserListProps, UserListState> {
 
   private showCreateUserModal = () => {
     this.setState({ createUserModalVisible: true });
+  };
+
+  private createUserModalClosed = () => {
+    alert("createUserModalClosed");
+    this.setState({ createUserModalVisible: false });
   };
 }

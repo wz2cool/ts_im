@@ -17,6 +17,8 @@ interface CreateUserModalState {
 
 interface CreateUserModalProps extends FormComponentProps {
   visible?: boolean;
+  refreshList?: () => void;
+  closed?: () => void;
 }
 
 const formItemLayout = {
@@ -47,6 +49,14 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     }
   }
 
+  componentDidUpdate(prevProps: CreateUserModalProps, prevState: CreateUserModalState) {
+    if (prevState.visible === true && this.state.visible === false) {
+      if (this.props.closed) {
+        this.props.closed();
+      }
+    }
+  }
+
   createUser = async (values: any) => {
     const dto = new CreateUserDto();
     dto.displayName = values.displayName;
@@ -58,13 +68,19 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     dto.source = 1;
 
     this.setState({ loading: true });
+    if (this.props.refreshList) {
+      this.props.refreshList();
+    }
     try {
       await httpService.createUser(dto);
       this.setState({ visible: false });
     } catch (e) {
       let errMsg = "未知错误: " + e.message;
-      console.log(e);
-      if (!ObjectUtils.isNullOrUndefined(e.response) && !ObjectUtils.isNullOrUndefined(e.response.data) && !ObjectUtils.isNullOrUndefined(e.response.data.message)) {
+      if (
+        !ObjectUtils.isNullOrUndefined(e.response) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data.message)
+      ) {
         errMsg = e.response.data.message;
       }
       message.error(errMsg);
