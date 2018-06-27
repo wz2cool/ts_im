@@ -28,7 +28,6 @@ export interface DispatchToProps {
 interface UserListState {
   createUserModalVisible: boolean;
   createUserModalClosed: () => void;
-  refreshList: () => void;
 }
 
 interface UserListProps extends StateToProps, DispatchToProps {}
@@ -36,7 +35,7 @@ interface UserListProps extends StateToProps, DispatchToProps {}
 export class UserList extends React.Component<UserListProps, UserListState> {
   constructor(props: UserListProps) {
     super(props);
-    this.state = { createUserModalVisible: false, refreshList: this.refreshList, createUserModalClosed: this.createUserModalClosed };
+    this.state = { createUserModalVisible: false, createUserModalClosed: this.createUserModalClosed };
   }
 
   componentDidMount(): void {
@@ -161,14 +160,10 @@ export class UserList extends React.Component<UserListProps, UserListState> {
             />
           </Layout.Content>
         </Layout>
-        <CreateUserModal visible={this.state.createUserModalVisible} refreshList={this.state.refreshList} closed={this.state.createUserModalClosed} />
+        <CreateUserModal visible={this.state.createUserModalVisible} closed={this.state.createUserModalClosed} />
       </div>
     );
   }
-
-  private refreshList = () => {
-    this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
-  };
 
   private pageNumChange = (pageNum: number) => {
     this.props.pageNumChange(pageNum);
@@ -198,7 +193,10 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   };
 
   private search = () => {
-    this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
+    // search need rest pagenum to 1;
+    const newPageNum = 1;
+    this.props.pageNumChange(newPageNum);
+    this.props.fetchUserInfoPage(this.props.userFilter, newPageNum, this.props.pageSize);
   };
 
   private clearFilter = () => {
@@ -212,7 +210,9 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   };
 
   private createUserModalClosed = () => {
-    alert("createUserModalClosed");
     this.setState({ createUserModalVisible: false });
+    // force refresh.
+    const newFilter = lodash.assign({}, this.props.userFilter);
+    this.props.fetchUserInfoPage(newFilter, this.props.pageNum, this.props.pageSize);
   };
 }

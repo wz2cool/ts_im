@@ -17,7 +17,6 @@ interface CreateUserModalState {
 
 interface CreateUserModalProps extends FormComponentProps {
   visible?: boolean;
-  refreshList?: () => void;
   closed?: () => void;
 }
 
@@ -68,9 +67,6 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
     dto.source = 1;
 
     this.setState({ loading: true });
-    if (this.props.refreshList) {
-      this.props.refreshList();
-    }
     try {
       await httpService.createUser(dto);
       this.setState({ visible: false });
