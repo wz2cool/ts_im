@@ -102,12 +102,12 @@ export class UserList extends React.Component<UserListProps, UserListState> {
               <FormItem label="来源">
                 <Select
                   className="source_select"
-                  value={this.props.userFilter.source || 0}
+                  value={this.props.userFilter.source || -1}
                   onChange={value => {
                     this.searchFieldChange("source", value);
                   }}
                 >
-                  <Select.Option value={0}>全部</Select.Option>
+                  <Select.Option value={-1}>全部</Select.Option>
                   <Select.Option value={1}>网站注册</Select.Option>
                   <Select.Option value={2}>手机注册</Select.Option>
                 </Select>
@@ -115,18 +115,18 @@ export class UserList extends React.Component<UserListProps, UserListState> {
               <FormItem label="状态">
                 <Select
                   className="status_select"
-                  value={this.props.userFilter.active || 0}
+                  value={this.props.userFilter.active || -1}
                   onChange={value => {
                     this.searchFieldChange("active", value);
                   }}
                 >
-                  <Select.Option value={0}>全部</Select.Option>
-                  <Select.Option value={1}>未审核</Select.Option>
-                  <Select.Option value={2}>已审核</Select.Option>
+                  <Select.Option value={-1}>全部</Select.Option>
+                  <Select.Option value={0}>未审核</Select.Option>
+                  <Select.Option value={1}>已审核</Select.Option>
                 </Select>
               </FormItem>
               <FormItem>
-                <Button type="primary" icon="search" onClick={this.search}>
+                <Button type="primary" icon="search" onClick={this.search} loading={this.props.loading}>
                   搜索
                 </Button>
               </FormItem>
