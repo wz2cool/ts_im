@@ -1,13 +1,15 @@
 import * as React from "react";
-import { UserFilterDto, UserInfoPageDto } from "../../../../models/dto";
-import { Table, Layout, Form, Input, Button, Select } from "antd";
+import { UserFilterDto, UserInfoPageDto, UserInfoDto } from "../../../../models/dto";
+import { Table, Layout, Form, Input, Button, Select, Modal } from "antd";
 import * as lodash from "lodash";
 import CreateUserModal from "../create-user-modal";
 
 import "./style.scss";
 import { StringUtils, ObjectUtils } from "ts-commons";
+import { ColumnProps } from "antd/lib/table";
 
 const FormItem = Form.Item;
+const confirm = Modal.confirm;
 
 export interface StateToProps {
   loading: boolean;
@@ -39,14 +41,11 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   }
 
   componentDidMount(): void {
-    if (!this.props.userInfoPage.entites || this.props.userInfoPage.entites.length === 0) {
-      this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
-    }
+    this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
   }
 
   public render(): JSX.Element {
-    console.log(this.props);
-    const columns = [
+    const columns: ColumnProps<UserInfoDto>[] = [
       {
         title: "ID",
         dataIndex: "id",
@@ -71,6 +70,34 @@ export class UserList extends React.Component<UserListProps, UserListState> {
         title: "邮箱",
         dataIndex: "email",
         key: "email",
+      },
+      {
+        title: "来源",
+        key: "source",
+        dataIndex: "source",
+        render: (text, record, index) => {
+          return <div>{this.getSourceString(record.source)}</div>;
+        },
+      },
+      {
+        title: "状态",
+        key: "active",
+        dataIndex: "active",
+        render: (text, record, index) => {
+          return <div>{this.getActiveString(record.active)}</div>;
+        },
+      },
+      {
+        title: "",
+        render: (text, record, index) => {
+          return (
+            <div>
+              <Button type="danger" size="small" onClick={() => this.hanleDeleteUser(record)}>
+                删除
+              </Button>
+            </div>
+          );
+        },
       },
     ];
 
@@ -209,5 +236,35 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     // force refresh.
     const newFilter = lodash.assign({}, this.props.userFilter);
     this.props.fetchUserInfoPage(newFilter, this.props.pageNum, this.props.pageSize);
+  };
+
+  private hanleDeleteUser = (user: UserInfoDto) => {
+    confirm({
+      title: "删除用户",
+      content: `你确定要删除用户："${user.userName}" ？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {},
+    });
+  };
+
+  private getSourceString = (source: number) => {
+    if (source === 1) {
+      return "网站注册";
+    } else if (source === 2) {
+      return "手机注册";
+    } else {
+      return "来源未知";
+    }
+  };
+
+  private getActiveString = (active: number) => {
+    if (active === 0) {
+      return "未审核";
+    } else if (active === 1) {
+      return "已审核";
+    } else {
+      return "未知";
+    }
   };
 }

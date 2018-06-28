@@ -1,11 +1,12 @@
 import * as React from "react";
 
-import { Modal, Form, Input, Button, message } from "antd";
+import { Form, message } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { ObjectUtils, RegexUtils, StringUtils } from "ts-commons";
 import { CommonsHelper } from "../../../../helpers";
 import { CreateUserDto } from "../../../../models/dto";
 import { UserHttpService } from "../../../../services/user-http.service";
+import { getView } from "./view";
 
 const httpService = UserHttpService.getInstance();
 
@@ -20,18 +21,7 @@ interface CreateUserModalProps extends FormComponentProps {
   closed?: () => void;
 }
 
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
-  },
-};
-
-class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserModalState> {
+export class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserModalState> {
   constructor(props: CreateUserModalProps) {
     super(props);
     this.state = {
@@ -39,6 +29,10 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
       confirmDirty: false,
       visible: false,
     };
+  }
+
+  public render(): JSX.Element {
+    return getView(this);
   }
 
   componentWillReceiveProps(nextProps: CreateUserModalProps) {
@@ -156,91 +150,6 @@ class CreateUserModal extends React.Component<CreateUserModalProps, CreateUserMo
   handleModalCanal = () => {
     this.setState({ visible: false });
   };
-
-  public render(): JSX.Element {
-    const { getFieldDecorator } = this.props.form;
-    return (
-      <Modal destroyOnClose={true} maskClosable={false} title="添加用户" visible={this.state.visible} footer={null} onCancel={this.handleModalCanal}>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Item {...formItemLayout} label="用户名">
-            {getFieldDecorator("username", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写用户名！",
-                },
-                {
-                  validator: this.validateUsername,
-                },
-              ],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="邮箱">
-            {getFieldDecorator("email", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写邮箱！",
-                },
-                {
-                  validator: this.validateEmail,
-                },
-              ],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="手机">
-            {getFieldDecorator("mobile", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写手机号！",
-                },
-                {
-                  validator: this.validateMobile,
-                },
-              ],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="密码">
-            {getFieldDecorator("password", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写密码！",
-                },
-                {
-                  validator: this.validateToNextPassword,
-                },
-              ],
-            })(<Input type="password" />)}
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="确认密码">
-            {getFieldDecorator("confirm", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写确认密码！",
-                },
-                {
-                  validator: this.compareToFirstPassword,
-                },
-              ],
-            })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
-          </Form.Item>
-          <Form.Item {...formItemLayout} label="昵称">
-            {getFieldDecorator("displayName", {
-              rules: [],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item wrapperCol={{ span: 12, offset: 10 }}>
-            <Button type="primary" htmlType="submit" loading={this.state.loading}>
-              提交
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-    );
-  }
 }
 
 export default Form.create()(CreateUserModal);
