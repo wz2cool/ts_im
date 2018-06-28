@@ -1,7 +1,14 @@
 import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
 import { AnyAction } from "redux";
 import * as lodash from "lodash";
-import { FETCH_USER_INFO_PAGE_BEGIN, FETCH_USER_INFO_PAGE_SUCCESS, FETCH_USER_INFO_PAGE_FAILED, PAGE_NUM_CHANGE, PAGE_SIZE_CHANGE, SEARCH_FIELD_CHANGE } from "../actions/user-list.action";
+import {
+  FETCH_USER_INFO_PAGE_BEGIN,
+  FETCH_USER_INFO_PAGE_SUCCESS,
+  FETCH_USER_INFO_PAGE_FAILED,
+  PAGE_NUM_CHANGE,
+  PAGE_SIZE_CHANGE,
+  SEARCH_FIELD_CHANGE,
+} from "../actions/user-list.action";
 
 export interface ReducerState {
   loading: boolean;

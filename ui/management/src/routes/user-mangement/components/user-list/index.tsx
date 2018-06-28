@@ -1,7 +1,6 @@
 import * as React from "react";
 import { UserFilterDto, UserInfoPageDto } from "../../../../models/dto";
 import { Table, Layout, Form, Input, Button, Select } from "antd";
-import { StringUtils, ObjectUtils } from "ts-commons";
 import * as lodash from "lodash";
 import CreateUserModal from "../create-user-modal";
 
@@ -121,12 +120,12 @@ export class UserList extends React.Component<UserListProps, UserListState> {
                   }}
                 >
                   <Select.Option value={-1}>全部</Select.Option>
-                  <Select.Option value={0}>未审核</Select.Option>
-                  <Select.Option value={1}>已审核</Select.Option>
+                  <Select.Option value={1}>未审核</Select.Option>
+                  <Select.Option value={2}>已审核</Select.Option>
                 </Select>
               </FormItem>
               <FormItem>
-                <Button type="primary" icon="search" onClick={this.search} loading={this.props.loading}>
+                <Button type="primary" icon="search" onClick={this.search}>
                   搜索
                 </Button>
               </FormItem>
@@ -178,16 +177,7 @@ export class UserList extends React.Component<UserListProps, UserListState> {
 
   private searchFieldChange = (fieldName: string, value: any) => {
     const filter = this.props.userFilter;
-    let useValue;
-
-    if (ObjectUtils.isNullOrUndefined(value) || value === 0) {
-      useValue = undefined;
-    } else if (ObjectUtils.isString(value) && StringUtils.isBlank(value as string)) {
-      useValue = undefined;
-    } else {
-      useValue = value;
-    }
-    filter[fieldName] = useValue;
+    filter[fieldName] = value;
     const newFilter = lodash.assign({}, filter);
     this.props.searchFieldChange(newFilter);
   };
