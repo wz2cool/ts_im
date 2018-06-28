@@ -83,7 +83,6 @@ export class CreateUserModal extends React.Component<CreateUserModalProps, Creat
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (ObjectUtils.isNullOrUndefined(err)) {
-        console.log("Received values of form: ", values);
         this.createUser(values);
       }
     });
