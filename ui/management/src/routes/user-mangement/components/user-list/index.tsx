@@ -5,6 +5,7 @@ import * as lodash from "lodash";
 import CreateUserModal from "../create-user-modal";
 
 import "./style.scss";
+import { StringUtils, ObjectUtils } from "ts-commons";
 
 const FormItem = Form.Item;
 
@@ -101,27 +102,31 @@ export class UserList extends React.Component<UserListProps, UserListState> {
               <FormItem label="来源">
                 <Select
                   className="source_select"
-                  value={this.props.userFilter.source || -1}
+                  value={ObjectUtils.toSafeString(this.props.userFilter.source)}
                   onChange={value => {
-                    this.searchFieldChange("source", value);
+                    const valueStr = value.toString();
+                    const useValue = StringUtils.isNotBlank(valueStr) ? parseInt(valueStr) : undefined;
+                    this.searchFieldChange("source", useValue);
                   }}
                 >
-                  <Select.Option value={-1}>全部</Select.Option>
-                  <Select.Option value={1}>网站注册</Select.Option>
-                  <Select.Option value={2}>手机注册</Select.Option>
+                  <Select.Option value="">全部</Select.Option>
+                  <Select.Option value="1">网站注册</Select.Option>
+                  <Select.Option value="2">手机注册</Select.Option>
                 </Select>
               </FormItem>
               <FormItem label="状态">
                 <Select
                   className="status_select"
-                  value={this.props.userFilter.active || -1}
+                  value={ObjectUtils.toSafeString(this.props.userFilter.active)}
                   onChange={value => {
-                    this.searchFieldChange("active", value);
+                    const valueStr = value.toString();
+                    const useValue = StringUtils.isNotBlank(valueStr) ? parseInt(valueStr) : undefined;
+                    this.searchFieldChange("active", useValue);
                   }}
                 >
-                  <Select.Option value={-1}>全部</Select.Option>
-                  <Select.Option value={1}>未审核</Select.Option>
-                  <Select.Option value={2}>已审核</Select.Option>
+                  <Select.Option value="">全部</Select.Option>
+                  <Select.Option value="0">未审核</Select.Option>
+                  <Select.Option value="1">已审核</Select.Option>
                 </Select>
               </FormItem>
               <FormItem>

@@ -2,7 +2,6 @@ import { ActionPayload } from "../../../models/interface";
 import { UserInfoPageDto, UserFilterDto } from "../../../models/dto";
 import { Dispatch } from "redux";
 import { UserHttpService } from "../../../services";
-import * as lodash from "lodash";
 
 export const FETCH_USER_INFO_PAGE_BEGIN = "FETCH_USER_INFO_PAGE_BEGIN";
 export const FETCH_USER_INFO_PAGE_SUCCESS = "FETCH_USER_INFO_PAGE_SUCCESS";
@@ -57,11 +56,9 @@ export const searchFieldChange = (filter: UserFilterDto): ActionPayload => {
 export const fetchUserInfoPage = (filter: UserFilterDto, pageNum: number, pageSize: number) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(fetchUserInfoPageBegin());
-    const searchFilter = lodash.assign({}, filter);
-    searchFilter.source = searchFilter.source && searchFilter.source > 0 ? searchFilter.source : undefined;
-    searchFilter.active = searchFilter.active && searchFilter.active > 0 ? searchFilter.active : undefined;
+    console.log(filter);
     return userHttpService
-      .getUserInfosByFilter(searchFilter, pageNum, pageSize)
+      .getUserInfosByFilter(filter, pageNum, pageSize)
       .then(response => {
         dispatch(fetchUserInfoPageSuccess(response.data));
       })
