@@ -55,6 +55,7 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     this.setState({
       pageNum: pageNum,
     });
+    this.fetchUserInfoPage(this.props.userFilter, pageNum, this.state.pageSize);
   };
 
   pageSizeChange = (pageNum: number, pageSize: number) => {
@@ -62,6 +63,7 @@ export class UserList extends React.Component<UserListProps, UserListState> {
       pageNum: pageNum,
       pageSize: pageSize,
     });
+    this.fetchUserInfoPage(this.props.userFilter, pageNum, pageSize);
   };
 
   searchFieldChange = (fieldName: string, value: any) => {
@@ -97,7 +99,10 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   fetchUserInfoPage = async (filter: UserFilterDto, pageNum: number, pageSize: number) => {
     try {
       this.setState({ loading: true });
-      await userHttpService.getUserInfosByFilter(filter, pageNum, pageSize);
+      const response = await userHttpService.getUserInfosByFilter(filter, pageNum, pageSize);
+      this.setState({
+        userInfoPage: response.data,
+      });
     } catch (e) {
       let errMsg = "未知错误: " + e.message;
       if (
