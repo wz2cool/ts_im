@@ -112,9 +112,19 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     try {
       this.setState({ loading: true });
       const response = await userHttpService.getUserInfosByFilter(filter, pageNum, pageSize);
-      this.setState({
-        userInfoPage: response.data,
-      });
+      const userInfoPage = response.data;
+      const page = Math.floor((userInfoPage.total + 0.0) / userInfoPage.pageSize);
+      if (page >= pageNum) {
+        this.setState({
+          userInfoPage: response.data,
+        });
+      } else {
+        // 如果页数和当前pagenum 不匹配 需要重新拿
+        this.setState({
+          pageNum: page,
+        });
+        await this.fetchUserInfoPage(filter, page, pageSize);
+      }
     } catch (e) {
       let errMsg = "未知错误: " + e.message;
       if (
