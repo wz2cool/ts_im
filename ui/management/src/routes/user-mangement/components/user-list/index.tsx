@@ -71,7 +71,6 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     filter[fieldName] = value;
     const newFilter = lodash.assign({}, filter);
     this.props.searchFieldChange(newFilter);
-    this.fetchUserInfoPage(newFilter, this.state.pageNum, this.state.pageSize);
   };
 
   search = () => {
