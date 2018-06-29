@@ -124,11 +124,11 @@ export class UserService {
       await conn.beginTransaction();
       beginTrans = true;
       const mapper = new UserMapper(conn);
-      const user = new User();
-      user.id = userId;
-      user.active = UserActive.ACTIVE;
-      user.updateTime = new Date();
-      const effectRows = await mapper.updateByPrimaryKeySelective(user);
+      const effectRows = await mapper.updateByPrimaryKeySelective({
+        id: userId,
+        active: UserActive.ACTIVE,
+        updateTime: new Date(),
+      });
       console.log('effectRows: ', effectRows);
       await conn.commit();
       return new Promise<void>((resolve, reject) => resolve());

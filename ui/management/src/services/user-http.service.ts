@@ -16,7 +16,6 @@ export class UserHttpService {
   }
 
   public getUserInfosByFilter(UserFilterDto: UserFilterDto, pageNum: number, pageSize: number): AxiosPromise<UserInfoPageDto> {
-    console.log("get data");
     const url = `${this.apiURL}/users/filter/?pageNum=${pageNum}&pageSize=${pageSize}`;
     return axios.post(url, UserFilterDto, this.config);
   }
@@ -29,5 +28,10 @@ export class UserHttpService {
   public deleteUser(userId: number): AxiosPromise<void> {
     const url = `${this.apiURL}/users/${userId}`;
     return axios.delete(url, this.config);
+  }
+
+  public activeUser(userId: number): AxiosPromise<void> {
+    const url = `${this.apiURL}/users/${userId}/active`;
+    return axios.put(url, null, this.config);
   }
 }

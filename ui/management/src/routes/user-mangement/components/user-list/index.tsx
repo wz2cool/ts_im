@@ -95,7 +95,7 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
   };
 
-  hanleDeleteUser = (user: UserInfoDto) => {
+  handleDeleteUser = (user: UserInfoDto) => {
     const that = this;
     confirm({
       title: "删除用户",
@@ -107,6 +107,8 @@ export class UserList extends React.Component<UserListProps, UserListState> {
       },
     });
   };
+
+  handleActiveUser = (user: UserInfoDto) => {};
 
   fetchUserInfoPage = async (filter: UserFilterDto, pageNum: number, pageSize: number) => {
     try {
@@ -144,6 +146,26 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     try {
       this.setState({ loading: true });
       await userHttpService.deleteUser(userId);
+      this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
+    } catch (e) {
+      let errMsg = "未知错误: " + e.message;
+      if (
+        !ObjectUtils.isNullOrUndefined(e.response) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data.message)
+      ) {
+        errMsg = e.response.data.message;
+      }
+      message.error(errMsg);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  activeUser = async (userId: number) => {
+    try {
+      this.setState({ loading: true });
+      await userHttpService.activeUser(userId);
       this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
     } catch (e) {
       let errMsg = "未知错误: " + e.message;

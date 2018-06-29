@@ -77,7 +77,12 @@ const getView = (component: UserList): JSX.Element => {
       render: (text, record, index) => {
         return (
           <div>
-            <Button type="danger" size="small" onClick={() => that.hanleDeleteUser(record)}>
+            {!record.active && (
+              <Button className="active_button" type="default" size="small" onClick={() => that.activeUser(record.id)}>
+                审核
+              </Button>
+            )}
+            <Button type="danger" size="small" onClick={() => that.handleDeleteUser(record)}>
               删除
             </Button>
           </div>
