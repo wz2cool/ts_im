@@ -95,6 +95,19 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
   };
 
+  hanleDeleteUser = (user: UserInfoDto) => {
+    const that = this;
+    confirm({
+      title: "删除用户",
+      content: `你确定要删除用户："${user.userName}" ？`,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        that.deleteUser(user.id);
+      },
+    });
+  };
+
   fetchUserInfoPage = async (filter: UserFilterDto, pageNum: number, pageSize: number) => {
     try {
       this.setState({ loading: true });
@@ -117,13 +130,23 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     }
   };
 
-  hanleDeleteUser = (user: UserInfoDto) => {
-    confirm({
-      title: "删除用户",
-      content: `你确定要删除用户："${user.userName}" ？`,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {},
-    });
+  deleteUser = async (userId: number) => {
+    try {
+      this.setState({ loading: true });
+      await userHttpService.deleteUser(userId);
+      this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
+    } catch (e) {
+      let errMsg = "未知错误: " + e.message;
+      if (
+        !ObjectUtils.isNullOrUndefined(e.response) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data.message)
+      ) {
+        errMsg = e.response.data.message;
+      }
+      message.error(errMsg);
+    } finally {
+      this.setState({ loading: false });
+    }
   };
 }

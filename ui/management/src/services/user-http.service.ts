@@ -25,4 +25,9 @@ export class UserHttpService {
     const url = `${this.apiURL}/users`;
     return axios.post(url, dto, this.config);
   }
+
+  public deleteUser(userId: number): AxiosPromise<void> {
+    const url = `${this.apiURL}/users/${userId}`;
+    return axios.delete(url, this.config);
+  }
 }
