@@ -157,15 +157,15 @@ const getView = (component: UserList): JSX.Element => {
         <Layout.Content>
           <Table
             columns={columns}
-            dataSource={that.props.userInfoPage.entites}
-            loading={that.props.loading}
+            dataSource={that.state.userInfoPage.entites}
+            loading={that.state.loading}
             pagination={{
               pageSizeOptions: ["1", "2", "10", "20", "30", "40", "50"],
               showQuickJumper: true,
               showSizeChanger: true,
-              current: that.props.pageNum,
-              pageSize: that.props.userInfoPage.pageSize,
-              total: that.props.userInfoPage.total,
+              current: that.state.pageNum,
+              pageSize: that.state.userInfoPage.pageSize,
+              total: that.state.userInfoPage.total,
               onChange: that.pageNumChange,
               onShowSizeChange: that.pageSizeChange,
             }}

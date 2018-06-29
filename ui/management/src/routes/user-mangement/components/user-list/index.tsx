@@ -1,9 +1,10 @@
 import * as React from "react";
 import { UserFilterDto, UserInfoPageDto, UserInfoDto } from "../../../../models/dto";
-import { Modal } from "antd";
+import { Modal, message } from "antd";
 import * as lodash from "lodash";
 import { getView } from "./view";
 import { UserHttpService } from "../../../../services";
+import { ObjectUtils } from "ts-commons";
 
 const confirm = Modal.confirm;
 const userHttpService = UserHttpService.getInstance();
@@ -30,10 +31,12 @@ interface UserListProps extends StateToProps, DispatchToProps {}
 export class UserList extends React.Component<UserListProps, UserListState> {
   constructor(props: UserListProps) {
     super(props);
+    const userInfoPage = new UserInfoPageDto();
+    userInfoPage.entites = [];
     this.state = {
       createUserModalVisible: false,
       createUserModalClosed: this.createUserModalClosed,
-      userInfoPage: new UserInfoPageDto(),
+      userInfoPage: userInfoPage,
       loading: false,
       pageNum: 1,
       pageSize: 10,
@@ -41,7 +44,7 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   }
 
   componentDidMount(): void {
-    // this.props.fetchUserInfoPage(this.props.userFilter, this.props.pageNum, this.props.pageSize);
+    this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
   }
 
   public render(): JSX.Element {
@@ -49,14 +52,16 @@ export class UserList extends React.Component<UserListProps, UserListState> {
   }
 
   pageNumChange = (pageNum: number) => {
-    this.props.pageNumChange(pageNum);
-    this.props.fetchUserInfoPage(this.props.userFilter, pageNum, this.props.pageSize);
+    this.setState({
+      pageNum: pageNum,
+    });
   };
 
   pageSizeChange = (pageNum: number, pageSize: number) => {
-    this.props.pageNumChange(pageNum);
-    this.props.pageSizeChange(pageSize);
-    this.props.fetchUserInfoPage(this.props.userFilter, pageNum, pageSize);
+    this.setState({
+      pageNum: pageNum,
+      pageSize: pageSize,
+    });
   };
 
   searchFieldChange = (fieldName: string, value: any) => {
@@ -64,19 +69,20 @@ export class UserList extends React.Component<UserListProps, UserListState> {
     filter[fieldName] = value;
     const newFilter = lodash.assign({}, filter);
     this.props.searchFieldChange(newFilter);
+    this.fetchUserInfoPage(newFilter, this.state.pageNum, this.state.pageSize);
   };
 
   search = () => {
     // search need rest pagenum to 1;
     const newPageNum = 1;
-    this.props.pageNumChange(newPageNum);
-    this.props.fetchUserInfoPage(this.props.userFilter, newPageNum, this.props.pageSize);
+    this.setState({ pageNum: newPageNum });
+    this.fetchUserInfoPage(this.props.userFilter, newPageNum, this.state.pageSize);
   };
 
   clearFilter = () => {
     const emptyFilter = new UserFilterDto();
     this.props.searchFieldChange(emptyFilter);
-    this.props.fetchUserInfoPage(emptyFilter, this.props.pageNum, this.props.pageSize);
+    this.fetchUserInfoPage(emptyFilter, this.state.pageNum, this.state.pageSize);
   };
 
   showCreateUserModal = () => {
@@ -85,12 +91,27 @@ export class UserList extends React.Component<UserListProps, UserListState> {
 
   createUserModalClosed = () => {
     this.setState({ createUserModalVisible: false });
-    // force refresh.
-    const newFilter = lodash.assign({}, this.props.userFilter);
-    this.props.fetchUserInfoPage(newFilter, this.props.pageNum, this.props.pageSize);
+    this.fetchUserInfoPage(this.props.userFilter, this.state.pageNum, this.state.pageSize);
   };
 
-  fetchUserInfoPage = (filter: UserFilterDto, pageNum: number, pageSize: number) => {};
+  fetchUserInfoPage = async (filter: UserFilterDto, pageNum: number, pageSize: number) => {
+    try {
+      this.setState({ loading: true });
+      await userHttpService.getUserInfosByFilter(filter, pageNum, pageSize);
+    } catch (e) {
+      let errMsg = "未知错误: " + e.message;
+      if (
+        !ObjectUtils.isNullOrUndefined(e.response) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data) &&
+        !ObjectUtils.isNullOrUndefined(e.response.data.message)
+      ) {
+        errMsg = e.response.data.message;
+      }
+      message.error(errMsg);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
 
   hanleDeleteUser = (user: UserInfoDto) => {
     confirm({
